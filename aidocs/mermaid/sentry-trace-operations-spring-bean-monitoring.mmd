@@ -1,0 +1,91 @@
+sequenceDiagram
+    participant Client as 客户端代码
+    participant Proxy as Spring AOP 代理
+    participant TransactionAdvice as SentryTransactionAdvice
+    participant SpanAdvice as SentrySpanAdvice
+    participant Sentry as Sentry SDK
+    participant Bean as 目标 Bean
+    participant Backend as Sentry 后台
+
+    Note over Client: 调用 @SentryTransaction 方法
+    Client->>Proxy: userService.createUser(request)
+    
+    Note over Proxy: AOP 拦截处理
+    Proxy->>TransactionAdvice: 拦截方法调用
+    TransactionAdvice->>TransactionAdvice: 解析注解信息
+    Note over TransactionAdvice: sentryTransaction = method.getAnnotation(SentryTransaction.class)<br/>operation = sentryTransaction.operation() ?: "bean"
+    
+    TransactionAdvice->>Sentry: 创建分叉作用域
+    Sentry-->>TransactionAdvice: 返回 forkedScopes
+    
+    Note over TransactionAdvice: 创建事务
+    TransactionAdvice->>Sentry: forkedScopes.startTransaction(transactionContext, options)
+    Note over TransactionAdvice: transactionContext:<br/>- name: "UserService.createUser"<br/>- operation: "bean"<br/>- source: COMPONENT
+    Sentry-->>TransactionAdvice: 返回 Transaction
+    
+    TransactionAdvice->>Sentry: 绑定到作用域
+    Note over Sentry: 设置事务标签<br/>- component.type: "spring.bean"<br/>- method.name: "createUser"
+    
+    Note over TransactionAdvice: 执行目标方法
+    TransactionAdvice->>Bean: 调用实际业务方法
+    activate Bean
+    
+    Note over Bean: 业务方法内部可能调用其他方法
+    Bean->>Proxy: validateUser(user) [@SentrySpan]
+    Proxy->>SpanAdvice: 拦截 Span 方法
+    
+    SpanAdvice->>Sentry: 获取当前活跃 Span
+    Sentry-->>SpanAdvice: 返回当前 Transaction
+    
+    SpanAdvice->>SpanAdvice: 解析 Span 注解
+    Note over SpanAdvice: sentrySpan = method.getAnnotation(SentrySpan.class)<br/>operation = sentrySpan.operation() ?: "UserService.validateUser"
+    
+    SpanAdvice->>Sentry: activeSpan.startChild(operation, description, options)
+    Sentry-->>SpanAdvice: 返回子 Span
+    
+    Note over SpanAdvice: 设置 Span 标签
+    SpanAdvice->>Sentry: span.setTag("method.class", "UserService")
+    SpanAdvice->>Sentry: span.setTag("method.name", "validateUser")
+    
+    SpanAdvice->>Bean: 执行验证逻辑
+    Note over Bean: 用户验证处理<br/>- 参数校验<br/>- 业务规则检查<br/>- 数据验证
+    
+    alt 验证成功
+        Bean-->>SpanAdvice: 验证通过
+        SpanAdvice->>Sentry: span.setStatus(SpanStatus.OK)
+    else 验证失败
+        Bean-->>SpanAdvice: 抛出验证异常
+        SpanAdvice->>Sentry: span.setThrowable(validationException)
+        SpanAdvice->>Sentry: span.setStatus(SpanStatus.INVALID_ARGUMENT)
+    end
+    
+    SpanAdvice->>Sentry: span.finish()
+    Note over Sentry: 上报验证 Span
+    Sentry->>Backend: 发送 validation Span
+    
+    SpanAdvice-->>Bean: 返回验证结果
+    
+    Note over Bean: 继续业务处理
+    Bean->>Bean: 创建用户逻辑
+    Note over Bean: 用户创建处理<br/>- 数据持久化<br/>- 事件发布<br/>- 缓存更新
+    
+    alt 创建成功
+        Bean-->>TransactionAdvice: 返回创建的用户
+        TransactionAdvice->>Sentry: transaction.setStatus(SpanStatus.OK)
+        Note over TransactionAdvice: 设置成功指标<br/>- user.created: true<br/>- execution.time: duration
+    else 创建失败
+        Bean-->>TransactionAdvice: 抛出业务异常
+        TransactionAdvice->>Sentry: transaction.setThrowable(businessException)
+        TransactionAdvice->>Sentry: transaction.setStatus(SpanStatus.INTERNAL_ERROR)
+        Note over TransactionAdvice: 设置错误信息<br/>- error.type: "BusinessException"<br/>- error.message: exception.getMessage()
+    end
+    
+    deactivate Bean
+    
+    Note over TransactionAdvice: 完成事务
+    TransactionAdvice->>Sentry: transaction.finish()
+    Note over Sentry: 上报事务数据
+    Sentry->>Backend: 发送 bean Transaction 及所有子 Span
+    
+    TransactionAdvice->>Sentry: 清理作用域
+    TransactionAdvice-->>Client: 返回方法结果 

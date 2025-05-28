@@ -1,0 +1,1123 @@
+.
+├── aidocs
+│   ├── mermaid
+│   │   └── svg
+│   └── rules
+├── buildSrc
+│   └── src
+│       └── main
+│           └── java
+├── docs
+├── gradle
+│   └── wrapper
+├── hooks
+├── scripts
+├── sentry
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           ├── backpressure
+│       │   │           ├── cache
+│       │   │           │   └── tape
+│       │   │           ├── clientreport
+│       │   │           ├── config
+│       │   │           ├── exception
+│       │   │           ├── hints
+│       │   │           ├── instrumentation
+│       │   │           │   └── file
+│       │   │           ├── internal
+│       │   │           │   ├── debugmeta
+│       │   │           │   ├── eventprocessor
+│       │   │           │   ├── gestures
+│       │   │           │   ├── modules
+│       │   │           │   └── viewhierarchy
+│       │   │           ├── logger
+│       │   │           ├── opentelemetry
+│       │   │           ├── profilemeasurements
+│       │   │           ├── protocol
+│       │   │           ├── rrweb
+│       │   │           ├── transport
+│       │   │           ├── util
+│       │   │           │   └── thread
+│       │   │           └── vendor
+│       │   │               └── gson
+│       │   │                   ├── internal
+│       │   │                   │   └── bind
+│       │   │                   │       └── util
+│       │   │                   └── stream
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── native-image
+│       │               └── io.sentry
+│       │                   └── sentry
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           ├── backpressure
+│           │           ├── cache
+│           │           │   └── tape
+│           │           ├── clientreport
+│           │           ├── config
+│           │           ├── hints
+│           │           ├── instrumentation
+│           │           │   └── file
+│           │           ├── internal
+│           │           │   ├── debugmeta
+│           │           │   └── modules
+│           │           ├── protocol
+│           │           ├── rrweb
+│           │           ├── transport
+│           │           ├── util
+│           │           │   └── thread
+│           │           └── vendor
+│           │               └── gson
+│           │                   ├── internal
+│           │                   │   └── bind
+│           │                   │       └── util
+│           │                   └── stream
+│           └── resources
+│               ├── json
+│               └── mockito-extensions
+├── sentry-android
+│   └── src
+│       └── main
+│           └── res
+│               └── values
+├── sentry-android-core
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── core
+│       │   │                   ├── cache
+│       │   │                   ├── internal
+│       │   │                   │   ├── debugmeta
+│       │   │                   │   ├── gestures
+│       │   │                   │   ├── modules
+│       │   │                   │   ├── threaddump
+│       │   │                   │   └── util
+│       │   │                   ├── performance
+│       │   │                   └── util
+│       │   └── res
+│       │       └── values
+│       └── test
+│           ├── assets
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── core
+│           │                   ├── cache
+│           │                   ├── internal
+│           │                   │   ├── debugmeta
+│           │                   │   ├── gestures
+│           │                   │   ├── modules
+│           │                   │   ├── threaddump
+│           │                   │   └── util
+│           │                   └── performance
+│           └── resources
+│               └── mockito-extensions
+├── sentry-android-fragment
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── fragment
+│       │   └── res
+│       │       └── values
+│       └── test
+│           └── java
+│               └── io
+│                   └── sentry
+│                       └── android
+│                           └── fragment
+├── sentry-android-integration-tests
+│   ├── sentry-uitest-android
+│   │   └── src
+│   │       ├── androidTest
+│   │       │   └── java
+│   │       │       └── io
+│   │       │           └── sentry
+│   │       │               └── uitest
+│   │       │                   └── android
+│   │       │                       └── mockservers
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── uitest
+│   │           │               └── android
+│   │           │                   └── utils
+│   │           └── res
+│   │               ├── layout
+│   │               └── values
+│   ├── sentry-uitest-android-benchmark
+│   │   └── src
+│   │       ├── androidTest
+│   │       │   └── java
+│   │       │       └── io
+│   │       │           └── sentry
+│   │       │               └── uitest
+│   │       │                   └── android
+│   │       │                       └── benchmark
+│   │       │                           └── util
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── uitest
+│   │           │               └── android
+│   │           │                   └── benchmark
+│   │           └── res
+│   │               └── layout
+│   ├── sentry-uitest-android-critical
+│   │   ├── maestro
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── uitest
+│   │                           └── android
+│   │                               └── critical
+│   ├── test-app-plain
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── java
+│   │           │               └── tests
+│   │           │                   └── perf
+│   │           │                       └── appplain
+│   │           └── res
+│   │               ├── drawable
+│   │               ├── drawable-v24
+│   │               ├── layout
+│   │               ├── menu
+│   │               ├── mipmap-anydpi-v26
+│   │               ├── mipmap-hdpi
+│   │               ├── mipmap-mdpi
+│   │               ├── mipmap-xhdpi
+│   │               ├── mipmap-xxhdpi
+│   │               ├── mipmap-xxxhdpi
+│   │               ├── navigation
+│   │               ├── values
+│   │               ├── values-land
+│   │               ├── values-night
+│   │               ├── values-w1240dp
+│   │               ├── values-w600dp
+│   │               └── xml
+│   └── test-app-sentry
+│       └── src
+│           └── main
+│               ├── java
+│               │   └── io
+│               │       └── sentry
+│               │           └── java
+│               │               └── tests
+│               │                   └── perf
+│               │                       └── appsentry
+│               └── res
+│                   ├── drawable
+│                   ├── drawable-v24
+│                   ├── layout
+│                   ├── menu
+│                   ├── mipmap-anydpi-v26
+│                   ├── mipmap-hdpi
+│                   ├── mipmap-mdpi
+│                   ├── mipmap-xhdpi
+│                   ├── mipmap-xxhdpi
+│                   ├── mipmap-xxxhdpi
+│                   ├── navigation
+│                   ├── values
+│                   ├── values-land
+│                   ├── values-night
+│                   ├── values-w1240dp
+│                   ├── values-w600dp
+│                   └── xml
+├── sentry-android-navigation
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── navigation
+│       │   └── res
+│       │       └── values
+│       └── test
+│           └── java
+│               └── io
+│                   └── sentry
+│                       └── android
+│                           └── navigation
+├── sentry-android-ndk
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── ndk
+│       │   └── res
+│       │       └── values
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── ndk
+│           └── resources
+│               └── mockito-extensions
+├── sentry-android-replay
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── replay
+│       │   │                   ├── capture
+│       │   │                   ├── gestures
+│       │   │                   ├── util
+│       │   │                   ├── video
+│       │   │                   └── viewhierarchy
+│       │   ├── res
+│       │   │   └── values
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── io
+│       │               └── sentry
+│       │                   └── sentry-android-replay
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── replay
+│           │                   ├── capture
+│           │                   ├── gestures
+│           │                   ├── util
+│           │                   └── viewhierarchy
+│           └── resources
+├── sentry-android-sqlite
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── sqlite
+│       │   └── res
+│       │       └── values
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── sqlite
+│           └── resources
+│               └── mockito-extensions
+├── sentry-android-timber
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── timber
+│       │   └── res
+│       │       └── values
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── timber
+│           └── resources
+│               └── mockito-extensions
+├── sentry-apache-http-client-5
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── transport
+│       │                   └── apache
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── transport
+│           │               └── apache
+│           └── resources
+│               └── mockito-extensions
+├── sentry-apollo
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── apollo
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           ├── apollo
+│           │           │   └── type
+│           │           └── util
+│           └── resources
+│               └── mockito-extensions
+├── sentry-apollo-3
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── apollo3
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           ├── apollo3
+│           │           │   ├── adapter
+│           │           │   ├── selections
+│           │           │   └── type
+│           │           └── util
+│           └── resources
+│               └── mockito-extensions
+├── sentry-apollo-4
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── apollo4
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           ├── apollo4
+│           │           │   └── generated
+│           │           │       ├── adapter
+│           │           │       ├── selections
+│           │           │       └── type
+│           │           └── util
+│           └── resources
+│               └── mockito-extensions
+├── sentry-bom
+├── sentry-compose
+│   ├── api
+│   │   ├── android
+│   │   └── desktop
+│   └── src
+│       ├── androidMain
+│       │   ├── kotlin
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── compose
+│       │   │               ├── gestures
+│       │   │               └── viewhierarchy
+│       │   └── res
+│       │       └── values
+│       └── androidUnitTest
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── compose
+│                           └── viewhierarchy
+├── sentry-compose-helper
+├── sentry-graphql
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── graphql
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── graphql
+├── sentry-graphql-22
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── graphql22
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── graphql22
+├── sentry-graphql-core
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── graphql
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── graphql
+├── sentry-jdbc
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── jdbc
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── jdbc
+├── sentry-jul
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── jul
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── jul
+│           └── resources
+│               └── mockito-extensions
+├── sentry-kotlin-extensions
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── kotlin
+│       └── test
+│           └── java
+│               └── io
+│                   └── sentry
+│                       └── kotlin
+├── sentry-log4j2
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── log4j2
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── log4j2
+│           └── resources
+│               └── mockito-extensions
+├── sentry-logback
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── logback
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── logback
+│           └── resources
+│               └── mockito-extensions
+├── sentry-okhttp
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── okhttp
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── proguard
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── okhttp
+│           └── resources
+│               └── mockito-extensions
+├── sentry-openfeign
+│   ├── api
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── openfeign
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── openfeign
+│           └── resources
+│               └── mockito-extensions
+├── sentry-opentelemetry
+│   ├── sentry-opentelemetry-agent
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── opentelemetry
+│   │                           └── agent
+│   ├── sentry-opentelemetry-agentcustomization
+│   │   ├── api
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── opentelemetry
+│   │           └── resources
+│   │               └── META-INF
+│   │                   └── services
+│   ├── sentry-opentelemetry-agentless
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── opentelemetry
+│   │                           └── agent
+│   ├── sentry-opentelemetry-agentless-spring
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── opentelemetry
+│   │                           └── agent
+│   ├── sentry-opentelemetry-bootstrap
+│   │   ├── api
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── opentelemetry
+│   │           └── resources
+│   │               └── META-INF
+│   │                   └── services
+│   └── sentry-opentelemetry-core
+│       ├── api
+│       └── src
+│           ├── main
+│           │   └── java
+│           │       └── io
+│           │           └── sentry
+│           │               └── opentelemetry
+│           └── test
+│               └── kotlin
+├── sentry-quartz
+│   ├── api
+│   └── src
+│       └── main
+│           └── java
+│               └── io
+│                   └── sentry
+│                       └── quartz
+├── sentry-reactor
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── reactor
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── reactor
+├── sentry-samples
+│   ├── sentry-samples-android
+│   │   └── src
+│   │       └── main
+│   │           ├── cpp
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── android
+│   │           │                   └── compose
+│   │           └── res
+│   │               ├── drawable
+│   │               ├── drawable-v24
+│   │               ├── layout
+│   │               ├── mipmap-anydpi-v26
+│   │               ├── mipmap-hdpi
+│   │               ├── mipmap-mdpi
+│   │               ├── mipmap-xhdpi
+│   │               ├── mipmap-xxhdpi
+│   │               ├── mipmap-xxxhdpi
+│   │               ├── raw
+│   │               ├── values
+│   │               └── xml
+│   ├── sentry-samples-console
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── samples
+│   │                           └── console
+│   ├── sentry-samples-console-opentelemetry-noagent
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── samples
+│   │                           └── console
+│   ├── sentry-samples-jul
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── jul
+│   │           └── resources
+│   ├── sentry-samples-log4j2
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── log4j2
+│   │           └── resources
+│   ├── sentry-samples-logback
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── logback
+│   │           └── resources
+│   ├── sentry-samples-netflix-dgs
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── netflix
+│   │           │                   └── dgs
+│   │           │                       └── graphql
+│   │           │                           └── types
+│   │           └── resources
+│   │               └── schema
+│   ├── sentry-samples-openfeign
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── samples
+│   │                           └── openfeign
+│   ├── sentry-samples-servlet
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── servlet
+│   │           └── webapp
+│   │               └── WEB-INF
+│   ├── sentry-samples-spring
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── spring
+│   │           │                   └── web
+│   │           └── resources
+│   ├── sentry-samples-spring-boot
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       ├── graphql
+│   │       │   │                       └── quartz
+│   │       │   └── resources
+│   │       │       └── graphql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── systemtest
+│   │           └── resources
+│   ├── sentry-samples-spring-boot-jakarta
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── jakarta
+│   │       │   │                           ├── graphql
+│   │       │   │                           └── quartz
+│   │       │   └── resources
+│   │       │       └── graphql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── systemtest
+│   │           └── resources
+│   ├── sentry-samples-spring-boot-jakarta-opentelemetry
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── jakarta
+│   │       │   │                           ├── graphql
+│   │       │   │                           └── quartz
+│   │       │   └── resources
+│   │       │       └── graphql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── systemtest
+│   │           └── resources
+│   ├── sentry-samples-spring-boot-jakarta-opentelemetry-noagent
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── jakarta
+│   │       │   │                           ├── graphql
+│   │       │   │                           └── quartz
+│   │       │   └── resources
+│   │       │       └── graphql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── systemtest
+│   │           └── resources
+│   ├── sentry-samples-spring-boot-opentelemetry
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       ├── graphql
+│   │       │   │                       └── quartz
+│   │       │   └── resources
+│   │       │       └── graphql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── systemtest
+│   │           └── resources
+│   ├── sentry-samples-spring-boot-opentelemetry-noagent
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       ├── graphql
+│   │       │   │                       └── quartz
+│   │       │   └── resources
+│   │       │       └── graphql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── systemtest
+│   │           └── resources
+│   ├── sentry-samples-spring-boot-webflux
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── graphql
+│   │       │   └── resources
+│   │       │       └── graphql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── systemtest
+│   │           └── resources
+│   ├── sentry-samples-spring-boot-webflux-jakarta
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── jakarta
+│   │       │   │                           └── graphql
+│   │       │   └── resources
+│   │       │       └── graphql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── systemtest
+│   │           └── resources
+│   └── sentry-samples-spring-jakarta
+│       └── src
+│           └── main
+│               ├── java
+│               │   └── io
+│               │       └── sentry
+│               │           └── samples
+│               │               └── spring
+│               │                   └── jakarta
+│               │                       └── web
+│               └── resources
+├── sentry-servlet
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── servlet
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── servlet
+├── sentry-servlet-jakarta
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── servlet
+│       │   │               └── jakarta
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── servlet
+│                           └── jakarta
+├── sentry-spring
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── spring
+│       │   │               ├── checkin
+│       │   │               ├── exception
+│       │   │               ├── graphql
+│       │   │               ├── opentelemetry
+│       │   │               ├── tracing
+│       │   │               └── webflux
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── spring
+│           │               ├── exception
+│           │               ├── graphql
+│           │               ├── mvc
+│           │               ├── tracing
+│           │               └── webflux
+│           └── resources
+│               └── mockito-extensions
+├── sentry-spring-boot
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── spring
+│       │   │               └── boot
+│       │   │                   └── graphql
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── native-image
+│       │               └── io.sentry
+│       │                   └── sentry
+│       └── test
+│           ├── kotlin
+│           │   ├── com
+│           │   │   └── acme
+│           │   └── io
+│           │       └── sentry
+│           │           └── spring
+│           │               └── boot
+│           │                   └── it
+│           └── resources
+│               └── mockito-extensions
+├── sentry-spring-boot-jakarta
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── spring
+│       │   │               └── boot
+│       │   │                   └── jakarta
+│       │   │                       └── graphql
+│       │   └── resources
+│       │       └── META-INF
+│       │           ├── native-image
+│       │           │   └── io.sentry
+│       │           │       └── sentry
+│       │           └── spring
+│       └── test
+│           ├── kotlin
+│           │   ├── com
+│           │   │   └── acme
+│           │   └── io
+│           │       └── sentry
+│           │           └── spring
+│           │               └── boot
+│           │                   └── jakarta
+│           │                       └── it
+│           └── resources
+│               └── mockito-extensions
+├── sentry-spring-boot-starter
+│   └── api
+├── sentry-spring-boot-starter-jakarta
+│   └── api
+├── sentry-spring-jakarta
+│   ├── api
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── spring
+│       │   │               └── jakarta
+│       │   │                   ├── checkin
+│       │   │                   ├── exception
+│       │   │                   ├── graphql
+│       │   │                   ├── opentelemetry
+│       │   │                   ├── tracing
+│       │   │                   └── webflux
+│       │   │                       └── reactor
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── spring
+│                           └── jakarta
+│                               ├── exception
+│                               ├── graphql
+│                               ├── mvc
+│                               ├── tracing
+│                               └── webflux
+├── sentry-system-test-support
+│   ├── api
+│   └── src
+│       └── main
+│           ├── graphql
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── systemtest
+│                           ├── graphql
+│                           └── util
+├── sentry-test-support
+│   ├── api
+│   └── src
+│       └── main
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── test
+└── test
+
+1121 directories

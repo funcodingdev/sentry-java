@@ -1,0 +1,56 @@
+sequenceDiagram
+    participant App as 应用程序
+    participant JDBC as JDBC Driver
+    participant P6Spy as P6Spy 拦截器
+    participant Listener as SentryJdbcEventListener
+    participant Sentry as Sentry SDK
+    participant DB as 数据库
+    participant Backend as Sentry 后台
+
+    Note over App: 执行数据库操作
+    App->>JDBC: executeQuery(sql)
+    JDBC->>P6Spy: 拦截 SQL 执行
+    
+    Note over P6Spy: 执行前处理
+    P6Spy->>Listener: onBeforeAnyExecute(statementInfo)
+    Listener->>Sentry: 获取当前 Span
+    Sentry-->>Listener: 返回父 Span
+    
+    alt 存在父 Span
+        Listener->>Listener: 创建 SpanOptions
+        Note over Listener: 设置 origin = "auto.db.jdbc"
+        Listener->>Sentry: parent.startChild("db.query", sql, options)
+        Sentry-->>Listener: 返回 db.query Span
+        Listener->>Listener: 存储到 ThreadLocal
+    end
+    
+    Note over P6Spy: 执行 SQL
+    P6Spy->>DB: 实际执行 SQL 查询
+    activate DB
+    Note over DB: 查询处理<br/>- 解析 SQL<br/>- 索引查找<br/>- 数据检索<br/>- 结果组装
+    DB-->>P6Spy: 返回查询结果
+    deactivate DB
+    
+    Note over P6Spy: 执行后处理
+    P6Spy->>Listener: onAfterAnyExecute(statementInfo, timeElapsed, exception)
+    Listener->>Listener: 从 ThreadLocal 获取 Span
+    
+    alt Span 存在
+        Listener->>Listener: applyDatabaseDetailsToSpan()
+        Note over Listener: 设置数据库信息<br/>- db.system (postgresql/mysql)<br/>- db.name (数据库名)
+        
+        alt 执行成功
+            Listener->>Sentry: span.setStatus(SpanStatus.OK)
+        else 执行异常
+            Listener->>Sentry: span.setThrowable(exception)
+            Listener->>Sentry: span.setStatus(SpanStatus.INTERNAL_ERROR)
+        end
+        
+        Listener->>Sentry: span.finish()
+        Listener->>Listener: 清除 ThreadLocal
+        
+        Note over Sentry: 上报 Span 数据
+        Sentry->>Backend: 发送 db.query Span
+    end
+    
+    P6Spy-->>App: 返回查询结果 

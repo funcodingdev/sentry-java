@@ -1,0 +1,94 @@
+sequenceDiagram
+    participant Client as HTTP 客户端
+    participant Server as Web 服务器
+    participant Filter as SentryTracingFilter
+    participant Sentry as Sentry SDK
+    participant Controller as Spring Controller
+    participant Service as 业务服务
+    participant Backend as Sentry 后台
+
+    Note over Client: HTTP 请求
+    Client->>Server: POST /api/users
+    
+    Note over Server: 请求拦截处理
+    Server->>Filter: doFilter(request, response, chain)
+    Filter->>Filter: 解析请求信息
+    Note over Filter: method = request.getMethod()<br/>uri = request.getRequestURI()<br/>userAgent = request.getHeader("User-Agent")
+    
+    Filter->>Sentry: 创建事务上下文
+    Note over Filter: transactionContext:<br/>- name: "POST /api/users"<br/>- operation: "http.server"<br/>- source: URL
+    
+    Filter->>Sentry: scopes.startTransaction(transactionContext, options)
+    Sentry-->>Filter: 返回 http.server Transaction
+    
+    Note over Filter: 设置请求标签和数据
+    Filter->>Sentry: transaction.setTag("http.method", "POST")
+    Filter->>Sentry: transaction.setTag("http.url", "/api/users")
+    Filter->>Sentry: transaction.setTag("http.user_agent", userAgent)
+    Filter->>Sentry: transaction.setData("http.query", queryString)
+    Filter->>Sentry: transaction.setData("http.fragment", fragment)
+    
+    alt 用户信息可用
+        Filter->>Filter: 提取用户信息
+        Filter->>Sentry: transaction.setUser(userInfo)
+        Note over Filter: 设置用户上下文<br/>- user.id<br/>- user.username<br/>- user.ip_address
+    end
+    
+    Note over Filter: 执行请求链
+    Filter->>Controller: 继续过滤器链
+    activate Controller
+    
+    Note over Controller: Spring MVC 处理
+    Controller->>Controller: 路由匹配和参数绑定
+    Note over Controller: @PostMapping("/api/users")<br/>public User createUser(@RequestBody CreateUserRequest request)
+    
+    Controller->>Service: userService.createUser(request) [@SentryTransaction]
+    activate Service
+    
+    Note over Service: 业务逻辑处理
+    Service->>Service: 验证请求参数
+    Service->>Service: 创建用户实体
+    Service->>Service: 保存到数据库
+    
+    alt 创建成功
+        Service-->>Controller: 返回创建的用户
+        deactivate Service
+        Controller->>Controller: 构造响应
+        Note over Controller: ResponseEntity.ok(user)
+    else 创建失败
+        Service-->>Controller: 抛出业务异常
+        deactivate Service
+        Controller->>Controller: 异常处理
+        Note over Controller: @ExceptionHandler<br/>ResponseEntity.badRequest()
+    end
+    
+    Controller-->>Filter: 返回响应结果
+    deactivate Controller
+    
+    Note over Filter: 响应处理
+    Filter->>Filter: 获取响应状态
+    Note over Filter: status = response.getStatus()<br/>contentLength = response.getContentLength()
+    
+    Filter->>Sentry: 设置响应标签
+    Filter->>Sentry: transaction.setTag("http.status_code", status)
+    Filter->>Sentry: transaction.setData("http.response.content_length", contentLength)
+    
+    alt 请求成功 (2xx)
+        Filter->>Sentry: transaction.setStatus(SpanStatus.OK)
+        Note over Filter: 设置成功指标<br/>- request.processed: true<br/>- response.size: contentLength
+    else 客户端错误 (4xx)
+        Filter->>Sentry: transaction.setStatus(SpanStatus.INVALID_ARGUMENT)
+        Note over Filter: 设置错误信息<br/>- error.type: "ClientError"<br/>- error.code: status
+    else 服务端错误 (5xx)
+        Filter->>Sentry: transaction.setStatus(SpanStatus.INTERNAL_ERROR)
+        Filter->>Sentry: transaction.setThrowable(exception)
+        Note over Filter: 设置错误信息<br/>- error.type: "ServerError"<br/>- error.message: exception.getMessage()
+    end
+    
+    Note over Filter: 完成事务
+    Filter->>Sentry: transaction.finish()
+    Note over Sentry: 上报事务数据
+    Sentry->>Backend: 发送 http.server Transaction 及所有子 Span
+    
+    Filter-->>Server: 继续响应处理
+    Server-->>Client: HTTP 响应 

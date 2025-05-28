@@ -1,0 +1,3306 @@
+.
+├── .craft.yml
+├── .editorconfig
+├── .gitattributes
+├── .github
+│   ├── CODEOWNERS
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug_report_android.yml
+│   │   ├── bug_report_java.yml
+│   │   ├── config.yml
+│   │   ├── feature_android.yml
+│   │   ├── feature_java.yml
+│   │   └── maintainer-blank.yml
+│   ├── dependabot.yml
+│   ├── file-filters.yml
+│   ├── pull_request_template.md
+│   └── workflows
+│       ├── add-platform-label.yml
+│       ├── agp-matrix.yml
+│       ├── build.yml
+│       ├── changes-in-high-risk-code.yml
+│       ├── codeql-analysis.yml
+│       ├── danger.yml
+│       ├── enforce-license-compliance.yml
+│       ├── format-code.yml
+│       ├── integration-tests-benchmarks.yml
+│       ├── integration-tests-ui-critical.yml
+│       ├── integration-tests-ui.yml
+│       ├── release-build.yml
+│       ├── release.yml
+│       ├── system-tests-backend.yml
+│       └── update-deps.yml
+├── .gitignore
+├── .gitmodules
+├── .mvn
+│   └── wrapper
+│       ├── MavenWrapperDownloader.java
+│       └── maven-wrapper.properties
+├── .sauce
+│   ├── sentry-uitest-android-benchmark-lite.yml
+│   ├── sentry-uitest-android-benchmark.yml
+│   └── sentry-uitest-android-ui.yml
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── MIGRATION.md
+├── Makefile
+├── README.md
+├── aidocs
+│   ├── .cursorrules
+│   ├── README.md
+│   ├── mermaid
+│   │   ├── README.md
+│   │   ├── sentry-crash-monitoring-anr-detection.mmd
+│   │   ├── sentry-crash-monitoring-crash-recovery.mmd
+│   │   ├── sentry-crash-monitoring-exception-capture.mmd
+│   │   ├── sentry-crash-monitoring-native-crash.mmd
+│   │   ├── sentry-crash-monitoring-startup-crash.mmd
+│   │   ├── sentry-init-quick-reference-android-flow.mmd
+│   │   ├── sentry-initialization-flow-android-initialization.mmd
+│   │   ├── sentry-initialization-flow-client-creation.mmd
+│   │   ├── sentry-initialization-flow-configuration-loading.mmd
+│   │   ├── sentry-initialization-flow-core-initialization.mmd
+│   │   ├── sentry-initialization-flow-integration-registration.mmd
+│   │   ├── sentry-startup-monitoring-time-measurement.mmd
+│   │   └── svg
+│   │       ├── sentry-crash-monitoring-anr-detection.svg
+│   │       ├── sentry-crash-monitoring-crash-recovery.svg
+│   │       ├── sentry-crash-monitoring-exception-capture.svg
+│   │       ├── sentry-crash-monitoring-native-crash.svg
+│   │       ├── sentry-crash-monitoring-startup-crash.svg
+│   │       ├── sentry-init-quick-reference-android-flow.svg
+│   │       ├── sentry-initialization-flow-android-initialization.svg
+│   │       ├── sentry-initialization-flow-client-creation.svg
+│   │       ├── sentry-initialization-flow-configuration-loading.svg
+│   │       ├── sentry-initialization-flow-core-initialization.svg
+│   │       ├── sentry-initialization-flow-integration-registration.svg
+│   │       └── sentry-startup-monitoring-time-measurement.svg
+│   ├── rules
+│   │   ├── .cursorrules
+│   │   └── README.md
+│   ├── sentry-crash-monitoring.md
+│   ├── sentry-init-quick-reference.md
+│   ├── sentry-initialization-details.md
+│   ├── sentry-initialization-flow.md
+│   ├── sentry-network-monitoring.md
+│   ├── sentry-profiling-analysis.md
+│   ├── sentry-replay-analysis.md
+│   ├── sentry-session-management.md
+│   ├── sentry-startup-monitoring.md
+│   └── sentry-ui-jank-monitoring.md
+├── build.gradle.kts
+├── buildSrc
+│   ├── .kotlin
+│   │   └── sessions
+│   ├── build.gradle.kts
+│   ├── settings.gradle.kts
+│   └── src
+│       └── main
+│           └── java
+│               ├── Config.kt
+│               └── Publication.kt
+├── codecov.yml
+├── debug.keystore
+├── detekt.yml
+├── docs
+│   └── stylesheet.css
+├── gradle
+│   ├── libs.versions.toml
+│   └── wrapper
+│       └── gradle-wrapper.properties
+├── gradle.properties
+├── gradlew
+├── gradlew.bat
+├── hooks
+│   └── pre-commit
+├── local.properties
+├── project_structure.txt
+├── scripts
+│   ├── bump-version.sh
+│   ├── commit-formatted-code.sh
+│   ├── mvnw
+│   ├── mvnw.cmd
+│   ├── settings.xml
+│   ├── test-ui-critical.sh
+│   ├── toggle-codec-logs.sh
+│   ├── update-gradle.sh
+│   └── update-sentry-native-ndk.sh
+├── sentry
+│   ├── api
+│   │   └── sentry.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           ├── AsyncHttpTransportFactory.java
+│       │   │           ├── Attachment.java
+│       │   │           ├── BackfillingEventProcessor.java
+│       │   │           ├── Baggage.java
+│       │   │           ├── BaggageHeader.java
+│       │   │           ├── Breadcrumb.java
+│       │   │           ├── CheckIn.java
+│       │   │           ├── CheckInStatus.java
+│       │   │           ├── CircularFifoQueue.java
+│       │   │           ├── CombinedContextsView.java
+│       │   │           ├── CombinedScopeView.java
+│       │   │           ├── CompositePerformanceCollector.java
+│       │   │           ├── CpuCollectionData.java
+│       │   │           ├── CustomSamplingContext.java
+│       │   │           ├── DataCategory.java
+│       │   │           ├── DateUtils.java
+│       │   │           ├── DeduplicateMultithreadedEventProcessor.java
+│       │   │           ├── DefaultCompositePerformanceCollector.java
+│       │   │           ├── DefaultScopesStorage.java
+│       │   │           ├── DefaultSpanFactory.java
+│       │   │           ├── DefaultVersionDetector.java
+│       │   │           ├── DiagnosticLogger.java
+│       │   │           ├── DirectoryProcessor.java
+│       │   │           ├── DisabledQueue.java
+│       │   │           ├── Dsn.java
+│       │   │           ├── DsnUtil.java
+│       │   │           ├── DuplicateEventDetectionEventProcessor.java
+│       │   │           ├── EnvelopeReader.java
+│       │   │           ├── EnvelopeSender.java
+│       │   │           ├── EventProcessor.java
+│       │   │           ├── ExperimentalOptions.java
+│       │   │           ├── ExternalOptions.java
+│       │   │           ├── FilterString.java
+│       │   │           ├── FullyDisplayedReporter.java
+│       │   │           ├── Hint.java
+│       │   │           ├── HostnameCache.java
+│       │   │           ├── HttpStatusCodeRange.java
+│       │   │           ├── HubAdapter.java
+│       │   │           ├── HubScopesWrapper.java
+│       │   │           ├── IConnectionStatusProvider.java
+│       │   │           ├── IContinuousProfiler.java
+│       │   │           ├── IEnvelopeReader.java
+│       │   │           ├── IEnvelopeSender.java
+│       │   │           ├── IHub.java
+│       │   │           ├── ILogger.java
+│       │   │           ├── IMemoryCollector.java
+│       │   │           ├── IOptionsObserver.java
+│       │   │           ├── IPerformanceCollector.java
+│       │   │           ├── IPerformanceContinuousCollector.java
+│       │   │           ├── IPerformanceSnapshotCollector.java
+│       │   │           ├── IReplayApi.java
+│       │   │           ├── IScope.java
+│       │   │           ├── IScopeObserver.java
+│       │   │           ├── IScopes.java
+│       │   │           ├── IScopesStorage.java
+│       │   │           ├── ISentryClient.java
+│       │   │           ├── ISentryExecutorService.java
+│       │   │           ├── ISentryLifecycleToken.java
+│       │   │           ├── ISerializer.java
+│       │   │           ├── ISocketTagger.java
+│       │   │           ├── ISpan.java
+│       │   │           ├── ISpanFactory.java
+│       │   │           ├── ITransaction.java
+│       │   │           ├── ITransactionProfiler.java
+│       │   │           ├── ITransportFactory.java
+│       │   │           ├── IVersionDetector.java
+│       │   │           ├── InitPriority.java
+│       │   │           ├── Instrumenter.java
+│       │   │           ├── Integration.java
+│       │   │           ├── IpAddressUtils.java
+│       │   │           ├── JavaMemoryCollector.java
+│       │   │           ├── JsonDeserializer.java
+│       │   │           ├── JsonObjectDeserializer.java
+│       │   │           ├── JsonObjectReader.java
+│       │   │           ├── JsonObjectSerializer.java
+│       │   │           ├── JsonObjectWriter.java
+│       │   │           ├── JsonReflectionObjectSerializer.java
+│       │   │           ├── JsonSerializable.java
+│       │   │           ├── JsonSerializer.java
+│       │   │           ├── JsonUnknown.java
+│       │   │           ├── MainEventProcessor.java
+│       │   │           ├── ManifestVersionDetector.java
+│       │   │           ├── MeasurementUnit.java
+│       │   │           ├── MemoryCollectionData.java
+│       │   │           ├── MonitorConfig.java
+│       │   │           ├── MonitorContexts.java
+│       │   │           ├── MonitorSchedule.java
+│       │   │           ├── MonitorScheduleType.java
+│       │   │           ├── MonitorScheduleUnit.java
+│       │   │           ├── NoOpCompositePerformanceCollector.java
+│       │   │           ├── NoOpConnectionStatusProvider.java
+│       │   │           ├── NoOpContinuousProfiler.java
+│       │   │           ├── NoOpEnvelopeReader.java
+│       │   │           ├── NoOpHub.java
+│       │   │           ├── NoOpLogger.java
+│       │   │           ├── NoOpReplayBreadcrumbConverter.java
+│       │   │           ├── NoOpReplayController.java
+│       │   │           ├── NoOpScope.java
+│       │   │           ├── NoOpScopes.java
+│       │   │           ├── NoOpScopesLifecycleToken.java
+│       │   │           ├── NoOpScopesStorage.java
+│       │   │           ├── NoOpSentryClient.java
+│       │   │           ├── NoOpSentryExecutorService.java
+│       │   │           ├── NoOpSerializer.java
+│       │   │           ├── NoOpSocketTagger.java
+│       │   │           ├── NoOpSpan.java
+│       │   │           ├── NoOpSpanFactory.java
+│       │   │           ├── NoOpTransaction.java
+│       │   │           ├── NoOpTransactionProfiler.java
+│       │   │           ├── NoOpTransportFactory.java
+│       │   │           ├── NoopVersionDetector.java
+│       │   │           ├── ObjectReader.java
+│       │   │           ├── ObjectWriter.java
+│       │   │           ├── OptionsContainer.java
+│       │   │           ├── OutboxSender.java
+│       │   │           ├── PerformanceCollectionData.java
+│       │   │           ├── PreviousSessionFinalizer.java
+│       │   │           ├── ProfileChunk.java
+│       │   │           ├── ProfileContext.java
+│       │   │           ├── ProfileLifecycle.java
+│       │   │           ├── ProfilingTraceData.java
+│       │   │           ├── ProfilingTransactionData.java
+│       │   │           ├── PropagationContext.java
+│       │   │           ├── ReplayBreadcrumbConverter.java
+│       │   │           ├── ReplayController.java
+│       │   │           ├── ReplayRecording.java
+│       │   │           ├── RequestDetails.java
+│       │   │           ├── RequestDetailsResolver.java
+│       │   │           ├── SamplingContext.java
+│       │   │           ├── Scope.java
+│       │   │           ├── ScopeBindingMode.java
+│       │   │           ├── ScopeCallback.java
+│       │   │           ├── ScopeObserverAdapter.java
+│       │   │           ├── ScopeType.java
+│       │   │           ├── Scopes.java
+│       │   │           ├── ScopesAdapter.java
+│       │   │           ├── ScopesStorageFactory.java
+│       │   │           ├── SendCachedEnvelopeFireAndForgetIntegration.java
+│       │   │           ├── SendFireAndForgetEnvelopeSender.java
+│       │   │           ├── SendFireAndForgetOutboxSender.java
+│       │   │           ├── Sentry.java
+│       │   │           ├── SentryAppStartProfilingOptions.java
+│       │   │           ├── SentryAttribute.java
+│       │   │           ├── SentryAttributeType.java
+│       │   │           ├── SentryAttributes.java
+│       │   │           ├── SentryAutoDateProvider.java
+│       │   │           ├── SentryBaseEvent.java
+│       │   │           ├── SentryClient.java
+│       │   │           ├── SentryCrashLastRunState.java
+│       │   │           ├── SentryDate.java
+│       │   │           ├── SentryDateProvider.java
+│       │   │           ├── SentryEnvelope.java
+│       │   │           ├── SentryEnvelopeHeader.java
+│       │   │           ├── SentryEnvelopeItem.java
+│       │   │           ├── SentryEnvelopeItemHeader.java
+│       │   │           ├── SentryEvent.java
+│       │   │           ├── SentryExceptionFactory.java
+│       │   │           ├── SentryExecutorService.java
+│       │   │           ├── SentryInstantDate.java
+│       │   │           ├── SentryInstantDateProvider.java
+│       │   │           ├── SentryIntegrationPackageStorage.java
+│       │   │           ├── SentryItemType.java
+│       │   │           ├── SentryLevel.java
+│       │   │           ├── SentryLockReason.java
+│       │   │           ├── SentryLogEvent.java
+│       │   │           ├── SentryLogEventAttributeValue.java
+│       │   │           ├── SentryLogEvents.java
+│       │   │           ├── SentryLogLevel.java
+│       │   │           ├── SentryLongDate.java
+│       │   │           ├── SentryNanotimeDate.java
+│       │   │           ├── SentryNanotimeDateProvider.java
+│       │   │           ├── SentryOpenTelemetryMode.java
+│       │   │           ├── SentryOptions.java
+│       │   │           ├── SentryReplayEvent.java
+│       │   │           ├── SentryReplayOptions.java
+│       │   │           ├── SentryRuntimeEventProcessor.java
+│       │   │           ├── SentrySpanStorage.java
+│       │   │           ├── SentryStackTraceFactory.java
+│       │   │           ├── SentryThreadFactory.java
+│       │   │           ├── SentryTraceHeader.java
+│       │   │           ├── SentryTracer.java
+│       │   │           ├── SentryUUID.java
+│       │   │           ├── SentryValues.java
+│       │   │           ├── SentryWrapper.java
+│       │   │           ├── Session.java
+│       │   │           ├── ShutdownHookIntegration.java
+│       │   │           ├── Span.java
+│       │   │           ├── SpanContext.java
+│       │   │           ├── SpanDataConvention.java
+│       │   │           ├── SpanFactoryFactory.java
+│       │   │           ├── SpanFinishedCallback.java
+│       │   │           ├── SpanId.java
+│       │   │           ├── SpanOptions.java
+│       │   │           ├── SpanStatus.java
+│       │   │           ├── SpotlightIntegration.java
+│       │   │           ├── Stack.java
+│       │   │           ├── SynchronizedCollection.java
+│       │   │           ├── SynchronizedQueue.java
+│       │   │           ├── SystemOutLogger.java
+│       │   │           ├── TraceContext.java
+│       │   │           ├── TracesSampler.java
+│       │   │           ├── TracesSamplingDecision.java
+│       │   │           ├── TransactionContext.java
+│       │   │           ├── TransactionFinishedCallback.java
+│       │   │           ├── TransactionOptions.java
+│       │   │           ├── TypeCheckHint.java
+│       │   │           ├── UncaughtExceptionHandler.java
+│       │   │           ├── UncaughtExceptionHandlerIntegration.java
+│       │   │           ├── UserFeedback.java
+│       │   │           ├── backpressure
+│       │   │           │   ├── BackpressureMonitor.java
+│       │   │           │   ├── IBackpressureMonitor.java
+│       │   │           │   └── NoOpBackpressureMonitor.java
+│       │   │           ├── cache
+│       │   │           │   ├── CacheStrategy.java
+│       │   │           │   ├── CacheUtils.java
+│       │   │           │   ├── EnvelopeCache.java
+│       │   │           │   ├── IEnvelopeCache.java
+│       │   │           │   ├── PersistingOptionsObserver.java
+│       │   │           │   ├── PersistingScopeObserver.java
+│       │   │           │   └── tape
+│       │   │           │       ├── EmptyObjectQueue.java
+│       │   │           │       ├── FileObjectQueue.java
+│       │   │           │       ├── ObjectQueue.java
+│       │   │           │       └── QueueFile.java
+│       │   │           ├── clientreport
+│       │   │           │   ├── AtomicClientReportStorage.java
+│       │   │           │   ├── ClientReport.java
+│       │   │           │   ├── ClientReportKey.java
+│       │   │           │   ├── ClientReportRecorder.java
+│       │   │           │   ├── DiscardReason.java
+│       │   │           │   ├── DiscardedEvent.java
+│       │   │           │   ├── IClientReportRecorder.java
+│       │   │           │   ├── IClientReportStorage.java
+│       │   │           │   └── NoOpClientReportRecorder.java
+│       │   │           ├── config
+│       │   │           │   ├── AbstractPropertiesProvider.java
+│       │   │           │   ├── ClasspathPropertiesLoader.java
+│       │   │           │   ├── CompositePropertiesProvider.java
+│       │   │           │   ├── EnvironmentVariablePropertiesProvider.java
+│       │   │           │   ├── FilesystemPropertiesLoader.java
+│       │   │           │   ├── PropertiesLoader.java
+│       │   │           │   ├── PropertiesProvider.java
+│       │   │           │   ├── PropertiesProviderFactory.java
+│       │   │           │   ├── SimplePropertiesProvider.java
+│       │   │           │   └── SystemPropertyPropertiesProvider.java
+│       │   │           ├── exception
+│       │   │           │   ├── ExceptionMechanismException.java
+│       │   │           │   ├── InvalidSentryTraceHeaderException.java
+│       │   │           │   ├── SentryEnvelopeException.java
+│       │   │           │   └── SentryHttpClientException.java
+│       │   │           ├── hints
+│       │   │           │   ├── AbnormalExit.java
+│       │   │           │   ├── ApplyScopeData.java
+│       │   │           │   ├── Backfillable.java
+│       │   │           │   ├── BlockingFlushHint.java
+│       │   │           │   ├── Cached.java
+│       │   │           │   ├── DiskFlushNotification.java
+│       │   │           │   ├── Enqueable.java
+│       │   │           │   ├── EventDropReason.java
+│       │   │           │   ├── Flushable.java
+│       │   │           │   ├── Resettable.java
+│       │   │           │   ├── Retryable.java
+│       │   │           │   ├── SessionEnd.java
+│       │   │           │   ├── SessionEndHint.java
+│       │   │           │   ├── SessionStart.java
+│       │   │           │   ├── SessionStartHint.java
+│       │   │           │   ├── SubmissionResult.java
+│       │   │           │   └── TransactionEnd.java
+│       │   │           ├── instrumentation
+│       │   │           │   └── file
+│       │   │           │       ├── FileIOSpanManager.java
+│       │   │           │       ├── FileInputStreamInitData.java
+│       │   │           │       ├── FileOutputStreamInitData.java
+│       │   │           │       ├── SentryFileInputStream.java
+│       │   │           │       ├── SentryFileOutputStream.java
+│       │   │           │       ├── SentryFileReader.java
+│       │   │           │       └── SentryFileWriter.java
+│       │   │           ├── internal
+│       │   │           │   ├── ManifestVersionReader.java
+│       │   │           │   ├── debugmeta
+│       │   │           │   │   ├── IDebugMetaLoader.java
+│       │   │           │   │   ├── NoOpDebugMetaLoader.java
+│       │   │           │   │   └── ResourcesDebugMetaLoader.java
+│       │   │           │   ├── eventprocessor
+│       │   │           │   │   └── EventProcessorAndOrder.java
+│       │   │           │   ├── gestures
+│       │   │           │   │   ├── GestureTargetLocator.java
+│       │   │           │   │   └── UiElement.java
+│       │   │           │   ├── modules
+│       │   │           │   │   ├── CompositeModulesLoader.java
+│       │   │           │   │   ├── IModulesLoader.java
+│       │   │           │   │   ├── ManifestModulesLoader.java
+│       │   │           │   │   ├── ModulesLoader.java
+│       │   │           │   │   ├── NoOpModulesLoader.java
+│       │   │           │   │   └── ResourcesModulesLoader.java
+│       │   │           │   └── viewhierarchy
+│       │   │           │       └── ViewHierarchyExporter.java
+│       │   │           ├── logger
+│       │   │           │   ├── ILoggerApi.java
+│       │   │           │   ├── ILoggerBatchProcessor.java
+│       │   │           │   ├── LoggerApi.java
+│       │   │           │   ├── LoggerBatchProcessor.java
+│       │   │           │   ├── NoOpLoggerApi.java
+│       │   │           │   ├── NoOpLoggerBatchProcessor.java
+│       │   │           │   └── SentryLogParameters.java
+│       │   │           ├── opentelemetry
+│       │   │           │   └── OpenTelemetryUtil.java
+│       │   │           ├── profilemeasurements
+│       │   │           │   ├── ProfileMeasurement.java
+│       │   │           │   └── ProfileMeasurementValue.java
+│       │   │           ├── protocol
+│       │   │           │   ├── App.java
+│       │   │           │   ├── Browser.java
+│       │   │           │   ├── Contexts.java
+│       │   │           │   ├── DebugImage.java
+│       │   │           │   ├── DebugMeta.java
+│       │   │           │   ├── Device.java
+│       │   │           │   ├── Feedback.java
+│       │   │           │   ├── Geo.java
+│       │   │           │   ├── Gpu.java
+│       │   │           │   ├── MeasurementValue.java
+│       │   │           │   ├── Mechanism.java
+│       │   │           │   ├── Message.java
+│       │   │           │   ├── MetricSummary.java
+│       │   │           │   ├── OperatingSystem.java
+│       │   │           │   ├── Request.java
+│       │   │           │   ├── Response.java
+│       │   │           │   ├── SdkInfo.java
+│       │   │           │   ├── SdkVersion.java
+│       │   │           │   ├── SentryException.java
+│       │   │           │   ├── SentryId.java
+│       │   │           │   ├── SentryPackage.java
+│       │   │           │   ├── SentryRuntime.java
+│       │   │           │   ├── SentrySpan.java
+│       │   │           │   ├── SentryStackFrame.java
+│       │   │           │   ├── SentryStackTrace.java
+│       │   │           │   ├── SentryThread.java
+│       │   │           │   ├── SentryTransaction.java
+│       │   │           │   ├── Spring.java
+│       │   │           │   ├── TransactionInfo.java
+│       │   │           │   ├── TransactionNameSource.java
+│       │   │           │   ├── User.java
+│       │   │           │   ├── ViewHierarchy.java
+│       │   │           │   └── ViewHierarchyNode.java
+│       │   │           ├── rrweb
+│       │   │           │   ├── RRWebBreadcrumbEvent.java
+│       │   │           │   ├── RRWebEvent.java
+│       │   │           │   ├── RRWebEventType.java
+│       │   │           │   ├── RRWebIncrementalSnapshotEvent.java
+│       │   │           │   ├── RRWebInteractionEvent.java
+│       │   │           │   ├── RRWebInteractionMoveEvent.java
+│       │   │           │   ├── RRWebMetaEvent.java
+│       │   │           │   ├── RRWebOptionsEvent.java
+│       │   │           │   ├── RRWebSpanEvent.java
+│       │   │           │   └── RRWebVideoEvent.java
+│       │   │           ├── transport
+│       │   │           │   ├── AsyncHttpTransport.java
+│       │   │           │   ├── AuthenticatorWrapper.java
+│       │   │           │   ├── CurrentDateProvider.java
+│       │   │           │   ├── HttpConnection.java
+│       │   │           │   ├── ICurrentDateProvider.java
+│       │   │           │   ├── ITransport.java
+│       │   │           │   ├── ITransportGate.java
+│       │   │           │   ├── NoOpEnvelopeCache.java
+│       │   │           │   ├── NoOpTransport.java
+│       │   │           │   ├── NoOpTransportGate.java
+│       │   │           │   ├── ProxyAuthenticator.java
+│       │   │           │   ├── QueuedThreadPoolExecutor.java
+│       │   │           │   ├── RateLimiter.java
+│       │   │           │   ├── ReusableCountLatch.java
+│       │   │           │   ├── StdoutTransport.java
+│       │   │           │   └── TransportResult.java
+│       │   │           ├── util
+│       │   │           │   ├── AutoClosableReentrantLock.java
+│       │   │           │   ├── CheckInUtils.java
+│       │   │           │   ├── ClassLoaderUtils.java
+│       │   │           │   ├── CollectionUtils.java
+│       │   │           │   ├── DebugMetaPropertiesApplier.java
+│       │   │           │   ├── ErrorUtils.java
+│       │   │           │   ├── EventProcessorUtils.java
+│       │   │           │   ├── ExceptionUtils.java
+│       │   │           │   ├── FileUtils.java
+│       │   │           │   ├── HintUtils.java
+│       │   │           │   ├── HttpUtils.java
+│       │   │           │   ├── InitUtil.java
+│       │   │           │   ├── IntegrationUtils.java
+│       │   │           │   ├── JsonSerializationUtils.java
+│       │   │           │   ├── LazyEvaluator.java
+│       │   │           │   ├── LifecycleHelper.java
+│       │   │           │   ├── LoadClass.java
+│       │   │           │   ├── LogUtils.java
+│       │   │           │   ├── MapObjectReader.java
+│       │   │           │   ├── MapObjectWriter.java
+│       │   │           │   ├── Objects.java
+│       │   │           │   ├── Pair.java
+│       │   │           │   ├── Platform.java
+│       │   │           │   ├── PropagationTargetsUtils.java
+│       │   │           │   ├── Random.java
+│       │   │           │   ├── SampleRateUtils.java
+│       │   │           │   ├── ScopesUtil.java
+│       │   │           │   ├── SentryRandom.java
+│       │   │           │   ├── SpanUtils.java
+│       │   │           │   ├── StringUtils.java
+│       │   │           │   ├── TracingUtils.java
+│       │   │           │   ├── UUIDGenerator.java
+│       │   │           │   ├── UUIDStringUtils.java
+│       │   │           │   ├── UrlUtils.java
+│       │   │           │   └── thread
+│       │   │           │       ├── IThreadChecker.java
+│       │   │           │       ├── NoOpThreadChecker.java
+│       │   │           │       └── ThreadChecker.java
+│       │   │           └── vendor
+│       │   │               ├── Base64.java
+│       │   │               └── gson
+│       │   │                   ├── LICENSE
+│       │   │                   ├── internal
+│       │   │                   │   └── bind
+│       │   │                   │       └── util
+│       │   │                   │           └── ISO8601Utils.java
+│       │   │                   └── stream
+│       │   │                       ├── JsonReader.java
+│       │   │                       ├── JsonScope.java
+│       │   │                       ├── JsonToken.java
+│       │   │                       ├── JsonWriter.java
+│       │   │                       └── MalformedJsonException.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── native-image
+│       │               └── io.sentry
+│       │                   └── sentry
+│       │                       └── native-image.properties
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           ├── AttachmentTest.kt
+│           │           ├── BaggageTest.kt
+│           │           ├── BreadcrumbTest.kt
+│           │           ├── CachedEvent.kt
+│           │           ├── CheckInSerializationTest.kt
+│           │           ├── CombinedContextsViewTest.kt
+│           │           ├── CombinedScopeViewTest.kt
+│           │           ├── CustomCachedApplyScopeDataHint.kt
+│           │           ├── CustomEventProcessor.kt
+│           │           ├── DateUtilsTest.kt
+│           │           ├── DeduplicateMultithreadedEventProcessorTest.kt
+│           │           ├── DefaultCompositePerformanceCollectorTest.kt
+│           │           ├── DenyReadFileSecurityManager.java
+│           │           ├── DiagnosticLoggerTest.kt
+│           │           ├── DirectoryProcessorTest.kt
+│           │           ├── DisabledQueueTest.kt
+│           │           ├── DsnTest.kt
+│           │           ├── DsnUtilTest.kt
+│           │           ├── DuplicateEventDetectionEventProcessorTest.kt
+│           │           ├── EnvelopeSenderTest.kt
+│           │           ├── ExternalOptionsTest.kt
+│           │           ├── FileFromResources.kt
+│           │           ├── FilterStringTest.kt
+│           │           ├── FullyDisplayedReporterTest.kt
+│           │           ├── HttpStatusCodeRangeTest.kt
+│           │           ├── HubAdapterTest.kt
+│           │           ├── InstrumenterTest.kt
+│           │           ├── IpAddressUtilsTest.kt
+│           │           ├── JavaMemoryCollectorTest.kt
+│           │           ├── JsonObjectDeserializerTest.kt
+│           │           ├── JsonObjectReaderTest.kt
+│           │           ├── JsonObjectSerializerTest.kt
+│           │           ├── JsonReflectionObjectSerializerTest.kt
+│           │           ├── JsonSerializerBenchmarkTests.kt
+│           │           ├── JsonSerializerTest.kt
+│           │           ├── JsonUnknownSerializationTest.kt
+│           │           ├── MainEventProcessorTest.kt
+│           │           ├── MeasurementUnitTest.kt
+│           │           ├── NoOpConnectionStatusProviderTest.kt
+│           │           ├── NoOpContinuousProfilerTest.kt
+│           │           ├── NoOpHubTest.kt
+│           │           ├── NoOpScopeTest.kt
+│           │           ├── NoOpSentryClientTest.kt
+│           │           ├── NoOpSentryExecutorServiceTest.kt
+│           │           ├── NoOpSerializerTest.kt
+│           │           ├── NoOpSpanTest.kt
+│           │           ├── NoOpTransactionProfilerTest.kt
+│           │           ├── NoOpTransactionTest.kt
+│           │           ├── OptionsContainerTest.kt
+│           │           ├── OutboxSenderTest.kt
+│           │           ├── PerformanceCollectionDataTest.kt
+│           │           ├── PreviousSessionFinalizerTest.kt
+│           │           ├── PropagationContextTest.kt
+│           │           ├── RequestDetailsResolverTest.kt
+│           │           ├── SampleDsn.kt
+│           │           ├── ScopeTest.kt
+│           │           ├── ScopesAdapterTest.kt
+│           │           ├── ScopesTest.kt
+│           │           ├── SendCachedEnvelopeFireAndForgetIntegrationTest.kt
+│           │           ├── SentryAutoDateProviderTest.kt
+│           │           ├── SentryBaseEventTypeTest.kt
+│           │           ├── SentryClientTest.kt
+│           │           ├── SentryCrashLastRunStateTest.kt
+│           │           ├── SentryEnvelopeItemTest.kt
+│           │           ├── SentryEnvelopeTest.kt
+│           │           ├── SentryEventTest.kt
+│           │           ├── SentryExceptionFactoryTest.kt
+│           │           ├── SentryExecutorServiceTest.kt
+│           │           ├── SentryInstantDateTest.kt
+│           │           ├── SentryIntegrationPackageStorageTest.kt
+│           │           ├── SentryLongDateTest.kt
+│           │           ├── SentryNanotimeDateTest.kt
+│           │           ├── SentryOptionsManipulator.kt
+│           │           ├── SentryOptionsTest.kt
+│           │           ├── SentryOptionsTracingTest.kt
+│           │           ├── SentryReplayOptionsTest.kt
+│           │           ├── SentryRuntimeEventProcessorTest.kt
+│           │           ├── SentryStackTraceFactoryTest.kt
+│           │           ├── SentryTest.kt
+│           │           ├── SentryThreadFactoryTest.kt
+│           │           ├── SentryTraceHeaderTest.kt
+│           │           ├── SentryTracerTest.kt
+│           │           ├── SentryUUIDTest.kt
+│           │           ├── SentryValuesTest.kt
+│           │           ├── SentryWrapperTest.kt
+│           │           ├── SessionAdapterTest.kt
+│           │           ├── ShutdownHookIntegrationTest.kt
+│           │           ├── SpanContextTest.kt
+│           │           ├── SpanStatusTest.kt
+│           │           ├── SpanTest.kt
+│           │           ├── StackTest.kt
+│           │           ├── StringExtensions.kt
+│           │           ├── TraceContextSerializationTest.kt
+│           │           ├── TracePropagationTargetsTest.kt
+│           │           ├── TracesSamplerTest.kt
+│           │           ├── TransactionContextTest.kt
+│           │           ├── TransactionContextsTest.kt
+│           │           ├── UUIDStringUtilsTest.kt
+│           │           ├── UncaughtExceptionHandlerIntegrationTest.kt
+│           │           ├── UrlDetailsTest.kt
+│           │           ├── UserFeedbackSerializationTest.kt
+│           │           ├── backpressure
+│           │           │   └── BackpressureMonitorTest.kt
+│           │           ├── cache
+│           │           │   ├── CacheStrategyTest.kt
+│           │           │   ├── CacheUtilsTest.kt
+│           │           │   ├── EnvelopeCacheTest.kt
+│           │           │   ├── PersistingOptionsObserverTest.kt
+│           │           │   ├── PersistingScopeObserverTest.kt
+│           │           │   └── tape
+│           │           │       ├── CorruptQueueFileTest.kt
+│           │           │       ├── ObjectQueueTest.kt
+│           │           │       └── QueueFileTest.kt
+│           │           ├── clientreport
+│           │           │   ├── AtomicClientReportStorageTest.kt
+│           │           │   ├── ClientReportMultiThreadingTest.kt
+│           │           │   └── ClientReportTest.kt
+│           │           ├── config
+│           │           │   ├── ClasspathPropertiesLoaderTest.kt
+│           │           │   ├── CompositePropertiesProviderTest.kt
+│           │           │   ├── EnvironmentVariablePropertiesProviderTest.kt
+│           │           │   ├── FilesystemPropertiesLoaderTest.kt
+│           │           │   ├── PropertiesProviderTest.kt
+│           │           │   ├── SimplePropertiesProviderTest.kt
+│           │           │   └── SystemPropertyPropertiesProviderTest.kt
+│           │           ├── hints
+│           │           │   └── HintTest.kt
+│           │           ├── instrumentation
+│           │           │   └── file
+│           │           │       ├── FileIOSpanManagerTest.kt
+│           │           │       ├── SentryFileInputStreamTest.kt
+│           │           │       ├── SentryFileOutputStreamTest.kt
+│           │           │       ├── SentryFileReaderTest.kt
+│           │           │       └── SentryFileWriterTest.kt
+│           │           ├── internal
+│           │           │   ├── SpotlightIntegrationTest.kt
+│           │           │   ├── debugmeta
+│           │           │   │   └── ResourcesDebugMetaLoaderTest.kt
+│           │           │   └── modules
+│           │           │       ├── CompositeModulesLoaderTest.kt
+│           │           │       ├── ManifestModulesLoaderTest.kt
+│           │           │       └── ResourcesModulesLoaderTest.kt
+│           │           ├── protocol
+│           │           │   ├── AppSerializationTest.kt
+│           │           │   ├── AppTest.kt
+│           │           │   ├── BreadcrumbSerializationTest.kt
+│           │           │   ├── BrowserSerializationTest.kt
+│           │           │   ├── BrowserTest.kt
+│           │           │   ├── CombinedContextsViewSerializationTest.kt
+│           │           │   ├── ContextsSerializationTest.kt
+│           │           │   ├── ContextsTest.kt
+│           │           │   ├── DebugImageSerializationTest.kt
+│           │           │   ├── DebugMetaSerializationTest.kt
+│           │           │   ├── DebugMetaTest.kt
+│           │           │   ├── DeviceSerializationTest.kt
+│           │           │   ├── DeviceTest.kt
+│           │           │   ├── FeedbackTest.kt
+│           │           │   ├── GpuSerializationTest.kt
+│           │           │   ├── GpuTest.kt
+│           │           │   ├── MeasurementValueSerializationTest.kt
+│           │           │   ├── MechanismSerializationTest.kt
+│           │           │   ├── MechanismTest.kt
+│           │           │   ├── MessageSerializationTest.kt
+│           │           │   ├── MessageTest.kt
+│           │           │   ├── OperatingSystemSerializationTest.kt
+│           │           │   ├── OperatingSystemTest.kt
+│           │           │   ├── ReplayRecordingSerializationTest.kt
+│           │           │   ├── RequestSerializationTest.kt
+│           │           │   ├── RequestTest.kt
+│           │           │   ├── ResponseSerializationTest.kt
+│           │           │   ├── SdkInfoSerializationTest.kt
+│           │           │   ├── SdkVersionSerializationTest.kt
+│           │           │   ├── SentryBaseEventSerializationTest.kt
+│           │           │   ├── SentryEnvelopeHeaderSerializationTest.kt
+│           │           │   ├── SentryEnvelopeItemHeaderSerializationTest.kt
+│           │           │   ├── SentryEventSerializationTest.kt
+│           │           │   ├── SentryExceptionSerializationTest.kt
+│           │           │   ├── SentryIdSerializationTest.kt
+│           │           │   ├── SentryIdTest.kt
+│           │           │   ├── SentryItemTypeSerializationTest.kt
+│           │           │   ├── SentryLockReasonSerializationTest.kt
+│           │           │   ├── SentryLogsSerializationTest.kt
+│           │           │   ├── SentryPackageSerializationTest.kt
+│           │           │   ├── SentryReplayEventSerializationTest.kt
+│           │           │   ├── SentryRuntimeSerializationTest.kt
+│           │           │   ├── SentryRuntimeTest.kt
+│           │           │   ├── SentrySpanSerializationTest.kt
+│           │           │   ├── SentrySpanTest.kt
+│           │           │   ├── SentryStackFrameSerializationTest.kt
+│           │           │   ├── SentryStackTraceSerializationTest.kt
+│           │           │   ├── SentryThreadSerializationTest.kt
+│           │           │   ├── SentryTransactionSerializationTest.kt
+│           │           │   ├── SerializationUtils.kt
+│           │           │   ├── SessionSerializationTest.kt
+│           │           │   ├── SpanContextSerializationTest.kt
+│           │           │   ├── SpanIdSerializationTest.kt
+│           │           │   ├── SpanIdTest.kt
+│           │           │   ├── SpringSerializationTest.kt
+│           │           │   ├── UserSerializationTest.kt
+│           │           │   ├── UserTest.kt
+│           │           │   ├── ViewHierarchyNodeSerializationTest.kt
+│           │           │   └── ViewHierarchySerializationTest.kt
+│           │           ├── rrweb
+│           │           │   ├── RRWebBreadcrumbEventSerializationTest.kt
+│           │           │   ├── RRWebEventSerializationTest.kt
+│           │           │   ├── RRWebInteractionEventSerializationTest.kt
+│           │           │   ├── RRWebInteractionMoveEventSerializationTest.kt
+│           │           │   ├── RRWebMetaEventSerializationTest.kt
+│           │           │   ├── RRWebOptionsEventSerializationTest.kt
+│           │           │   ├── RRWebSpanEventSerializationTest.kt
+│           │           │   └── RRWebVideoEventSerializationTest.kt
+│           │           ├── transport
+│           │           │   ├── AsyncHttpTransportClientReportTest.kt
+│           │           │   ├── AsyncHttpTransportTest.kt
+│           │           │   ├── HttpConnectionTest.kt
+│           │           │   ├── QueuedThreadPoolExecutorTest.kt
+│           │           │   ├── RateLimiterTest.kt
+│           │           │   ├── ReusableCountLatchTest.kt
+│           │           │   └── StdoutTransportTest.kt
+│           │           ├── util
+│           │           │   ├── AutoClosableReentrantLockTest.kt
+│           │           │   ├── CheckInUtilsTest.kt
+│           │           │   ├── CollectionUtilsTest.kt
+│           │           │   ├── ExceptionUtilsTest.kt
+│           │           │   ├── Extensions.kt
+│           │           │   ├── FileUtilsTest.kt
+│           │           │   ├── HintUtilsTest.kt
+│           │           │   ├── HttpUtilsTest.kt
+│           │           │   ├── InitUtilTest.kt
+│           │           │   ├── JsonSerializationUtilsTest.kt
+│           │           │   ├── LazyEvaluatorTest.kt
+│           │           │   ├── MapObjectReaderTest.kt
+│           │           │   ├── MapObjectWriterTest.kt
+│           │           │   ├── PlatformTestManipulator.kt
+│           │           │   ├── SampleRateUtilTest.kt
+│           │           │   ├── SentryRandomTest.kt
+│           │           │   ├── SpanUtilsTest.kt
+│           │           │   ├── StringUtilsTest.kt
+│           │           │   ├── TracingUtilsTest.kt
+│           │           │   ├── UrlUtilsTest.kt
+│           │           │   └── thread
+│           │           │       └── ThreadCheckerTest.kt
+│           │           └── vendor
+│           │               └── gson
+│           │                   ├── internal
+│           │                   │   └── bind
+│           │                   │       └── util
+│           │                   │           └── ISO8601UtilsTest.java
+│           │                   └── stream
+│           │                       ├── JsonReaderTest.java
+│           │                       └── JsonWriterTest.java
+│           └── resources
+│               ├── Tongariro.jpg
+│               ├── corrupt_queue_file.txt
+│               ├── envelope-event-attachment.txt
+│               ├── envelope-feedback.txt
+│               ├── envelope-session-start.txt
+│               ├── envelope-transaction-with-sample-rand.txt
+│               ├── envelope-transaction-with-sample-rate.txt
+│               ├── envelope-transaction.txt
+│               ├── envelope_attachment.txt
+│               ├── envelope_session.txt
+│               ├── envelope_session_sdkversion.txt
+│               ├── event.json
+│               ├── event_breadcrumb_data.json
+│               ├── event_with_contexts.json
+│               ├── json
+│               │   ├── app.json
+│               │   ├── breadcrumb.json
+│               │   ├── browser.json
+│               │   ├── checkin_crontab.json
+│               │   ├── checkin_interval.json
+│               │   ├── contexts.json
+│               │   ├── debug_image.json
+│               │   ├── debug_meta.json
+│               │   ├── device.json
+│               │   ├── gpu.json
+│               │   ├── measurement_value_double.json
+│               │   ├── measurement_value_int.json
+│               │   ├── measurement_value_missing.json
+│               │   ├── mechanism.json
+│               │   ├── message.json
+│               │   ├── operating_system.json
+│               │   ├── replay_recording.json
+│               │   ├── request.json
+│               │   ├── response.json
+│               │   ├── rrweb_breadcrumb_event.json
+│               │   ├── rrweb_event.json
+│               │   ├── rrweb_interaction_event.json
+│               │   ├── rrweb_interaction_move_event.json
+│               │   ├── rrweb_meta_event.json
+│               │   ├── rrweb_options_event.json
+│               │   ├── rrweb_span_event.json
+│               │   ├── rrweb_video_event.json
+│               │   ├── sdk_info.json
+│               │   ├── sdk_version.json
+│               │   ├── sentry_base_event.json
+│               │   ├── sentry_base_event_with_null_extra.json
+│               │   ├── sentry_envelope_header.json
+│               │   ├── sentry_envelope_item_header.json
+│               │   ├── sentry_event.json
+│               │   ├── sentry_exception.json
+│               │   ├── sentry_id.json
+│               │   ├── sentry_lock_reason.json
+│               │   ├── sentry_logs.json
+│               │   ├── sentry_package.json
+│               │   ├── sentry_replay_event.json
+│               │   ├── sentry_runtime.json
+│               │   ├── sentry_span.json
+│               │   ├── sentry_span_legacy_date_format.json
+│               │   ├── sentry_stack_frame.json
+│               │   ├── sentry_stack_trace.json
+│               │   ├── sentry_thread.json
+│               │   ├── sentry_transaction.json
+│               │   ├── sentry_transaction_legacy_date_format.json
+│               │   ├── sentry_transaction_no_measurement_unit.json
+│               │   ├── session.json
+│               │   ├── span_context.json
+│               │   ├── span_context_null_op.json
+│               │   ├── span_id.json
+│               │   ├── spring.json
+│               │   ├── trace_state.json
+│               │   ├── trace_state_no_sample_rate.json
+│               │   ├── user.json
+│               │   ├── view_hierarchy.json
+│               │   └── view_hierarchy_node.json
+│               ├── mockito-extensions
+│               │   └── org.mockito.plugins.MockMaker
+│               └── session.json
+├── sentry-android
+│   ├── build.gradle.kts
+│   ├── proguard-rules.pro
+│   └── src
+│       └── main
+│           ├── AndroidManifest.xml
+│           └── res
+│               └── values
+│                   └── public.xml
+├── sentry-android-core
+│   ├── .gitignore
+│   ├── api
+│   │   └── sentry-android-core.api
+│   ├── build.gradle.kts
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── main
+│       │   ├── AndroidManifest.xml
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── core
+│       │   │                   ├── ANRWatchDog.java
+│       │   │                   ├── ActivityBreadcrumbsIntegration.java
+│       │   │                   ├── ActivityFramesTracker.java
+│       │   │                   ├── ActivityLifecycleIntegration.java
+│       │   │                   ├── AndroidContinuousProfiler.java
+│       │   │                   ├── AndroidCpuCollector.java
+│       │   │                   ├── AndroidDateUtils.java
+│       │   │                   ├── AndroidFatalLogger.java
+│       │   │                   ├── AndroidLogger.java
+│       │   │                   ├── AndroidMemoryCollector.java
+│       │   │                   ├── AndroidOptionsInitializer.java
+│       │   │                   ├── AndroidProfiler.java
+│       │   │                   ├── AndroidSocketTagger.java
+│       │   │                   ├── AndroidTransactionProfiler.java
+│       │   │                   ├── AndroidTransportGate.java
+│       │   │                   ├── AnrIntegration.java
+│       │   │                   ├── AnrIntegrationFactory.java
+│       │   │                   ├── AnrV2EventProcessor.java
+│       │   │                   ├── AnrV2Integration.java
+│       │   │                   ├── AppComponentsBreadcrumbsIntegration.java
+│       │   │                   ├── AppLifecycleIntegration.java
+│       │   │                   ├── AppState.java
+│       │   │                   ├── ApplicationNotResponding.java
+│       │   │                   ├── BuildInfoProvider.java
+│       │   │                   ├── ContextUtils.java
+│       │   │                   ├── CurrentActivityHolder.java
+│       │   │                   ├── DefaultAndroidEventProcessor.java
+│       │   │                   ├── DeviceInfoUtil.java
+│       │   │                   ├── EmptySecureContentProvider.java
+│       │   │                   ├── EnvelopeFileObserver.java
+│       │   │                   ├── EnvelopeFileObserverIntegration.java
+│       │   │                   ├── IDebugImagesLoader.java
+│       │   │                   ├── Installation.java
+│       │   │                   ├── InternalSentrySdk.java
+│       │   │                   ├── LifecycleWatcher.java
+│       │   │                   ├── LoadClass.java
+│       │   │                   ├── MainLooperHandler.java
+│       │   │                   ├── ManifestMetadataReader.java
+│       │   │                   ├── NdkHandlerStrategy.java
+│       │   │                   ├── NdkIntegration.java
+│       │   │                   ├── NetworkBreadcrumbsIntegration.java
+│       │   │                   ├── NoOpDebugImagesLoader.java
+│       │   │                   ├── PerformanceAndroidEventProcessor.java
+│       │   │                   ├── ScreenshotEventProcessor.java
+│       │   │                   ├── SendCachedEnvelopeIntegration.java
+│       │   │                   ├── SentryAndroid.java
+│       │   │                   ├── SentryAndroidDateProvider.java
+│       │   │                   ├── SentryAndroidOptions.java
+│       │   │                   ├── SentryFrameMetrics.java
+│       │   │                   ├── SentryInitProvider.java
+│       │   │                   ├── SentryLogcatAdapter.java
+│       │   │                   ├── SentryPerformanceProvider.java
+│       │   │                   ├── SpanFrameMetricsCollector.java
+│       │   │                   ├── SystemEventsBreadcrumbsIntegration.java
+│       │   │                   ├── UserInteractionIntegration.java
+│       │   │                   ├── ViewHierarchyEventProcessor.java
+│       │   │                   ├── cache
+│       │   │                   │   └── AndroidEnvelopeCache.java
+│       │   │                   ├── internal
+│       │   │                   │   ├── debugmeta
+│       │   │                   │   │   └── AssetsDebugMetaLoader.java
+│       │   │                   │   ├── gestures
+│       │   │                   │   │   ├── AndroidViewGestureTargetLocator.java
+│       │   │                   │   │   ├── NoOpWindowCallback.java
+│       │   │                   │   │   ├── SentryGestureListener.java
+│       │   │                   │   │   ├── SentryWindowCallback.java
+│       │   │                   │   │   ├── ViewUtils.java
+│       │   │                   │   │   └── WindowCallbackAdapter.java
+│       │   │                   │   ├── modules
+│       │   │                   │   │   └── AssetsModulesLoader.java
+│       │   │                   │   ├── threaddump
+│       │   │                   │   │   ├── Line.java
+│       │   │                   │   │   ├── Lines.java
+│       │   │                   │   │   └── ThreadDumpParser.java
+│       │   │                   │   └── util
+│       │   │                   │       ├── AndroidConnectionStatusProvider.java
+│       │   │                   │       ├── AndroidCurrentDateProvider.java
+│       │   │                   │       ├── AndroidThreadChecker.java
+│       │   │                   │       ├── BreadcrumbFactory.java
+│       │   │                   │       ├── ClassUtil.java
+│       │   │                   │       ├── ContentProviderSecurityChecker.java
+│       │   │                   │       ├── CpuInfoUtils.java
+│       │   │                   │       ├── Debouncer.java
+│       │   │                   │       ├── DeviceOrientations.java
+│       │   │                   │       ├── FirstDrawDoneListener.java
+│       │   │                   │       ├── Permissions.java
+│       │   │                   │       ├── RootChecker.java
+│       │   │                   │       ├── ScreenshotUtils.java
+│       │   │                   │       └── SentryFrameMetricsCollector.java
+│       │   │                   ├── performance
+│       │   │                   │   ├── ActivityLifecycleCallbacksAdapter.java
+│       │   │                   │   ├── ActivityLifecycleSpanHelper.java
+│       │   │                   │   ├── ActivityLifecycleTimeSpan.java
+│       │   │                   │   ├── AppStartMetrics.java
+│       │   │                   │   ├── TimeSpan.java
+│       │   │                   │   └── WindowContentChangedCallback.java
+│       │   │                   └── util
+│       │   │                       └── AndroidLazyEvaluator.java
+│       │   └── res
+│       │       └── values
+│       │           └── public.xml
+│       └── test
+│           ├── AndroidManifest.xml
+│           ├── assets
+│           │   └── sentry-debug-meta.properties
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── core
+│           │                   ├── ANRWatchDogTest.kt
+│           │                   ├── ActivityBreadcrumbsIntegrationTest.kt
+│           │                   ├── ActivityFramesTrackerTest.kt
+│           │                   ├── ActivityLifecycleIntegrationTest.kt
+│           │                   ├── AndroidConnectionStatusProviderTest.kt
+│           │                   ├── AndroidContinuousProfilerTest.kt
+│           │                   ├── AndroidCpuCollectorTest.kt
+│           │                   ├── AndroidMemoryCollectorTest.kt
+│           │                   ├── AndroidOptionsInitializerTest.kt
+│           │                   ├── AndroidProfilerTest.kt
+│           │                   ├── AndroidTransactionProfilerTest.kt
+│           │                   ├── AndroidTransportGateTest.kt
+│           │                   ├── AnrIntegrationTest.kt
+│           │                   ├── AnrV2EventProcessorTest.kt
+│           │                   ├── AnrV2IntegrationTest.kt
+│           │                   ├── AppComponentsBreadcrumbsIntegrationTest.kt
+│           │                   ├── AppLifecycleIntegrationTest.kt
+│           │                   ├── ApplicationStub.kt
+│           │                   ├── CachedEvent.kt
+│           │                   ├── ContextUtilsTest.kt
+│           │                   ├── ContextUtilsTestHelper.kt
+│           │                   ├── CustomCachedApplyScopeDataHint.kt
+│           │                   ├── DefaultAndroidEventProcessorTest.kt
+│           │                   ├── DeviceInfoUtilTest.kt
+│           │                   ├── EnvelopeFileObserverIntegrationTest.kt
+│           │                   ├── EnvelopeFileObserverTest.kt
+│           │                   ├── InstallationTest.kt
+│           │                   ├── InternalSentrySdkTest.kt
+│           │                   ├── LifecycleWatcherTest.kt
+│           │                   ├── ManifestMetadataReaderTest.kt
+│           │                   ├── NdkIntegrationTest.kt
+│           │                   ├── NetworkBreadcrumbsIntegrationTest.kt
+│           │                   ├── PerformanceAndroidEventProcessorTest.kt
+│           │                   ├── PermissionsTest.kt
+│           │                   ├── ScreenshotEventProcessorTest.kt
+│           │                   ├── SendCachedEnvelopeIntegrationTest.kt
+│           │                   ├── SentryAndroidDateProviderTest.kt
+│           │                   ├── SentryAndroidOptionsTest.kt
+│           │                   ├── SentryAndroidTest.kt
+│           │                   ├── SentryFrameMetricsTest.kt
+│           │                   ├── SentryInitProviderTest.kt
+│           │                   ├── SentryLogcatAdapterTest.kt
+│           │                   ├── SentryNdk.kt
+│           │                   ├── SentryPerformanceProviderTest.kt
+│           │                   ├── SentryShadowProcess.kt
+│           │                   ├── SessionTrackingIntegrationTest.kt
+│           │                   ├── SpanFrameMetricsCollectorTest.kt
+│           │                   ├── SystemEventsBreadcrumbsIntegrationTest.kt
+│           │                   ├── UserInteractionIntegrationTest.kt
+│           │                   ├── ViewHierarchyEventProcessorTest.kt
+│           │                   ├── cache
+│           │                   │   └── AndroidEnvelopeCacheTest.kt
+│           │                   ├── internal
+│           │                   │   ├── debugmeta
+│           │                   │   │   └── AssetsDebugMetaLoaderTest.kt
+│           │                   │   ├── gestures
+│           │                   │   │   ├── SentryGestureListenerClickTest.kt
+│           │                   │   │   ├── SentryGestureListenerScrollTest.kt
+│           │                   │   │   ├── SentryGestureListenerTracingTest.kt
+│           │                   │   │   ├── SentryWindowCallbackTest.kt
+│           │                   │   │   ├── ViewHelpers.kt
+│           │                   │   │   └── ViewUtilsTest.kt
+│           │                   │   ├── modules
+│           │                   │   │   └── AssetsModulesLoaderTest.kt
+│           │                   │   ├── threaddump
+│           │                   │   │   └── ThreadDumpParserTest.kt
+│           │                   │   └── util
+│           │                   │       ├── AndroidThreadCheckerTest.kt
+│           │                   │       ├── ClassUtilTest.kt
+│           │                   │       ├── ContentProviderSecurityCheckerTest.kt
+│           │                   │       ├── CpuInfoUtilsTest.kt
+│           │                   │       ├── DebouncerTest.kt
+│           │                   │       ├── DeviceOrientationsTest.kt
+│           │                   │       ├── FirstDrawDoneListenerTest.kt
+│           │                   │       ├── RootCheckerTest.kt
+│           │                   │       ├── ScreenshotUtilTest.kt
+│           │                   │       └── SentryFrameMetricsCollectorTest.kt
+│           │                   └── performance
+│           │                       ├── ActivityLifecycleSpanHelperTest.kt
+│           │                       ├── ActivityLifecycleTimeSpanTest.kt
+│           │                       ├── AppStartMetricsTest.kt
+│           │                       └── TimeSpanTest.kt
+│           └── resources
+│               ├── mockito-extensions
+│               │   └── org.mockito.plugins.MockMaker
+│               ├── robolectric.properties
+│               ├── thread_dump.txt
+│               ├── thread_dump_bad_data.txt
+│               └── thread_dump_native_only.txt
+├── sentry-android-fragment
+│   ├── .gitignore
+│   ├── api
+│   │   └── sentry-android-fragment.api
+│   ├── build.gradle.kts
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── fragment
+│       │   │                   ├── FragmentLifecycleIntegration.kt
+│       │   │                   ├── FragmentLifecycleState.kt
+│       │   │                   └── SentryFragmentLifecycleCallbacks.kt
+│       │   └── res
+│       │       └── values
+│       │           └── public.xml
+│       └── test
+│           └── java
+│               └── io
+│                   └── sentry
+│                       └── android
+│                           └── fragment
+│                               ├── FragmentLifecycleIntegrationTest.kt
+│                               ├── FragmentLifecycleStateTest.kt
+│                               └── SentryFragmentLifecycleCallbacksTest.kt
+├── sentry-android-integration-tests
+│   ├── README.md
+│   ├── metrics-test.yml
+│   ├── sentry-uitest-android
+│   │   ├── .gitignore
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   ├── proguard-rules.pro
+│   │   └── src
+│   │       ├── androidTest
+│   │       │   └── java
+│   │       │       └── io
+│   │       │           └── sentry
+│   │       │               └── uitest
+│   │       │                   └── android
+│   │       │                       ├── AutomaticSpansTest.kt
+│   │       │                       ├── BaseUiTest.kt
+│   │       │                       ├── EnvelopeTests.kt
+│   │       │                       ├── ReplayTest.kt
+│   │       │                       ├── SdkInitTests.kt
+│   │       │                       ├── UserInteractionTests.kt
+│   │       │                       └── mockservers
+│   │       │                           ├── EnvelopeAsserter.kt
+│   │       │                           ├── MockRelay.kt
+│   │       │                           └── RelayAsserter.kt
+│   │       └── main
+│   │           ├── AndroidManifest.xml
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── uitest
+│   │           │               └── android
+│   │           │                   ├── ComposeActivity.kt
+│   │           │                   ├── EmptyActivity.kt
+│   │           │                   ├── ProfilingSampleActivity.kt
+│   │           │                   └── utils
+│   │           │                       └── BooleanIdlingResource.kt
+│   │           └── res
+│   │               ├── layout
+│   │               │   ├── activity_profiling_sample.xml
+│   │               │   └── profiling_sample_item_list.xml
+│   │               └── values
+│   │                   └── values.xml
+│   ├── sentry-uitest-android-benchmark
+│   │   ├── .gitignore
+│   │   ├── benchmark-proguard-rules.pro
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── androidTest
+│   │       │   └── java
+│   │       │       └── io
+│   │       │           └── sentry
+│   │       │               └── uitest
+│   │       │                   └── android
+│   │       │                       └── benchmark
+│   │       │                           ├── BaseBenchmarkTest.kt
+│   │       │                           ├── SentryBenchmarkTest.kt
+│   │       │                           └── util
+│   │       │                               ├── BenchmarkComparisonResult.kt
+│   │       │                               ├── BenchmarkOperation.kt
+│   │       │                               └── BenchmarkOperationComparable.kt
+│   │       └── main
+│   │           ├── AndroidManifest.xml
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── uitest
+│   │           │               └── android
+│   │           │                   └── benchmark
+│   │           │                       ├── BenchmarkActivity.kt
+│   │           │                       └── BenchmarkTransactionListAdapter.kt
+│   │           └── res
+│   │               └── layout
+│   │                   ├── activity_benchmark.xml
+│   │                   └── benchmark_item_list.xml
+│   ├── sentry-uitest-android-critical
+│   │   ├── .gitignore
+│   │   ├── build.gradle.kts
+│   │   ├── maestro
+│   │   │   ├── corruptEnvelope.yaml
+│   │   │   └── crash.yaml
+│   │   ├── proguard-rules.pro
+│   │   └── src
+│   │       └── main
+│   │           ├── AndroidManifest.xml
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── uitest
+│   │                           └── android
+│   │                               └── critical
+│   │                                   └── MainActivity.kt
+│   ├── test-app-plain
+│   │   ├── .gitignore
+│   │   ├── build.gradle.kts
+│   │   ├── proguard-rules.pro
+│   │   └── src
+│   │       └── main
+│   │           ├── AndroidManifest.xml
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── java
+│   │           │               └── tests
+│   │           │                   └── perf
+│   │           │                       └── appplain
+│   │           │                           ├── FirstFragment.java
+│   │           │                           ├── MainActivity.java
+│   │           │                           └── SecondFragment.java
+│   │           └── res
+│   │               ├── drawable
+│   │               │   └── ic_launcher_background.xml
+│   │               ├── drawable-v24
+│   │               │   └── ic_launcher_foreground.xml
+│   │               ├── layout
+│   │               │   ├── activity_main.xml
+│   │               │   ├── content_main.xml
+│   │               │   ├── fragment_first.xml
+│   │               │   └── fragment_second.xml
+│   │               ├── menu
+│   │               │   └── menu_main.xml
+│   │               ├── mipmap-anydpi-v26
+│   │               │   ├── ic_launcher.xml
+│   │               │   └── ic_launcher_round.xml
+│   │               ├── mipmap-hdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── mipmap-mdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── mipmap-xhdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── mipmap-xxhdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── mipmap-xxxhdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── navigation
+│   │               │   └── nav_graph.xml
+│   │               ├── values
+│   │               │   ├── colors.xml
+│   │               │   ├── dimens.xml
+│   │               │   ├── strings.xml
+│   │               │   └── themes.xml
+│   │               ├── values-land
+│   │               │   └── dimens.xml
+│   │               ├── values-night
+│   │               │   └── themes.xml
+│   │               ├── values-w1240dp
+│   │               │   └── dimens.xml
+│   │               ├── values-w600dp
+│   │               │   └── dimens.xml
+│   │               └── xml
+│   │                   ├── backup_rules.xml
+│   │                   └── data_extraction_rules.xml
+│   └── test-app-sentry
+│       ├── .gitignore
+│       ├── build.gradle.kts
+│       ├── proguard-rules.pro
+│       └── src
+│           └── main
+│               ├── AndroidManifest.xml
+│               ├── java
+│               │   └── io
+│               │       └── sentry
+│               │           └── java
+│               │               └── tests
+│               │                   └── perf
+│               │                       └── appsentry
+│               │                           ├── FirstFragment.java
+│               │                           ├── MainActivity.java
+│               │                           └── SecondFragment.java
+│               └── res
+│                   ├── drawable
+│                   │   └── ic_launcher_background.xml
+│                   ├── drawable-v24
+│                   │   └── ic_launcher_foreground.xml
+│                   ├── layout
+│                   │   ├── activity_main.xml
+│                   │   ├── content_main.xml
+│                   │   ├── fragment_first.xml
+│                   │   └── fragment_second.xml
+│                   ├── menu
+│                   │   └── menu_main.xml
+│                   ├── mipmap-anydpi-v26
+│                   │   ├── ic_launcher.xml
+│                   │   └── ic_launcher_round.xml
+│                   ├── mipmap-hdpi
+│                   │   ├── ic_launcher.png
+│                   │   └── ic_launcher_round.png
+│                   ├── mipmap-mdpi
+│                   │   ├── ic_launcher.png
+│                   │   └── ic_launcher_round.png
+│                   ├── mipmap-xhdpi
+│                   │   ├── ic_launcher.png
+│                   │   └── ic_launcher_round.png
+│                   ├── mipmap-xxhdpi
+│                   │   ├── ic_launcher.png
+│                   │   └── ic_launcher_round.png
+│                   ├── mipmap-xxxhdpi
+│                   │   ├── ic_launcher.png
+│                   │   └── ic_launcher_round.png
+│                   ├── navigation
+│                   │   └── nav_graph.xml
+│                   ├── values
+│                   │   ├── colors.xml
+│                   │   ├── dimens.xml
+│                   │   ├── strings.xml
+│                   │   └── themes.xml
+│                   ├── values-land
+│                   │   └── dimens.xml
+│                   ├── values-night
+│                   │   └── themes.xml
+│                   ├── values-w1240dp
+│                   │   └── dimens.xml
+│                   ├── values-w600dp
+│                   │   └── dimens.xml
+│                   └── xml
+│                       ├── backup_rules.xml
+│                       └── data_extraction_rules.xml
+├── sentry-android-navigation
+│   ├── .gitignore
+│   ├── api
+│   │   └── sentry-android-navigation.api
+│   ├── build.gradle.kts
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── navigation
+│       │   │                   └── SentryNavigationListener.kt
+│       │   └── res
+│       │       └── values
+│       │           └── public.xml
+│       └── test
+│           └── java
+│               └── io
+│                   └── sentry
+│                       └── android
+│                           └── navigation
+│                               └── SentryNavigationListenerTest.kt
+├── sentry-android-ndk
+│   ├── api
+│   │   └── sentry-android-ndk.api
+│   ├── build.gradle.kts
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── ndk
+│       │   │                   ├── DebugImagesLoader.java
+│       │   │                   ├── NdkScopeObserver.java
+│       │   │                   ├── SentryNdk.java
+│       │   │                   └── SentryNdkUtil.java
+│       │   └── res
+│       │       └── values
+│       │           └── public.xml
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── ndk
+│           │                   ├── DebugImagesLoaderTest.kt
+│           │                   ├── NdkScopeObserverTest.kt
+│           │                   ├── SentryNdkTest.kt
+│           │                   └── SentryNdkUtilTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-android-replay
+│   ├── .gitignore
+│   ├── api
+│   │   └── sentry-android-replay.api
+│   ├── build.gradle.kts
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── replay
+│       │   │                   ├── DefaultReplayBreadcrumbConverter.kt
+│       │   │                   ├── ModifierExtensions.kt
+│       │   │                   ├── Recorder.kt
+│       │   │                   ├── ReplayCache.kt
+│       │   │                   ├── ReplayIntegration.kt
+│       │   │                   ├── ReplayLifecycle.kt
+│       │   │                   ├── ScreenshotRecorder.kt
+│       │   │                   ├── SessionReplayOptions.kt
+│       │   │                   ├── ViewExtensions.kt
+│       │   │                   ├── WindowRecorder.kt
+│       │   │                   ├── Windows.kt
+│       │   │                   ├── capture
+│       │   │                   │   ├── BaseCaptureStrategy.kt
+│       │   │                   │   ├── BufferCaptureStrategy.kt
+│       │   │                   │   ├── CaptureStrategy.kt
+│       │   │                   │   └── SessionCaptureStrategy.kt
+│       │   │                   ├── gestures
+│       │   │                   │   ├── GestureRecorder.kt
+│       │   │                   │   └── ReplayGestureConverter.kt
+│       │   │                   ├── util
+│       │   │                   │   ├── Context.kt
+│       │   │                   │   ├── DebugOverlayDrawable.kt
+│       │   │                   │   ├── Executors.kt
+│       │   │                   │   ├── FixedWindowCallback.java
+│       │   │                   │   ├── MainLooperHandler.kt
+│       │   │                   │   ├── Nodes.kt
+│       │   │                   │   ├── Persistable.kt
+│       │   │                   │   ├── Sampling.kt
+│       │   │                   │   ├── TextLayout.kt
+│       │   │                   │   └── Views.kt
+│       │   │                   ├── video
+│       │   │                   │   ├── SimpleFrameMuxer.kt
+│       │   │                   │   ├── SimpleMp4FrameMuxer.kt
+│       │   │                   │   └── SimpleVideoEncoder.kt
+│       │   │                   └── viewhierarchy
+│       │   │                       ├── ComposeViewHierarchyNode.kt
+│       │   │                       └── ViewHierarchyNode.kt
+│       │   ├── res
+│       │   │   └── values
+│       │   │       └── public.xml
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── io
+│       │               └── sentry
+│       │                   └── sentry-android-replay
+│       │                       └── verification.properties
+│       └── test
+│           ├── AndroidManifest.xml
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── replay
+│           │                   ├── AnrWithReplayIntegrationTest.kt
+│           │                   ├── DefaultReplayBreadcrumbConverterTest.kt
+│           │                   ├── ReplayCacheTest.kt
+│           │                   ├── ReplayIntegrationTest.kt
+│           │                   ├── ReplayIntegrationWithRecorderTest.kt
+│           │                   ├── ReplayLifecycleTest.kt
+│           │                   ├── ReplaySmokeTest.kt
+│           │                   ├── capture
+│           │                   │   ├── BufferCaptureStrategyTest.kt
+│           │                   │   └── SessionCaptureStrategyTest.kt
+│           │                   ├── gestures
+│           │                   │   ├── GestureRecorderTest.kt
+│           │                   │   └── ReplayGestureConverterTest.kt
+│           │                   ├── util
+│           │                   │   ├── ReplayShadowMediaCodec.kt
+│           │                   │   └── TextViewDominantColorTest.kt
+│           │                   └── viewhierarchy
+│           │                       ├── ComposeMaskingOptionsTest.kt
+│           │                       ├── ContainerMaskingOptionsTest.kt
+│           │                       └── MaskingOptionsTest.kt
+│           └── resources
+│               └── Tongariro.jpg
+├── sentry-android-sqlite
+│   ├── api
+│   │   └── sentry-android-sqlite.api
+│   ├── build.gradle.kts
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── sqlite
+│       │   │                   ├── SQLiteSpanManager.kt
+│       │   │                   ├── SentryCrossProcessCursor.kt
+│       │   │                   ├── SentrySupportSQLiteDatabase.kt
+│       │   │                   ├── SentrySupportSQLiteOpenHelper.kt
+│       │   │                   └── SentrySupportSQLiteStatement.kt
+│       │   └── res
+│       │       └── values
+│       │           └── public.xml
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── sqlite
+│           │                   ├── SQLiteSpanManagerTest.kt
+│           │                   ├── SentryCrossProcessCursorTest.kt
+│           │                   ├── SentrySupportSQLiteDatabaseTest.kt
+│           │                   ├── SentrySupportSQLiteOpenHelperTest.kt
+│           │                   └── SentrySupportSQLiteStatementTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-android-timber
+│   ├── api
+│   │   └── sentry-android-timber.api
+│   ├── build.gradle.kts
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── android
+│       │   │               └── timber
+│       │   │                   ├── SentryTimberIntegration.kt
+│       │   │                   └── SentryTimberTree.kt
+│       │   └── res
+│       │       └── values
+│       │           └── public.xml
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── android
+│           │               └── timber
+│           │                   ├── SentryTimberIntegrationTest.kt
+│           │                   └── SentryTimberTreeTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-apache-http-client-5
+│   ├── api
+│   │   └── sentry-apache-http-client-5.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── transport
+│       │                   └── apache
+│       │                       ├── ApacheHttpClientTransport.java
+│       │                       └── ApacheHttpClientTransportFactory.java
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           ├── SentryOptionsManipulator.kt
+│           │           └── transport
+│           │               └── apache
+│           │                   ├── ApacheHttpClientTransportClientReportTest.kt
+│           │                   ├── ApacheHttpClientTransportFactoryTest.kt
+│           │                   └── ApacheHttpClientTransportTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-apollo
+│   ├── api
+│   │   └── sentry-apollo.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── apollo
+│       │                   └── SentryApolloInterceptor.kt
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           ├── apollo
+│           │           │   ├── LaunchDetailsQuery.java
+│           │           │   ├── SentryApolloInterceptorTest.kt
+│           │           │   └── type
+│           │           │       └── CustomType.java
+│           │           └── util
+│           │               └── ApolloPlatformTestManipulator.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-apollo-3
+│   ├── api
+│   │   └── sentry-apollo-3.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── apollo3
+│       │                   ├── SentryApollo3ClientException.kt
+│       │                   ├── SentryApollo3HttpInterceptor.kt
+│       │                   ├── SentryApollo3Interceptor.kt
+│       │                   └── SentryApolloBuilderExtensions.kt
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           ├── apollo3
+│           │           │   ├── LaunchDetailsQuery.kt
+│           │           │   ├── SentryApollo3InterceptorClientErrors.kt
+│           │           │   ├── SentryApollo3InterceptorTest.kt
+│           │           │   ├── SentryApollo3InterceptorWithVariablesTest.kt
+│           │           │   ├── adapter
+│           │           │   │   ├── LaunchDetailsQuery_ResponseAdapter.kt
+│           │           │   │   └── LaunchDetailsQuery_VariablesAdapter.kt
+│           │           │   ├── selections
+│           │           │   │   └── LaunchDetailsQuerySelections.kt
+│           │           │   └── type
+│           │           │       ├── GraphQLBoolean.kt
+│           │           │       ├── GraphQLID.kt
+│           │           │       ├── GraphQLString.kt
+│           │           │       ├── Launch.kt
+│           │           │       ├── Mission.kt
+│           │           │       ├── Query.kt
+│           │           │       └── Rocket.kt
+│           │           └── util
+│           │               └── Apollo3PlatformTestManipulator.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-apollo-4
+│   ├── README.md
+│   ├── api
+│   │   └── sentry-apollo-4.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── apollo4
+│       │                   ├── SentryApollo4.kt
+│       │                   ├── SentryApollo4ClientException.kt
+│       │                   ├── SentryApollo4HttpInterceptor.kt
+│       │                   ├── SentryApollo4Interceptor.kt
+│       │                   └── SentryApolloBuilderExtensions.kt
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           ├── apollo4
+│           │           │   ├── SentryApollo4BuilderExtensionsClientErrorsTest.kt
+│           │           │   ├── SentryApollo4BuilderExtensionsTest.kt
+│           │           │   ├── SentryApollo4HttpInterceptorTest.kt
+│           │           │   └── generated
+│           │           │       ├── LaunchDetailsQuery.kt
+│           │           │       ├── adapter
+│           │           │       │   ├── LaunchDetailsQuery_ResponseAdapter.kt
+│           │           │       │   └── LaunchDetailsQuery_VariablesAdapter.kt
+│           │           │       ├── selections
+│           │           │       │   └── LaunchDetailsQuerySelections.kt
+│           │           │       └── type
+│           │           │           ├── GraphQLBoolean.kt
+│           │           │           ├── GraphQLID.kt
+│           │           │           ├── GraphQLString.kt
+│           │           │           ├── Launch.kt
+│           │           │           ├── Mission.kt
+│           │           │           ├── Query.kt
+│           │           │           └── Rocket.kt
+│           │           └── util
+│           │               └── Apollo4PlatformTestManipulator.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-bom
+│   └── build.gradle.kts
+├── sentry-compose
+│   ├── .gitignore
+│   ├── README.md
+│   ├── api
+│   │   ├── android
+│   │   │   └── sentry-compose.api
+│   │   └── desktop
+│   │       └── sentry-compose.api
+│   ├── build.gradle.kts
+│   ├── gradle.properties
+│   ├── proguard-rules.pro
+│   └── src
+│       ├── androidMain
+│       │   ├── kotlin
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── compose
+│       │   │               ├── SentryComposeHelper.kt
+│       │   │               ├── SentryComposeTracing.kt
+│       │   │               ├── SentryModifier.kt
+│       │   │               ├── SentryNavigationIntegration.kt
+│       │   │               ├── gestures
+│       │   │               │   └── ComposeGestureTargetLocator.kt
+│       │   │               └── viewhierarchy
+│       │   │                   └── ComposeViewHierarchyExporter.kt
+│       │   └── res
+│       │       └── values
+│       │           └── public.xml
+│       └── androidUnitTest
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── compose
+│                           ├── ComposeIntegrationTests.kt
+│                           ├── SentryLifecycleObserverTest.kt
+│                           ├── SentryModifierComposeTest.kt
+│                           └── viewhierarchy
+│                               └── ComposeViewHierarchyExporterTest.kt
+├── sentry-compose-helper
+├── sentry-graphql
+│   ├── api
+│   │   └── sentry-graphql.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── graphql
+│       │                   └── SentryInstrumentation.java
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── graphql
+│                           ├── SentryInstrumentationAnotherTest.kt
+│                           └── SentryInstrumentationTest.kt
+├── sentry-graphql-22
+│   ├── api
+│   │   └── sentry-graphql-22.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── graphql22
+│       │                   └── SentryInstrumentation.java
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── graphql22
+│                           ├── SentryInstrumentationAnotherTest.kt
+│                           └── SentryInstrumentationTest.kt
+├── sentry-graphql-core
+│   ├── api
+│   │   └── sentry-graphql-core.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── graphql
+│       │                   ├── ExceptionReporter.java
+│       │                   ├── GraphqlStringUtils.java
+│       │                   ├── NoOpSubscriptionHandler.java
+│       │                   ├── SentryGenericDataFetcherExceptionHandler.java
+│       │                   ├── SentryGraphqlExceptionHandler.java
+│       │                   ├── SentryGraphqlInstrumentation.java
+│       │                   └── SentrySubscriptionHandler.java
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── graphql
+│                           ├── ExceptionReporterTest.kt
+│                           ├── GraphqlStringUtilsTest.kt
+│                           └── SentryGenericDataFetcherExceptionHandlerTest.kt
+├── sentry-jdbc
+│   ├── api
+│   │   └── sentry-jdbc.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── jdbc
+│       │   │               ├── DatabaseUtils.java
+│       │   │               └── SentryJdbcEventListener.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       │               └── com.p6spy.engine.event.JdbcEventListener
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── jdbc
+│                           ├── DatabaseUtilsTest.kt
+│                           └── SentryJdbcEventListenerTest.kt
+├── sentry-jul
+│   ├── api
+│   │   └── sentry-jul.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── jul
+│       │                   └── SentryHandler.java
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── jul
+│           │               └── SentryHandlerTest.kt
+│           └── resources
+│               ├── logging.properties
+│               ├── mockito-extensions
+│               │   └── org.mockito.plugins.MockMaker
+│               └── sentry.properties
+├── sentry-kotlin-extensions
+│   ├── api
+│   │   └── sentry-kotlin-extensions.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── kotlin
+│       │                   ├── SentryContext.kt
+│       │                   └── SentryCoroutineExceptionHandler.kt
+│       └── test
+│           └── java
+│               └── io
+│                   └── sentry
+│                       └── kotlin
+│                           ├── SentryContextTest.kt
+│                           └── SentryCoroutineExceptionHandlerTest.kt
+├── sentry-log4j2
+│   ├── api
+│   │   └── sentry-log4j2.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── log4j2
+│       │                   └── SentryAppender.java
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── log4j2
+│           │               └── SentryAppenderTest.kt
+│           └── resources
+│               ├── mockito-extensions
+│               │   └── org.mockito.plugins.MockMaker
+│               └── sentry.properties
+├── sentry-logback
+│   ├── api
+│   │   └── sentry-logback.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── logback
+│       │                   └── SentryAppender.java
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── logback
+│           │               └── SentryAppenderTest.kt
+│           └── resources
+│               ├── mockito-extensions
+│               │   └── org.mockito.plugins.MockMaker
+│               └── sentry.properties
+├── sentry-okhttp
+│   ├── api
+│   │   └── sentry-okhttp.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── okhttp
+│       │   │               ├── SentryOkHttpEvent.kt
+│       │   │               ├── SentryOkHttpEventListener.kt
+│       │   │               ├── SentryOkHttpInterceptor.kt
+│       │   │               └── SentryOkHttpUtils.kt
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── proguard
+│       │               └── sentry-okhttp.pro
+│       └── test
+│           ├── java
+│           │   └── io
+│           │       └── sentry
+│           │           └── okhttp
+│           │               ├── SentryOkHttpEventListenerTest.kt
+│           │               ├── SentryOkHttpEventTest.kt
+│           │               ├── SentryOkHttpInterceptorTest.kt
+│           │               └── SentryOkHttpUtilsTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugin.MockMaker
+├── sentry-openfeign
+│   ├── api
+│   │   └── sentry-openfeign.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── io
+│       │           └── sentry
+│       │               └── openfeign
+│       │                   ├── SentryCapability.java
+│       │                   └── SentryFeignClient.java
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── openfeign
+│           │               └── SentryFeignClientTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-opentelemetry
+│   ├── README.md
+│   ├── sentry-opentelemetry-agent
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── opentelemetry
+│   │                           └── agent
+│   │                               └── AgentMarker.java
+│   ├── sentry-opentelemetry-agentcustomization
+│   │   ├── api
+│   │   │   └── sentry-opentelemetry-agentcustomization.api
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── opentelemetry
+│   │           │               ├── SentryAutoConfigurationCustomizerProvider.java
+│   │           │               ├── SentryBootstrapPackagesProvider.java
+│   │           │               └── SentryPropagatorProvider.java
+│   │           └── resources
+│   │               └── META-INF
+│   │                   └── services
+│   │                       ├── io.opentelemetry.javaagent.tooling.bootstrap.BootstrapPackagesConfigurer
+│   │                       ├── io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider
+│   │                       └── io.opentelemetry.sdk.autoconfigure.spi.ConfigurablePropagatorProvider
+│   ├── sentry-opentelemetry-agentless
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── opentelemetry
+│   │                           └── agent
+│   │                               └── AgentlessMarker.java
+│   ├── sentry-opentelemetry-agentless-spring
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── opentelemetry
+│   │                           └── agent
+│   │                               └── AgentlessSpringMarker.java
+│   ├── sentry-opentelemetry-bootstrap
+│   │   ├── api
+│   │   │   └── sentry-opentelemetry-bootstrap.api
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── opentelemetry
+│   │           │               ├── IOtelSpanWrapper.java
+│   │           │               ├── InternalSemanticAttributes.java
+│   │           │               ├── OtelContextScopesStorage.java
+│   │           │               ├── OtelSpanFactory.java
+│   │           │               ├── OtelStorageToken.java
+│   │           │               ├── OtelStrongRefSpanWrapper.java
+│   │           │               ├── OtelTransactionSpanForwarder.java
+│   │           │               ├── SentryContextStorage.java
+│   │           │               ├── SentryContextStorageProvider.java
+│   │           │               ├── SentryContextWrapper.java
+│   │           │               ├── SentryOtelKeys.java
+│   │           │               ├── SentryOtelThreadLocalStorage.java
+│   │           │               └── SentryWeakSpanStorage.java
+│   │           └── resources
+│   │               └── META-INF
+│   │                   └── services
+│   │                       └── io.opentelemetry.context.ContextStorageProvider
+│   └── sentry-opentelemetry-core
+│       ├── api
+│       │   └── sentry-opentelemetry-core.api
+│       ├── build.gradle.kts
+│       └── src
+│           ├── main
+│           │   └── java
+│           │       └── io
+│           │           └── sentry
+│           │               └── opentelemetry
+│           │                   ├── OpenTelemetryAttributesExtractor.java
+│           │                   ├── OpenTelemetryLinkErrorEventProcessor.java
+│           │                   ├── OtelInternalSpanDetectionUtil.java
+│           │                   ├── OtelSamplingUtil.java
+│           │                   ├── OtelSentryPropagator.java
+│           │                   ├── OtelSentrySpanProcessor.java
+│           │                   ├── OtelSpanContext.java
+│           │                   ├── OtelSpanInfo.java
+│           │                   ├── OtelSpanWrapper.java
+│           │                   ├── SentryPropagator.java
+│           │                   ├── SentrySampler.java
+│           │                   ├── SentrySamplingResult.java
+│           │                   ├── SentrySpanExporter.java
+│           │                   ├── SentrySpanProcessor.java
+│           │                   ├── SpanDescriptionExtractor.java
+│           │                   ├── SpanNode.java
+│           │                   └── TraceData.java
+│           └── test
+│               └── kotlin
+│                   ├── OpenTelemetryAttributesExtractorTest.kt
+│                   ├── OtelInternalSpanDetectionUtilTest.kt
+│                   ├── OtelSentryPropagatorTest.kt
+│                   ├── SentrySpanProcessorTest.kt
+│                   └── SpanDescriptionExtractorTest.kt
+├── sentry-quartz
+│   ├── api
+│   │   └── sentry-quartz.api
+│   ├── build.gradle.kts
+│   └── src
+│       └── main
+│           └── java
+│               └── io
+│                   └── sentry
+│                       └── quartz
+│                           └── SentryJobListener.java
+├── sentry-reactor
+│   ├── README.md
+│   ├── api
+│   │   └── sentry-reactor.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── reactor
+│       │   │               ├── SentryReactorThreadLocalAccessor.java
+│       │   │               └── SentryReactorUtils.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       │               └── io.micrometer.context.ThreadLocalAccessor
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── reactor
+│                           └── SentryReactorUtilsTest.kt
+├── sentry-samples
+│   ├── sentry-samples-android
+│   │   ├── .cxx
+│   │   │   ├── Debug
+│   │   │   │   └── 3u6s1g3o
+│   │   │   │       ├── arm64-v8a
+│   │   │   │       │   ├── .cmake
+│   │   │   │       │   │   └── api
+│   │   │   │       │   │       └── v1
+│   │   │   │       │   │           ├── query
+│   │   │   │       │   │           │   └── client-agp
+│   │   │   │       │   │           │       ├── cache-v2
+│   │   │   │       │   │           │       ├── cmakeFiles-v1
+│   │   │   │       │   │           │       └── codemodel-v2
+│   │   │   │       │   │           └── reply
+│   │   │   │       │   │               ├── cache-v2-ece011d78c9b9ef6c4b7.json
+│   │   │   │       │   │               ├── cmakeFiles-v1-213036d95f83728f40a0.json
+│   │   │   │       │   │               ├── codemodel-v2-1a805ddcfedad5226927.json
+│   │   │   │       │   │               ├── directory-.-Debug-f5ebdc15457944623624.json
+│   │   │   │       │   │               ├── index-2025-02-18T10-57-50-0477.json
+│   │   │   │       │   │               └── target-native-sample-Debug-be2475b9900f92f0eea9.json
+│   │   │   │       │   ├── .ninja_deps
+│   │   │   │       │   ├── .ninja_log
+│   │   │   │       │   ├── CMakeCache.txt
+│   │   │   │       │   ├── CMakeFiles
+│   │   │   │       │   │   ├── 3.22.1-g37088a8
+│   │   │   │       │   │   │   ├── CMakeCCompiler.cmake
+│   │   │   │       │   │   │   ├── CMakeCXXCompiler.cmake
+│   │   │   │       │   │   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   │   │       │   │   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   │   │       │   │   │   ├── CMakeSystem.cmake
+│   │   │   │       │   │   │   ├── CompilerIdC
+│   │   │   │       │   │   │   │   ├── CMakeCCompilerId.c
+│   │   │   │       │   │   │   │   ├── CMakeCCompilerId.o
+│   │   │   │       │   │   │   │   └── tmp
+│   │   │   │       │   │   │   └── CompilerIdCXX
+│   │   │   │       │   │   │       ├── CMakeCXXCompilerId.cpp
+│   │   │   │       │   │   │       ├── CMakeCXXCompilerId.o
+│   │   │   │       │   │   │       └── tmp
+│   │   │   │       │   │   ├── CMakeOutput.log
+│   │   │   │       │   │   ├── CMakeTmp
+│   │   │   │       │   │   ├── TargetDirectories.txt
+│   │   │   │       │   │   ├── cmake.check_cache
+│   │   │   │       │   │   ├── native-sample.dir
+│   │   │   │       │   │   │   └── src
+│   │   │   │       │   │   │       └── main
+│   │   │   │       │   │   │           └── cpp
+│   │   │   │       │   │   │               └── native-sample.cpp.o
+│   │   │   │       │   │   └── rules.ninja
+│   │   │   │       │   ├── additional_project_files.txt
+│   │   │   │       │   ├── android_gradle_build.json
+│   │   │   │       │   ├── android_gradle_build_mini.json
+│   │   │   │       │   ├── build.ninja
+│   │   │   │       │   ├── build_file_index.txt
+│   │   │   │       │   ├── cmake_install.cmake
+│   │   │   │       │   ├── compile_commands.json
+│   │   │   │       │   ├── compile_commands.json.bin
+│   │   │   │       │   ├── configure_fingerprint.bin
+│   │   │   │       │   ├── metadata_generation_command.txt
+│   │   │   │       │   ├── prefab_config.json
+│   │   │   │       │   └── symbol_folder_index.txt
+│   │   │   │       ├── hash_key.txt
+│   │   │   │       ├── prefab
+│   │   │   │       │   ├── arm64-v8a
+│   │   │   │       │   │   └── prefab
+│   │   │   │       │   │       └── lib
+│   │   │   │       │   │           └── aarch64-linux-android
+│   │   │   │       │   │               └── cmake
+│   │   │   │       │   │                   └── sentry-native-ndk
+│   │   │   │       │   │                       ├── sentry-native-ndkConfig.cmake
+│   │   │   │       │   │                       └── sentry-native-ndkConfigVersion.cmake
+│   │   │   │       │   └── x86
+│   │   │   │       │       └── prefab
+│   │   │   │       │           └── lib
+│   │   │   │       │               └── i686-linux-android
+│   │   │   │       │                   └── cmake
+│   │   │   │       │                       └── sentry-native-ndk
+│   │   │   │       │                           ├── sentry-native-ndkConfig.cmake
+│   │   │   │       │                           └── sentry-native-ndkConfigVersion.cmake
+│   │   │   │       └── x86
+│   │   │   │           ├── .cmake
+│   │   │   │           │   └── api
+│   │   │   │           │       └── v1
+│   │   │   │           │           ├── query
+│   │   │   │           │           │   └── client-agp
+│   │   │   │           │           │       ├── cache-v2
+│   │   │   │           │           │       ├── cmakeFiles-v1
+│   │   │   │           │           │       └── codemodel-v2
+│   │   │   │           │           └── reply
+│   │   │   │           │               ├── cache-v2-f7db95325bc434cc697a.json
+│   │   │   │           │               ├── cmakeFiles-v1-d6783107011ca9e52149.json
+│   │   │   │           │               ├── codemodel-v2-fd2b991cf02633ea977f.json
+│   │   │   │           │               ├── directory-.-Debug-f5ebdc15457944623624.json
+│   │   │   │           │               ├── index-2025-05-27T12-17-10-0384.json
+│   │   │   │           │               └── target-native-sample-Debug-97067de7b903026bf6ad.json
+│   │   │   │           ├── CMakeCache.txt
+│   │   │   │           ├── CMakeFiles
+│   │   │   │           │   ├── 3.22.1-g37088a8
+│   │   │   │           │   │   ├── CMakeCCompiler.cmake
+│   │   │   │           │   │   ├── CMakeCXXCompiler.cmake
+│   │   │   │           │   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   │   │           │   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   │   │           │   │   ├── CMakeSystem.cmake
+│   │   │   │           │   │   ├── CompilerIdC
+│   │   │   │           │   │   │   ├── CMakeCCompilerId.c
+│   │   │   │           │   │   │   ├── CMakeCCompilerId.o
+│   │   │   │           │   │   │   └── tmp
+│   │   │   │           │   │   └── CompilerIdCXX
+│   │   │   │           │   │       ├── CMakeCXXCompilerId.cpp
+│   │   │   │           │   │       ├── CMakeCXXCompilerId.o
+│   │   │   │           │   │       └── tmp
+│   │   │   │           │   ├── CMakeOutput.log
+│   │   │   │           │   ├── CMakeTmp
+│   │   │   │           │   ├── TargetDirectories.txt
+│   │   │   │           │   ├── cmake.check_cache
+│   │   │   │           │   ├── native-sample.dir
+│   │   │   │           │   │   └── src
+│   │   │   │           │   │       └── main
+│   │   │   │           │   │           └── cpp
+│   │   │   │           │   └── rules.ninja
+│   │   │   │           ├── additional_project_files.txt
+│   │   │   │           ├── android_gradle_build.json
+│   │   │   │           ├── android_gradle_build_mini.json
+│   │   │   │           ├── build.ninja
+│   │   │   │           ├── build_file_index.txt
+│   │   │   │           ├── cmake_install.cmake
+│   │   │   │           ├── compile_commands.json
+│   │   │   │           ├── compile_commands.json.bin
+│   │   │   │           ├── configure_fingerprint.bin
+│   │   │   │           ├── metadata_generation_command.txt
+│   │   │   │           ├── prefab_config.json
+│   │   │   │           └── symbol_folder_index.txt
+│   │   │   └── tools
+│   │   │       └── debug
+│   │   │           ├── arm64-v8a
+│   │   │           │   └── compile_commands.json
+│   │   │           └── x86
+│   │   │               └── compile_commands.json
+│   │   ├── .gitignore
+│   │   ├── CMakeLists.txt
+│   │   ├── build.gradle.kts
+│   │   ├── proguard-rules.pro
+│   │   └── src
+│   │       └── main
+│   │           ├── AndroidManifest.xml
+│   │           ├── cpp
+│   │           │   └── native-sample.cpp
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── android
+│   │           │                   ├── CoroutinesUtil.kt
+│   │           │                   ├── FrameDataForSpansActivity.kt
+│   │           │                   ├── GesturesActivity.kt
+│   │           │                   ├── GitHubService.kt
+│   │           │                   ├── GithubAPI.kt
+│   │           │                   ├── MainActivity.java
+│   │           │                   ├── MyApplication.java
+│   │           │                   ├── NativeSample.java
+│   │           │                   ├── PermissionsActivity.kt
+│   │           │                   ├── ProfilingActivity.kt
+│   │           │                   ├── ProfilingListAdapter.kt
+│   │           │                   ├── SampleFragment.kt
+│   │           │                   ├── SampleInnerFragment.kt
+│   │           │                   ├── SecondActivity.kt
+│   │           │                   ├── ThirdActivityFragment.kt
+│   │           │                   ├── ThirdFragment.kt
+│   │           │                   └── compose
+│   │           │                       └── ComposeActivity.kt
+│   │           └── res
+│   │               ├── drawable
+│   │               │   ├── ic_launcher_background.xml
+│   │               │   └── sentry_glyph.xml
+│   │               ├── drawable-v24
+│   │               │   └── ic_launcher_foreground.xml
+│   │               ├── layout
+│   │               │   ├── activity_gestures.xml
+│   │               │   ├── activity_main.xml
+│   │               │   ├── activity_permissions.xml
+│   │               │   ├── activity_profiling.xml
+│   │               │   ├── activity_second.xml
+│   │               │   ├── activity_third_fragment.xml
+│   │               │   ├── fragment_recycler.xml
+│   │               │   ├── fragment_sample.xml
+│   │               │   ├── fragment_sample_inner.xml
+│   │               │   ├── fragment_scrolling.xml
+│   │               │   ├── profiling_item_list.xml
+│   │               │   └── third_fragment.xml
+│   │               ├── mipmap-anydpi-v26
+│   │               │   ├── ic_launcher.xml
+│   │               │   └── ic_launcher_round.xml
+│   │               ├── mipmap-hdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── mipmap-mdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── mipmap-xhdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── mipmap-xxhdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── mipmap-xxxhdpi
+│   │               │   ├── ic_launcher.png
+│   │               │   └── ic_launcher_round.png
+│   │               ├── raw
+│   │               │   └── sentry.png
+│   │               ├── values
+│   │               │   ├── colors.xml
+│   │               │   ├── strings.xml
+│   │               │   └── styles.xml
+│   │               └── xml
+│   │                   └── network.xml
+│   ├── sentry-samples-console
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── samples
+│   │                           └── console
+│   │                               └── Main.java
+│   ├── sentry-samples-console-opentelemetry-noagent
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── samples
+│   │                           └── console
+│   │                               └── Main.java
+│   ├── sentry-samples-jul
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── jul
+│   │           │                   └── Main.java
+│   │           └── resources
+│   │               ├── logging.properties
+│   │               └── sentry.properties
+│   ├── sentry-samples-log4j2
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── log4j2
+│   │           │                   └── Main.java
+│   │           └── resources
+│   │               ├── log4j2.xml
+│   │               └── sentry.properties
+│   ├── sentry-samples-logback
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── logback
+│   │           │                   └── Main.java
+│   │           └── resources
+│   │               ├── logback.xml
+│   │               └── sentry.properties
+│   ├── sentry-samples-netflix-dgs
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── netflix
+│   │           │                   └── dgs
+│   │           │                       ├── ActorsDataloader.java
+│   │           │                       ├── NetlixDgsApplication.java
+│   │           │                       ├── ShowsDatafetcher.java
+│   │           │                       └── graphql
+│   │           │                           ├── DgsConstants.java
+│   │           │                           └── types
+│   │           │                               ├── Actor.java
+│   │           │                               └── Show.java
+│   │           └── resources
+│   │               ├── application.properties
+│   │               └── schema
+│   │                   └── schema.graphqls
+│   ├── sentry-samples-openfeign
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── io
+│   │                   └── sentry
+│   │                       └── samples
+│   │                           └── openfeign
+│   │                               └── Main.java
+│   ├── sentry-samples-servlet
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── servlet
+│   │           │                   ├── SampleServlet.java
+│   │           │                   └── SentryInitializer.java
+│   │           └── webapp
+│   │               └── WEB-INF
+│   │                   └── web.xml
+│   ├── sentry-samples-spring
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           └── samples
+│   │           │               └── spring
+│   │           │                   ├── AppConfig.java
+│   │           │                   ├── AppInitializer.java
+│   │           │                   ├── SecurityConfiguration.java
+│   │           │                   ├── SentryConfig.java
+│   │           │                   ├── WebConfig.java
+│   │           │                   └── web
+│   │           │                       ├── Person.java
+│   │           │                       ├── PersonController.java
+│   │           │                       └── PersonService.java
+│   │           └── resources
+│   │               ├── logback.xml
+│   │               └── sentry.properties
+│   ├── sentry-samples-spring-boot
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       ├── CustomJob.java
+│   │       │   │                       ├── DistributedTracingController.java
+│   │       │   │                       ├── Person.java
+│   │       │   │                       ├── PersonController.java
+│   │       │   │                       ├── PersonService.java
+│   │       │   │                       ├── SecurityConfiguration.java
+│   │       │   │                       ├── SentryDemoApplication.java
+│   │       │   │                       ├── Todo.java
+│   │       │   │                       ├── TodoController.java
+│   │       │   │                       ├── graphql
+│   │       │   │                       │   ├── AssigneeController.java
+│   │       │   │                       │   ├── GreetingController.java
+│   │       │   │                       │   ├── ProjectController.java
+│   │       │   │                       │   └── TaskCreatorController.java
+│   │       │   │                       └── quartz
+│   │       │   │                           └── SampleJob.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       ├── graphql
+│   │       │       │   └── schema.graphqls
+│   │       │       └── schema.sql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           ├── DummyTest.kt
+│   │           │           └── systemtest
+│   │           │               ├── DistributedTracingSystemTest.kt
+│   │           │               ├── GraphqlGreetingSystemTest.kt
+│   │           │               ├── GraphqlProjectSystemTest.kt
+│   │           │               ├── GraphqlTaskSystemTest.kt
+│   │           │               ├── PersonSystemTest.kt
+│   │           │               └── TodoSystemTest.kt
+│   │           └── resources
+│   │               └── logback.xml
+│   ├── sentry-samples-spring-boot-jakarta
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   ├── sentry-jakarta-text-master.properties
+│   │   ├── sentry-package-rename.properties
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── jakarta
+│   │       │   │                           ├── CustomEventProcessor.java
+│   │       │   │                           ├── CustomJob.java
+│   │       │   │                           ├── DistributedTracingController.java
+│   │       │   │                           ├── Person.java
+│   │       │   │                           ├── PersonController.java
+│   │       │   │                           ├── PersonService.java
+│   │       │   │                           ├── SecurityConfiguration.java
+│   │       │   │                           ├── SentryDemoApplication.java
+│   │       │   │                           ├── Todo.java
+│   │       │   │                           ├── TodoController.java
+│   │       │   │                           ├── graphql
+│   │       │   │                           │   ├── AssigneeController.java
+│   │       │   │                           │   ├── GreetingController.java
+│   │       │   │                           │   ├── ProjectController.java
+│   │       │   │                           │   └── TaskCreatorController.java
+│   │       │   │                           └── quartz
+│   │       │   │                               └── SampleJob.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       ├── graphql
+│   │       │       │   └── schema.graphqls
+│   │       │       ├── quartz.properties
+│   │       │       └── schema.sql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           ├── DummyTest.kt
+│   │           │           └── systemtest
+│   │           │               ├── DistributedTracingSystemTest.kt
+│   │           │               ├── GraphqlGreetingSystemTest.kt
+│   │           │               ├── GraphqlProjectSystemTest.kt
+│   │           │               ├── GraphqlTaskSystemTest.kt
+│   │           │               ├── PersonSystemTest.kt
+│   │           │               └── TodoSystemTest.kt
+│   │           └── resources
+│   │               └── logback.xml
+│   ├── sentry-samples-spring-boot-jakarta-opentelemetry
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── jakarta
+│   │       │   │                           ├── CustomEventProcessor.java
+│   │       │   │                           ├── CustomJob.java
+│   │       │   │                           ├── DistributedTracingController.java
+│   │       │   │                           ├── Person.java
+│   │       │   │                           ├── PersonController.java
+│   │       │   │                           ├── PersonService.java
+│   │       │   │                           ├── SecurityConfiguration.java
+│   │       │   │                           ├── SentryDemoApplication.java
+│   │       │   │                           ├── Todo.java
+│   │       │   │                           ├── TodoController.java
+│   │       │   │                           ├── graphql
+│   │       │   │                           │   ├── AssigneeController.java
+│   │       │   │                           │   ├── GreetingController.java
+│   │       │   │                           │   ├── ProjectController.java
+│   │       │   │                           │   └── TaskCreatorController.java
+│   │       │   │                           └── quartz
+│   │       │   │                               └── SampleJob.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       ├── graphql
+│   │       │       │   └── schema.graphqls
+│   │       │       ├── quartz.properties
+│   │       │       └── schema.sql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           ├── DummyTest.kt
+│   │           │           └── systemtest
+│   │           │               ├── DistributedTracingSystemTest.kt
+│   │           │               ├── GraphqlGreetingSystemTest.kt
+│   │           │               ├── GraphqlProjectSystemTest.kt
+│   │           │               ├── GraphqlTaskSystemTest.kt
+│   │           │               ├── PersonSystemTest.kt
+│   │           │               └── TodoSystemTest.kt
+│   │           └── resources
+│   │               └── logback.xml
+│   ├── sentry-samples-spring-boot-jakarta-opentelemetry-noagent
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── jakarta
+│   │       │   │                           ├── CustomEventProcessor.java
+│   │       │   │                           ├── CustomJob.java
+│   │       │   │                           ├── DistributedTracingController.java
+│   │       │   │                           ├── Person.java
+│   │       │   │                           ├── PersonController.java
+│   │       │   │                           ├── PersonService.java
+│   │       │   │                           ├── SecurityConfiguration.java
+│   │       │   │                           ├── SentryDemoApplication.java
+│   │       │   │                           ├── Todo.java
+│   │       │   │                           ├── TodoController.java
+│   │       │   │                           ├── graphql
+│   │       │   │                           │   ├── AssigneeController.java
+│   │       │   │                           │   ├── GreetingController.java
+│   │       │   │                           │   ├── ProjectController.java
+│   │       │   │                           │   └── TaskCreatorController.java
+│   │       │   │                           └── quartz
+│   │       │   │                               └── SampleJob.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       ├── graphql
+│   │       │       │   └── schema.graphqls
+│   │       │       ├── quartz.properties
+│   │       │       └── schema.sql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           ├── DummyTest.kt
+│   │           │           └── systemtest
+│   │           │               ├── DistributedTracingSystemTest.kt
+│   │           │               ├── GraphqlGreetingSystemTest.kt
+│   │           │               ├── GraphqlProjectSystemTest.kt
+│   │           │               ├── GraphqlTaskSystemTest.kt
+│   │           │               ├── PersonSystemTest.kt
+│   │           │               └── TodoSystemTest.kt
+│   │           └── resources
+│   │               └── logback.xml
+│   ├── sentry-samples-spring-boot-opentelemetry
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       ├── CustomJob.java
+│   │       │   │                       ├── DistributedTracingController.java
+│   │       │   │                       ├── Person.java
+│   │       │   │                       ├── PersonController.java
+│   │       │   │                       ├── PersonService.java
+│   │       │   │                       ├── SecurityConfiguration.java
+│   │       │   │                       ├── SentryDemoApplication.java
+│   │       │   │                       ├── Todo.java
+│   │       │   │                       ├── TodoController.java
+│   │       │   │                       ├── graphql
+│   │       │   │                       │   ├── AssigneeController.java
+│   │       │   │                       │   ├── GreetingController.java
+│   │       │   │                       │   ├── ProjectController.java
+│   │       │   │                       │   └── TaskCreatorController.java
+│   │       │   │                       └── quartz
+│   │       │   │                           └── SampleJob.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       ├── graphql
+│   │       │       │   └── schema.graphqls
+│   │       │       └── schema.sql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           ├── DummyTest.kt
+│   │           │           └── systemtest
+│   │           │               ├── DistributedTracingSystemTest.kt
+│   │           │               ├── GraphqlGreetingSystemTest.kt
+│   │           │               ├── GraphqlProjectSystemTest.kt
+│   │           │               ├── GraphqlTaskSystemTest.kt
+│   │           │               ├── PersonSystemTest.kt
+│   │           │               └── TodoSystemTest.kt
+│   │           └── resources
+│   │               └── logback.xml
+│   ├── sentry-samples-spring-boot-opentelemetry-noagent
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       ├── CustomJob.java
+│   │       │   │                       ├── DistributedTracingController.java
+│   │       │   │                       ├── Person.java
+│   │       │   │                       ├── PersonController.java
+│   │       │   │                       ├── PersonService.java
+│   │       │   │                       ├── SecurityConfiguration.java
+│   │       │   │                       ├── SentryDemoApplication.java
+│   │       │   │                       ├── Todo.java
+│   │       │   │                       ├── TodoController.java
+│   │       │   │                       ├── graphql
+│   │       │   │                       │   ├── AssigneeController.java
+│   │       │   │                       │   ├── GreetingController.java
+│   │       │   │                       │   ├── ProjectController.java
+│   │       │   │                       │   └── TaskCreatorController.java
+│   │       │   │                       └── quartz
+│   │       │   │                           └── SampleJob.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       ├── graphql
+│   │       │       │   └── schema.graphqls
+│   │       │       └── schema.sql
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           ├── DummyTest.kt
+│   │           │           └── systemtest
+│   │           │               ├── DistributedTracingSystemTest.kt
+│   │           │               ├── GraphqlGreetingSystemTest.kt
+│   │           │               ├── GraphqlProjectSystemTest.kt
+│   │           │               ├── GraphqlTaskSystemTest.kt
+│   │           │               ├── PersonSystemTest.kt
+│   │           │               └── TodoSystemTest.kt
+│   │           └── resources
+│   │               └── logback.xml
+│   ├── sentry-samples-spring-boot-webflux
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       ├── DistributedTracingController.java
+│   │       │   │                       ├── Person.java
+│   │       │   │                       ├── PersonController.java
+│   │       │   │                       ├── PersonService.java
+│   │       │   │                       ├── SentryDemoApplication.java
+│   │       │   │                       ├── Todo.java
+│   │       │   │                       ├── TodoController.java
+│   │       │   │                       └── graphql
+│   │       │   │                           └── GreetingController.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       └── graphql
+│   │       │           └── schema.graphqls
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           ├── DummyTest.kt
+│   │           │           └── systemtest
+│   │           │               ├── DistributedTracingSystemTest.kt
+│   │           │               ├── GraphqlGreetingSystemTest.kt
+│   │           │               ├── PersonSystemTest.kt
+│   │           │               └── TodoSystemTest.kt
+│   │           └── resources
+│   │               └── logback.xml
+│   ├── sentry-samples-spring-boot-webflux-jakarta
+│   │   ├── README.md
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── sentry
+│   │       │   │           └── samples
+│   │       │   │               └── spring
+│   │       │   │                   └── boot
+│   │       │   │                       └── jakarta
+│   │       │   │                           ├── DistributedTracingController.java
+│   │       │   │                           ├── Person.java
+│   │       │   │                           ├── PersonController.java
+│   │       │   │                           ├── PersonService.java
+│   │       │   │                           ├── SentryDemoApplication.java
+│   │       │   │                           ├── Todo.java
+│   │       │   │                           ├── TodoController.java
+│   │       │   │                           └── graphql
+│   │       │   │                               └── GreetingController.java
+│   │       │   └── resources
+│   │       │       ├── application.properties
+│   │       │       └── graphql
+│   │       │           └── schema.graphqls
+│   │       └── test
+│   │           ├── kotlin
+│   │           │   └── io
+│   │           │       └── sentry
+│   │           │           ├── DummyTest.kt
+│   │           │           └── systemtest
+│   │           │               ├── DistributedTracingSystemTest.kt
+│   │           │               ├── GraphqlGreetingSystemTest.kt
+│   │           │               ├── PersonSystemTest.kt
+│   │           │               └── TodoSystemTest.kt
+│   │           └── resources
+│   │               └── logback.xml
+│   └── sentry-samples-spring-jakarta
+│       ├── README.md
+│       ├── build.gradle.kts
+│       ├── sentry-jakarta-text-master.properties
+│       ├── sentry-package-rename.properties
+│       └── src
+│           └── main
+│               ├── java
+│               │   └── io
+│               │       └── sentry
+│               │           └── samples
+│               │               └── spring
+│               │                   └── jakarta
+│               │                       ├── AppConfig.java
+│               │                       ├── AppInitializer.java
+│               │                       ├── SecurityConfiguration.java
+│               │                       ├── SentryConfig.java
+│               │                       ├── WebConfig.java
+│               │                       └── web
+│               │                           ├── Person.java
+│               │                           ├── PersonController.java
+│               │                           └── PersonService.java
+│               └── resources
+│                   ├── logback.xml
+│                   └── sentry.properties
+├── sentry-servlet
+│   ├── api
+│   │   └── sentry-servlet.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── servlet
+│       │   │               ├── SentryRequestHttpServletRequestProcessor.java
+│       │   │               ├── SentryServletContainerInitializer.java
+│       │   │               └── SentryServletRequestListener.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       │               └── javax.servlet.ServletContainerInitializer
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── servlet
+│                           ├── SentryRequestHttpServletRequestProcessorTest.kt
+│                           ├── SentryServletContainerInitializerTest.kt
+│                           └── SentryServletRequestListenerTest.kt
+├── sentry-servlet-jakarta
+│   ├── api
+│   │   └── sentry-servlet-jakarta.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── servlet
+│       │   │               └── jakarta
+│       │   │                   ├── SentryRequestHttpServletRequestProcessor.java
+│       │   │                   ├── SentryServletContainerInitializer.java
+│       │   │                   └── SentryServletRequestListener.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       │               └── jakarta.servlet.ServletContainerInitializer
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── servlet
+│                           └── jakarta
+│                               ├── SentryRequestHttpServletRequestProcessorTest.kt
+│                               ├── SentryServletContainerInitializerTest.kt
+│                               └── SentryServletRequestListenerTest.kt
+├── sentry-spring
+│   ├── api
+│   │   └── sentry-spring.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── spring
+│       │   │               ├── ContextTagsEventProcessor.java
+│       │   │               ├── EnableSentry.java
+│       │   │               ├── HttpServletRequestSentryUserProvider.java
+│       │   │               ├── RequestPayloadExtractor.java
+│       │   │               ├── SentryExceptionResolver.java
+│       │   │               ├── SentryHubRegistrar.java
+│       │   │               ├── SentryInitBeanPostProcessor.java
+│       │   │               ├── SentryRequestHttpServletRequestProcessor.java
+│       │   │               ├── SentryRequestResolver.java
+│       │   │               ├── SentrySpringFilter.java
+│       │   │               ├── SentrySpringServletContainerInitializer.java
+│       │   │               ├── SentryTaskDecorator.java
+│       │   │               ├── SentryUserFilter.java
+│       │   │               ├── SentryUserProvider.java
+│       │   │               ├── SentryWebConfiguration.java
+│       │   │               ├── SpringProfilesEventProcessor.java
+│       │   │               ├── SpringSecuritySentryUserProvider.java
+│       │   │               ├── checkin
+│       │   │               │   ├── SentryCheckIn.java
+│       │   │               │   ├── SentryCheckInAdvice.java
+│       │   │               │   ├── SentryCheckInAdviceConfiguration.java
+│       │   │               │   ├── SentryCheckInPointcutConfiguration.java
+│       │   │               │   ├── SentryQuartzConfiguration.java
+│       │   │               │   └── SentrySchedulerFactoryBeanCustomizer.java
+│       │   │               ├── exception
+│       │   │               │   ├── SentryCaptureExceptionParameter.java
+│       │   │               │   ├── SentryCaptureExceptionParameterAdvice.java
+│       │   │               │   ├── SentryCaptureExceptionParameterConfiguration.java
+│       │   │               │   ├── SentryCaptureExceptionParameterPointcutConfiguration.java
+│       │   │               │   └── SentryExceptionParameterAdviceConfiguration.java
+│       │   │               ├── graphql
+│       │   │               │   ├── SentryBatchLoaderRegistry.java
+│       │   │               │   ├── SentryDataFetcherExceptionResolverAdapter.java
+│       │   │               │   ├── SentryDgsSubscriptionHandler.java
+│       │   │               │   ├── SentryGraphqlBeanPostProcessor.java
+│       │   │               │   ├── SentryGraphqlConfiguration.java
+│       │   │               │   └── SentrySpringSubscriptionHandler.java
+│       │   │               ├── opentelemetry
+│       │   │               │   ├── SentryOpenTelemetryAgentWithoutAutoInitConfiguration.java
+│       │   │               │   └── SentryOpenTelemetryNoAgentConfiguration.java
+│       │   │               ├── tracing
+│       │   │               │   ├── CombinedTransactionNameProvider.java
+│       │   │               │   ├── SentryAdviceConfiguration.java
+│       │   │               │   ├── SentrySpan.java
+│       │   │               │   ├── SentrySpanAdvice.java
+│       │   │               │   ├── SentrySpanClientHttpRequestInterceptor.java
+│       │   │               │   ├── SentrySpanClientWebRequestFilter.java
+│       │   │               │   ├── SentrySpanPointcutConfiguration.java
+│       │   │               │   ├── SentryTracingConfiguration.java
+│       │   │               │   ├── SentryTracingFilter.java
+│       │   │               │   ├── SentryTransaction.java
+│       │   │               │   ├── SentryTransactionAdvice.java
+│       │   │               │   ├── SentryTransactionPointcutConfiguration.java
+│       │   │               │   ├── SpringMvcTransactionNameProvider.java
+│       │   │               │   ├── SpringServletTransactionNameProvider.java
+│       │   │               │   ├── TransactionNameProvider.java
+│       │   │               │   └── TransactionNameWithSource.java
+│       │   │               └── webflux
+│       │   │                   ├── SentryRequestResolver.java
+│       │   │                   ├── SentryScheduleHook.java
+│       │   │                   ├── SentryWebExceptionHandler.java
+│       │   │                   ├── SentryWebFilter.java
+│       │   │                   └── TransactionNameProvider.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       │               └── javax.servlet.ServletContainerInitializer
+│       └── test
+│           ├── kotlin
+│           │   └── io
+│           │       └── sentry
+│           │           └── spring
+│           │               ├── ContextTagsEventProcessorTest.kt
+│           │               ├── EnableSentryTest.kt
+│           │               ├── HttpServletRequestSentryUserProviderTest.kt
+│           │               ├── SentryCheckInAdviceTest.kt
+│           │               ├── SentryExceptionResolverTest.kt
+│           │               ├── SentryInitBeanPostProcessorTest.kt
+│           │               ├── SentryRequestHttpServletRequestProcessorTest.kt
+│           │               ├── SentrySpringFilterTest.kt
+│           │               ├── SentryTaskDecoratorTest.kt
+│           │               ├── SentryUserFilterTest.kt
+│           │               ├── SpringProfilesEventProcessorTest.kt
+│           │               ├── SpringSecuritySentryUserProviderTest.kt
+│           │               ├── exception
+│           │               │   └── SentryCaptureExceptionParameterAdviceTest.kt
+│           │               ├── graphql
+│           │               │   └── SentrySpringSubscriptionHandlerTest.kt
+│           │               ├── mvc
+│           │               │   └── SentrySpringIntegrationTest.kt
+│           │               ├── tracing
+│           │               │   ├── SentrySpanAdviceTest.kt
+│           │               │   ├── SentryTracingFilterTest.kt
+│           │               │   └── SentryTransactionAdviceTest.kt
+│           │               └── webflux
+│           │                   ├── SentryScheduleHookTest.kt
+│           │                   ├── SentryWebFluxTracingFilterTest.kt
+│           │                   └── SentryWebfluxIntegrationTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-spring-boot
+│   ├── README.md
+│   ├── api
+│   │   └── sentry-spring-boot.api
+│   ├── build.gradle.kts
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── spring
+│       │   │               └── boot
+│       │   │                   ├── InAppIncludesResolver.java
+│       │   │                   ├── SentryAutoConfiguration.java
+│       │   │                   ├── SentryLogbackAppenderAutoConfiguration.java
+│       │   │                   ├── SentryLogbackInitializer.java
+│       │   │                   ├── SentryProperties.java
+│       │   │                   ├── SentrySpanRestTemplateCustomizer.java
+│       │   │                   ├── SentrySpanWebClientCustomizer.java
+│       │   │                   ├── SentrySpringVersionChecker.java
+│       │   │                   ├── SentryWebfluxAutoConfiguration.java
+│       │   │                   └── graphql
+│       │   │                       └── SentryGraphqlAutoConfiguration.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           ├── native-image
+│       │           │   └── io.sentry
+│       │           │       └── sentry
+│       │           │           └── proxy-config.json
+│       │           └── spring.factories
+│       └── test
+│           ├── kotlin
+│           │   ├── com
+│           │   │   └── acme
+│           │   │       └── MainBootClass.kt
+│           │   └── io
+│           │       └── sentry
+│           │           └── spring
+│           │               └── boot
+│           │                   ├── SentryAutoConfigurationTest.kt
+│           │                   ├── SentryLogbackAppenderAutoConfigurationTest.kt
+│           │                   ├── SentrySpanRestTemplateCustomizerTest.kt
+│           │                   ├── SentrySpanWebClientCustomizerTest.kt
+│           │                   ├── SentryWebfluxAutoConfigurationTest.kt
+│           │                   └── it
+│           │                       └── SentrySpringIntegrationTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-spring-boot-jakarta
+│   ├── .gitignore
+│   ├── api
+│   │   └── sentry-spring-boot-jakarta.api
+│   ├── build.gradle.kts
+│   ├── sentry-jakarta-text-master.properties
+│   ├── sentry-package-rename.properties
+│   ├── spring-test-rename.properties
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── spring
+│       │   │               └── boot
+│       │   │                   └── jakarta
+│       │   │                       ├── InAppIncludesResolver.java
+│       │   │                       ├── SentryAutoConfiguration.java
+│       │   │                       ├── SentryLogbackAppenderAutoConfiguration.java
+│       │   │                       ├── SentryLogbackInitializer.java
+│       │   │                       ├── SentryProperties.java
+│       │   │                       ├── SentrySpanRestClientCustomizer.java
+│       │   │                       ├── SentrySpanRestTemplateCustomizer.java
+│       │   │                       ├── SentrySpanWebClientCustomizer.java
+│       │   │                       ├── SentrySpringVersionChecker.java
+│       │   │                       ├── SentryWebfluxAutoConfiguration.java
+│       │   │                       └── graphql
+│       │   │                           ├── SentryGraphql22AutoConfiguration.java
+│       │   │                           └── SentryGraphqlAutoConfiguration.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           ├── native-image
+│       │           │   └── io.sentry
+│       │           │       └── sentry
+│       │           │           └── proxy-config.json
+│       │           ├── spring
+│       │           │   └── org.springframework.boot.autoconfigure.AutoConfiguration.imports
+│       │           └── spring.factories
+│       └── test
+│           ├── kotlin
+│           │   ├── com
+│           │   │   └── acme
+│           │   │       └── MainBootClass.kt
+│           │   └── io
+│           │       └── sentry
+│           │           └── spring
+│           │               └── boot
+│           │                   └── jakarta
+│           │                       ├── SentryAutoConfigurationTest.kt
+│           │                       ├── SentryLogbackAppenderAutoConfigurationTest.kt
+│           │                       ├── SentrySpanRestClientCustomizerTest.kt
+│           │                       ├── SentrySpanRestTemplateCustomizerTest.kt
+│           │                       ├── SentrySpanWebClientCustomizerTest.kt
+│           │                       ├── SentryWebfluxAutoConfigurationTest.kt
+│           │                       └── it
+│           │                           └── SentrySpringIntegrationTest.kt
+│           └── resources
+│               └── mockito-extensions
+│                   └── org.mockito.plugins.MockMaker
+├── sentry-spring-boot-starter
+│   ├── api
+│   │   └── sentry-spring-boot-starter.api
+│   └── build.gradle.kts
+├── sentry-spring-boot-starter-jakarta
+│   ├── .gitignore
+│   ├── api
+│   │   └── sentry-spring-boot-starter-jakarta.api
+│   └── build.gradle.kts
+├── sentry-spring-jakarta
+│   ├── api
+│   │   └── sentry-spring-jakarta.api
+│   ├── build.gradle.kts
+│   ├── sentry-jakarta-text-master.properties
+│   ├── sentry-package-rename.properties
+│   ├── spring-test-rename.properties
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── io
+│       │   │       └── sentry
+│       │   │           └── spring
+│       │   │               └── jakarta
+│       │   │                   ├── ContextTagsEventProcessor.java
+│       │   │                   ├── EnableSentry.java
+│       │   │                   ├── HttpServletRequestSentryUserProvider.java
+│       │   │                   ├── RequestPayloadExtractor.java
+│       │   │                   ├── SentryExceptionResolver.java
+│       │   │                   ├── SentryHubRegistrar.java
+│       │   │                   ├── SentryInitBeanPostProcessor.java
+│       │   │                   ├── SentryRequestHttpServletRequestProcessor.java
+│       │   │                   ├── SentryRequestResolver.java
+│       │   │                   ├── SentrySpringFilter.java
+│       │   │                   ├── SentrySpringServletContainerInitializer.java
+│       │   │                   ├── SentryTaskDecorator.java
+│       │   │                   ├── SentryUserFilter.java
+│       │   │                   ├── SentryUserProvider.java
+│       │   │                   ├── SentryWebConfiguration.java
+│       │   │                   ├── SpringProfilesEventProcessor.java
+│       │   │                   ├── SpringSecuritySentryUserProvider.java
+│       │   │                   ├── checkin
+│       │   │                   │   ├── SentryCheckIn.java
+│       │   │                   │   ├── SentryCheckInAdvice.java
+│       │   │                   │   ├── SentryCheckInAdviceConfiguration.java
+│       │   │                   │   ├── SentryCheckInPointcutConfiguration.java
+│       │   │                   │   ├── SentryQuartzConfiguration.java
+│       │   │                   │   └── SentrySchedulerFactoryBeanCustomizer.java
+│       │   │                   ├── exception
+│       │   │                   │   ├── SentryCaptureExceptionParameter.java
+│       │   │                   │   ├── SentryCaptureExceptionParameterAdvice.java
+│       │   │                   │   ├── SentryCaptureExceptionParameterConfiguration.java
+│       │   │                   │   ├── SentryCaptureExceptionParameterPointcutConfiguration.java
+│       │   │                   │   └── SentryExceptionParameterAdviceConfiguration.java
+│       │   │                   ├── graphql
+│       │   │                   │   ├── SentryBatchLoaderRegistry.java
+│       │   │                   │   ├── SentryDataFetcherExceptionResolverAdapter.java
+│       │   │                   │   ├── SentryDgsSubscriptionHandler.java
+│       │   │                   │   ├── SentryGraphql22Configuration.java
+│       │   │                   │   ├── SentryGraphqlBeanPostProcessor.java
+│       │   │                   │   ├── SentryGraphqlConfiguration.java
+│       │   │                   │   └── SentrySpringSubscriptionHandler.java
+│       │   │                   ├── opentelemetry
+│       │   │                   │   ├── SentryOpenTelemetryAgentWithoutAutoInitConfiguration.java
+│       │   │                   │   └── SentryOpenTelemetryNoAgentConfiguration.java
+│       │   │                   ├── tracing
+│       │   │                   │   ├── CombinedTransactionNameProvider.java
+│       │   │                   │   ├── SentryAdviceConfiguration.java
+│       │   │                   │   ├── SentrySpan.java
+│       │   │                   │   ├── SentrySpanAdvice.java
+│       │   │                   │   ├── SentrySpanClientHttpRequestInterceptor.java
+│       │   │                   │   ├── SentrySpanClientWebRequestFilter.java
+│       │   │                   │   ├── SentrySpanPointcutConfiguration.java
+│       │   │                   │   ├── SentryTracingConfiguration.java
+│       │   │                   │   ├── SentryTracingFilter.java
+│       │   │                   │   ├── SentryTransaction.java
+│       │   │                   │   ├── SentryTransactionAdvice.java
+│       │   │                   │   ├── SentryTransactionPointcutConfiguration.java
+│       │   │                   │   ├── SpringMvcTransactionNameProvider.java
+│       │   │                   │   ├── SpringServletTransactionNameProvider.java
+│       │   │                   │   ├── TransactionNameProvider.java
+│       │   │                   │   └── TransactionNameWithSource.java
+│       │   │                   └── webflux
+│       │   │                       ├── AbstractSentryWebFilter.java
+│       │   │                       ├── SentryRequestResolver.java
+│       │   │                       ├── SentryScheduleHook.java
+│       │   │                       ├── SentryWebExceptionHandler.java
+│       │   │                       ├── SentryWebFilter.java
+│       │   │                       ├── SentryWebFilterWithThreadLocalAccessor.java
+│       │   │                       ├── TransactionNameProvider.java
+│       │   │                       └── reactor
+│       │   │                           └── ReactorUtils.java
+│       │   └── resources
+│       │       └── META-INF
+│       │           └── services
+│       │               └── jakarta.servlet.ServletContainerInitializer
+│       └── test
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── spring
+│                           └── jakarta
+│                               ├── ContextTagsEventProcessorTest.kt
+│                               ├── EnableSentryTest.kt
+│                               ├── HttpServletRequestSentryUserProviderTest.kt
+│                               ├── SentryCheckInAdviceTest.kt
+│                               ├── SentryExceptionResolverTest.kt
+│                               ├── SentryInitBeanPostProcessorTest.kt
+│                               ├── SentryRequestHttpServletRequestProcessorTest.kt
+│                               ├── SentrySpringFilterTest.kt
+│                               ├── SentryTaskDecoratorTest.kt
+│                               ├── SentryUserFilterTest.kt
+│                               ├── SpringProfilesEventProcessorTest.kt
+│                               ├── SpringSecuritySentryUserProviderTest.kt
+│                               ├── exception
+│                               │   └── SentryCaptureExceptionParameterAdviceTest.kt
+│                               ├── graphql
+│                               │   └── SentrySpringSubscriptionHandlerTest.kt
+│                               ├── mvc
+│                               │   └── SentrySpringIntegrationTest.kt
+│                               ├── tracing
+│                               │   ├── SentrySpanAdviceTest.kt
+│                               │   ├── SentryTracingFilterTest.kt
+│                               │   └── SentryTransactionAdviceTest.kt
+│                               └── webflux
+│                                   ├── SentryScheduleHookTest.kt
+│                                   ├── SentryWebFluxTracingFilterTest.kt
+│                                   └── SentryWebfluxIntegrationTest.kt
+├── sentry-system-test-support
+│   ├── api
+│   │   └── sentry-system-test-support.api
+│   ├── build.gradle.kts
+│   └── src
+│       └── main
+│           ├── graphql
+│           │   ├── greeting.graphql
+│           │   ├── project.graphql
+│           │   ├── schema.graphqls
+│           │   └── task.graphql
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       └── systemtest
+│                           ├── ResponseTypes.kt
+│                           ├── graphql
+│                           │   └── GraphqlTestClient.kt
+│                           └── util
+│                               ├── LoggingInsecureRestClient.kt
+│                               ├── RestTestClient.kt
+│                               ├── SentryMockServerClient.kt
+│                               └── TestHelper.kt
+├── sentry-test-support
+│   ├── api
+│   │   └── sentry-test-support.api
+│   ├── build.gradle.kts
+│   └── src
+│       └── main
+│           └── kotlin
+│               └── io
+│                   └── sentry
+│                       ├── Assertions.kt
+│                       └── test
+│                           ├── Init.kt
+│                           ├── Mocks.kt
+│                           └── Reflection.kt
+├── sentry.properties
+├── settings.gradle.kts
+└── test
+    ├── system-test-run-all.sh
+    ├── system-test-run.sh
+    ├── system-test-sentry-server-start.sh
+    ├── system-test-sentry-server-stop.sh
+    ├── system-test-sentry-server.py
+    ├── system-test-spring-server-start.sh
+    └── wait-for-spring.sh
+
+1185 directories, 2119 files
