@@ -282,48 +282,48 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant Sentry as Sentry
-    participant Options as SentryOptions
-    participant External as ExternalOptions
-    participant Properties as PropertiesProvider
-    participant Manifest as AndroidManifest
-    participant Files as 配置文件
+    participant S as Sentry
+    participant O as SentryOptions
+    participant E as ExternalOptions
+    participant P as PropertiesProvider
+    participant M as AndroidManifest
+    participant F as ConfigFiles
 
-    Note over Sentry: 预初始化配置检查
-    Sentry->>Options: isEnableExternalConfiguration()
-    alt 启用外部配置
-        Sentry->>Properties: PropertiesProviderFactory.create()
-        Properties->>Files: 读取sentry.properties
-        Properties->>Files: 读取系统属性
-        Properties->>Files: 读取环境变量
-        Properties-->>External: 配置数据
-        Sentry->>External: from(properties, logger)
-        External-->>Options: 外部配置
-        Sentry->>Options: merge(externalOptions)
+    Note over S: Pre-initialization Configuration Check
+    S->>O: isEnableExternalConfiguration()
+    alt External Configuration Enabled
+        S->>P: PropertiesProviderFactory.create()
+        P->>F: Read sentry.properties
+        P->>F: Read system properties
+        P->>F: Read environment variables
+        P-->>E: Configuration data
+        S->>E: from(properties, logger)
+        E-->>O: External configuration
+        S->>O: merge(externalOptions)
     end
 
-    Note over Sentry: Android特定配置加载
-    alt Android平台
-        Sentry->>Manifest: 读取meta-data
-        Manifest->>Options: 设置DSN
-        Manifest->>Options: 设置debug模式
-        Manifest->>Options: 设置采样率
-        Manifest->>Options: 设置环境信息
-        Manifest->>Options: 设置发布版本
+    Note over S: Android Specific Configuration Loading
+    alt Android Platform
+        S->>M: Read meta-data
+        M->>O: Set DSN
+        M->>O: Set debug mode
+        M->>O: Set sample rate
+        M->>O: Set environment info
+        M->>O: Set release version
     end
 
-    Note over Sentry: DSN验证
-    Sentry->>Options: getDsn()
-    alt DSN为空或禁用
-        Sentry->>Sentry: close()
-        Sentry-->>Sentry: return false
-    else DSN无效
-        Sentry-->>Sentry: throw IllegalArgumentException
+    Note over S: DSN Validation
+    S->>O: getDsn()
+    alt DSN Empty or Disabled
+        S->>S: close()
+        S-->>S: return false
+    else DSN Invalid
+        S-->>S: throw IllegalArgumentException
     end
 
-    Sentry->>Options: retrieveParsedDsn()
-    Options->>Options: 解析和验证DSN格式
-    Options-->>Sentry: 解析完成
+    S->>O: retrieveParsedDsn()
+    O->>O: Parse and validate DSN format
+    O-->>S: Parse completed
 ```
 
 ## 关键组件说明
