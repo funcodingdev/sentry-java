@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant App as Application
+    participant SA as SentryAndroid
+    participant S as Sentry
+    
+    App->>SA: init(context, config)
+    SA->>SA: 检查集成可用性
+    SA->>SA: 加载 Manifest 配置
+    SA->>SA: 安装默认集成
+    SA->>S: 调用核心初始化
+    S->>SA: 初始化完成
+    SA->>SA: 启动会话跟踪 

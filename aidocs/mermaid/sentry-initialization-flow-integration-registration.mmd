@@ -1,0 +1,38 @@
+sequenceDiagram
+    participant Sentry as Sentry
+    participant Integration as Integration
+    participant Scopes as IScopes
+    participant Options as SentryOptions
+    participant Platform as 平台组件
+
+    Note over Sentry: 遍历所有集成进行注册
+    loop 每个集成
+        Sentry->>Integration: register(scopes, options)
+        
+        Note over Integration: 集成特定的注册逻辑
+        alt ActivityLifecycleIntegration
+            Integration->>Platform: application.registerActivityLifecycleCallbacks()
+            Integration->>Options: 配置性能监控
+            Integration->>Options: 配置帧率跟踪
+        else AnrIntegration
+            Integration->>Platform: 启动ANR监控线程
+            Integration->>Platform: 设置ANR检测器
+        else NetworkBreadcrumbsIntegration
+            Integration->>Platform: 注册网络状态监听器
+            Integration->>Platform: 设置网络拦截器
+        else SystemEventsBreadcrumbsIntegration
+            Integration->>Platform: 注册系统事件广播接收器
+            Integration->>Platform: 设置Intent过滤器
+        else UncaughtExceptionHandlerIntegration
+            Integration->>Platform: 设置全局异常处理器
+            Integration->>Platform: 保存原有异常处理器
+        else ShutdownHookIntegration
+            Integration->>Platform: 注册JVM关闭钩子
+        end
+
+        Note over Integration: 更新SDK版本信息
+        Integration->>Options: addIntegrationToSdkVersion()
+        Integration->>Options: addPackageInfo()
+        
+        Integration-->>Sentry: 注册完成
+    end 

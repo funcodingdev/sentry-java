@@ -1,0 +1,37 @@
+# Sentry Java SDK 文档工程 - Cursor 自动化规则
+
+## 🎯 项目类型
+Sentry Java SDK 技术文档工程 - 包含源码分析、时序图、监控机制文档
+
+## 🔧 自动化指令
+
+### 文档操作
+- **修改文档**: 自动编辑对应的 .md 文件，保持格式一致
+- **新增章节**: 按照现有结构添加内容，包含代码示例和技术细节
+- **更新内容**: 深入源码级别，包含类名、方法名、文件路径
+
+### 时序图操作  
+- **新增时序图**: 在 `mermaid/` 目录创建 .mmd 文件，自动生成 SVG
+- **修改时序图**: 更新 .mmd 文件并重新生成 SVG
+- **批量转换**: 使用 `mmdc` 命令转换所有时序图
+
+### 格式标准
+- 中文为主要语言
+- 代码块使用 ```java、```kotlin 或 ```mermaid
+- 文件路径用粗体：**文件路径**: path/to/file.java
+- 类名方法名用反引号：`SentryClient`、`init()`
+
+### 技术上下文
+- **核心组件**: Sentry, SentryOptions, IScopes, SentryClient, ITransport
+- **关键流程**: 初始化→配置→组件创建→集成注册→监控启动
+- **平台特性**: Android(ANR/Native), Java(JVM/Spring), 通用(配置/传输)
+
+### 响应关键词
+- "时序图" → 处理 mermaid/ 目录操作
+- "文档" → 处理 .md 文件操作  
+- "初始化" → 关注 sentry-initialization-*.md
+- "崩溃" → 关注 sentry-crash-monitoring.md
+- "监控" → 关注对应监控文档
+
+## 🛠️ 自动执行
+当用户提及文档修改或时序图操作时，直接执行相应的文件操作，无需确认。 

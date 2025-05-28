@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant MainThread as 主线程
+    participant WatchDog as ANRWatchDog
+    participant System as Android系统
+    participant AnrV2 as AnrV2Integration
+    participant Sentry as Sentry SDK
+
+    Note over WatchDog: 实时检测方式
+    loop 每500ms
+        WatchDog->>MainThread: post(ticker)
+        alt 主线程响应
+            MainThread->>WatchDog: 更新心跳时间
+        else 主线程无响应 > 5s
+            WatchDog->>Sentry: 报告ANR事件
+        end
+    end
+    
+    Note over System: 系统级检测方式
+    System->>System: 检测到ANR
+    System->>System: 生成ApplicationExitInfo
+    
+    Note over AnrV2: 应用重启后
+    AnrV2->>System: 查询ApplicationExitInfo
+    AnrV2->>AnrV2: 解析线程转储
+    AnrV2->>Sentry: 报告历史ANR事件 

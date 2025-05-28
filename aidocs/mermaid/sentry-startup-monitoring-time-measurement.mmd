@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant Process as 进程启动
+    participant Provider as SentryPerformanceProvider
+    participant SDK as Sentry SDK
+    participant App as Application
+    participant Activity as Activity
+    participant Metrics as AppStartMetrics
+
+    Note over Process: 冷启动开始
+    Process->>Provider: ContentProvider.onCreate()
+    Provider->>Metrics: 设置 SDK 初始化时间
+    Note over Provider: sdkInitMillis = SystemClock.uptimeMillis()
+    
+    alt Android N+ (API 24+)
+        Provider->>Metrics: 设置应用启动时间
+        Note over Provider: Process.getStartUptimeMillis()
+    end
+    
+    Provider->>App: Application.onCreate()
+    App->>Metrics: onApplicationCreate()
+    Note over Metrics: 记录 Application.onCreate 开始时间
+    
+    App->>Activity: Activity.onCreate()
+    Activity->>Metrics: onActivityCreated()
+    Note over Metrics: 检查启动类型和有效性
+    
+    Activity->>Activity: 首帧绘制
+    Activity->>Metrics: onFirstFrameDrawn()
+    Note over Metrics: 停止所有时间跨度测量 

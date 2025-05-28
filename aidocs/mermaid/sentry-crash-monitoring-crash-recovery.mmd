@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant App as 应用重启
+    participant Cache as 缓存系统
+    participant Sender as 发送器
+    participant Server as Sentry服务器
+
+    App->>Cache: 检查崩溃标记文件
+    alt 发现崩溃标记
+        Cache->>Cache: 设置 crashedLastRun = true
+        Cache->>Cache: 删除崩溃标记文件
+    end
+    
+    Cache->>Sender: 扫描缓存目录
+    Sender->>Sender: 读取未发送的信封
+    
+    loop 每个缓存的信封
+        Sender->>Server: 发送信封
+        alt 发送成功
+            Sender->>Cache: 删除缓存文件
+        else 发送失败
+            Sender->>Cache: 保留缓存文件
+        end
+    end 
