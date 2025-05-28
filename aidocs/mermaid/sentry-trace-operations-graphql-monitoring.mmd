@@ -1,0 +1,84 @@
+sequenceDiagram
+    participant Client as GraphQL 客户端
+    participant Engine as GraphQL 执行引擎
+    participant Instrumentation as SentryGraphqlInstrumentation
+    participant Fetcher as SentryDataFetcher
+    participant Sentry as Sentry SDK
+    participant Resolver as 字段解析器
+    participant Backend as Sentry 后台
+
+    Note over Client: GraphQL 查询请求
+    Client->>Engine: 执行 GraphQL 查询
+    
+    Note over Engine: 开始执行阶段
+    Engine->>Instrumentation: beginExecution(parameters)
+    Instrumentation->>Instrumentation: 解析操作信息
+    Note over Instrumentation: operationName = parameters.getOperation().getName()<br/>operationType = parameters.getOperation().getOperation().name()
+    
+    Instrumentation->>Sentry: 获取当前 Span
+    Sentry-->>Instrumentation: 返回活跃 Span
+    
+    alt 存在活跃 Span
+        Instrumentation->>Sentry: activeSpan.startChild("graphql.operation", operationType + " " + operationName)
+        Sentry-->>Instrumentation: 返回 graphql.operation Span
+        Note over Instrumentation: 设置操作标签<br/>- operation.type<br/>- operation.name
+    end
+    
+    Note over Engine: 字段解析阶段
+    loop 每个字段
+        Engine->>Fetcher: get(DataFetchingEnvironment)
+        Fetcher->>Fetcher: 获取字段信息
+        Note over Fetcher: fieldName = environment.getField().getName()
+        
+        Fetcher->>Sentry: 获取当前 Span
+        Sentry-->>Fetcher: 返回活跃 Span
+        
+        alt 存在活跃 Span
+            Fetcher->>Sentry: activeSpan.startChild("graphql.fetcher", fieldName)
+            Sentry-->>Fetcher: 返回 graphql.fetcher Span
+            Note over Fetcher: 设置字段标签<br/>- field.name<br/>- field.type
+        end
+        
+        Note over Fetcher: 执行字段解析
+        Fetcher->>Resolver: delegate.get(environment)
+        activate Resolver
+        Note over Resolver: 业务逻辑处理<br/>- 数据查询<br/>- 计算处理<br/>- 结果转换
+        
+        alt 解析成功
+            Resolver-->>Fetcher: 返回字段值
+            Fetcher->>Sentry: span.setStatus(SpanStatus.OK)
+        else 解析异常
+            Resolver-->>Fetcher: 抛出异常
+            Fetcher->>Sentry: span.setThrowable(exception)
+            Fetcher->>Sentry: span.setStatus(SpanStatus.INTERNAL_ERROR)
+        end
+        deactivate Resolver
+        
+        alt Span 存在
+            Fetcher->>Sentry: span.finish()
+            Note over Sentry: 上报字段解析 Span
+            Sentry->>Backend: 发送 graphql.fetcher Span
+        end
+        
+        Fetcher-->>Engine: 返回字段结果
+    end
+    
+    Note over Engine: 执行完成阶段
+    Engine->>Instrumentation: onCompleted(result, throwable)
+    
+    alt 执行成功
+        Instrumentation->>Sentry: span.setStatus(SpanStatus.OK)
+        Note over Instrumentation: 设置成功指标<br/>- fields.resolved<br/>- execution.time
+    else 执行异常
+        Instrumentation->>Sentry: span.setThrowable(throwable)
+        Instrumentation->>Sentry: span.setStatus(SpanStatus.INTERNAL_ERROR)
+        Note over Instrumentation: 设置错误信息<br/>- error.type<br/>- error.message
+    end
+    
+    alt Span 存在
+        Instrumentation->>Sentry: span.finish()
+        Note over Sentry: 上报操作 Span
+        Sentry->>Backend: 发送 graphql.operation Span
+    end
+    
+    Engine-->>Client: 返回 GraphQL 响应 

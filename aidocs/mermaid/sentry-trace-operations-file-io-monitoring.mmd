@@ -1,0 +1,68 @@
+sequenceDiagram
+    participant App as 应用程序
+    participant SentryFile as SentryFileInputStream
+    participant SpanManager as FileIOSpanManager
+    participant Sentry as Sentry SDK
+    participant FileSystem as 文件系统
+    participant Backend as Sentry 后台
+
+    Note over App: 文件读取操作
+    App->>SentryFile: new SentryFileInputStream(file)
+    
+    Note over SentryFile: 初始化阶段
+    SentryFile->>SpanManager: startSpan(scopes, "file.read")
+    SpanManager->>Sentry: 获取当前 Span
+    Sentry-->>SpanManager: 返回父 Span
+    
+    alt 存在父 Span 且启用追踪
+        SpanManager->>Sentry: parent.startChild("file.read")
+        Sentry-->>SpanManager: 返回 file.read Span
+        SpanManager->>Sentry: span.setData("file.path", file.getAbsolutePath())
+        Note over SpanManager: 创建 FileIOSpanManager 实例
+    else 未启用追踪
+        Note over SpanManager: 返回 NoOp Span
+    end
+    
+    SentryFile-->>App: 返回 InputStream 实例
+    
+    Note over App: 执行读取操作
+    loop 多次读取
+        App->>SentryFile: read() / read(buffer)
+        SentryFile->>SpanManager: performIO(() -> delegate.read())
+        
+        activate SpanManager
+        Note over SpanManager: 执行 IO 操作并计算字节数
+        SpanManager->>FileSystem: 实际文件读取
+        activate FileSystem
+        Note over FileSystem: 磁盘 I/O 操作<br/>- 文件定位<br/>- 数据读取<br/>- 缓冲区填充
+        FileSystem-->>SpanManager: 返回读取字节数
+        deactivate FileSystem
+        
+        SpanManager->>SpanManager: 累计读取字节数
+        deactivate SpanManager
+        
+        SentryFile-->>App: 返回读取数据
+    end
+    
+    Note over App: 关闭文件
+    App->>SentryFile: close()
+    SentryFile->>SpanManager: finish(delegate)
+    
+    alt Span 存在
+        SpanManager->>Sentry: span.setData("file.size", totalBytesRead)
+        
+        alt IO 操作成功
+            SpanManager->>Sentry: span.setStatus(SpanStatus.OK)
+        else IO 异常
+            SpanManager->>Sentry: span.setThrowable(ioException)
+            SpanManager->>Sentry: span.setStatus(SpanStatus.INTERNAL_ERROR)
+        end
+        
+        SpanManager->>Sentry: span.finish()
+        
+        Note over Sentry: 上报 Span 数据
+        Sentry->>Backend: 发送 file.read Span
+    end
+    
+    SentryFile->>FileSystem: delegate.close()
+    SentryFile-->>App: 文件关闭完成 
