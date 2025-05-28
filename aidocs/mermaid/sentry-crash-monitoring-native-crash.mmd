@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant App as Native代码
+    participant Signal as 信号处理器
+    participant NDK as Sentry NDK
+    participant Java as Java层
+    participant Disk as 磁盘缓存
+
+    App->>Signal: Native崩溃 (SIGSEGV等)
+    Signal->>NDK: 捕获信号
+    NDK->>NDK: 收集崩溃信息
+    Note over NDK: - 寄存器状态<br/>- 堆栈跟踪<br/>- 内存映射
+    
+    NDK->>Disk: 写入崩溃文件
+    Note over Disk: 避免在信号处理器中<br/>进行复杂操作
+    
+    Note over Java: 应用重启后
+    Java->>Disk: 检查崩溃标记文件
+    Java->>Java: 读取崩溃信息
+    Java->>Java: 创建SentryEvent
+    Java->>Java: 发送到Sentry服务器 

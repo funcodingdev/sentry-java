@@ -1,0 +1,108 @@
+sequenceDiagram
+    participant User as 用户代码
+    participant Sentry as Sentry
+    participant Lock as AutoClosableReentrantLock
+    participant Options as SentryOptions
+    participant Scopes as IScopes
+    participant Client as SentryClient
+    participant Transport as ITransport
+    participant Integrations as Integration[]
+    participant Storage as IScopesStorage
+
+    User->>Sentry: init(OptionsConfiguration)
+    Sentry->>Lock: acquire()
+    Lock-->>Sentry: token
+
+    Note over Sentry: 1. 平台检查
+    alt Android平台 && 非SentryAndroidOptions
+        Sentry-->>User: throw IllegalArgumentException
+    end
+
+    Note over Sentry: 2. 预初始化配置
+    Sentry->>Sentry: preInitConfigurations(options)
+    Sentry->>Options: isEnableExternalConfiguration()
+    alt 启用外部配置
+        Sentry->>Options: merge(ExternalOptions)
+    end
+    Sentry->>Options: getDsn()
+    alt DSN为空或无效
+        Sentry->>Sentry: close()
+        Sentry-->>User: return false
+    end
+    Sentry->>Options: retrieveParsedDsn()
+
+    Note over Sentry: 3. 检查是否应该初始化
+    Sentry->>Sentry: shouldInit(options)
+    alt 不应该初始化
+        Sentry-->>User: 记录警告并返回
+    end
+
+    Note over Sentry: 4. 关闭现有Scopes
+    Sentry->>Scopes: getCurrentScopes()
+    Sentry->>Scopes: close(true)
+
+    Note over Sentry: 5. 创建新的Scopes结构
+    Sentry->>Sentry: globalScope.replaceOptions(options)
+    Sentry->>Scopes: new Scope(options) [rootScope]
+    Sentry->>Scopes: new Scope(options) [rootIsolationScope]
+    Sentry->>Scopes: new Scopes(rootScope, rootIsolationScope, globalScope)
+
+    Note over Sentry: 6. 初始化核心组件
+    Sentry->>Sentry: initLogger(options)
+    Sentry->>Sentry: initForOpenTelemetryMaybe(options)
+    Sentry->>Sentry: initScopesStorage(options)
+    Sentry->>Storage: close()
+    alt OpenTelemetry模式关闭
+        Sentry->>Storage: new DefaultScopesStorage()
+    else OpenTelemetry模式开启
+        Sentry->>Storage: ScopesStorageFactory.create()
+    end
+
+    Note over Sentry: 7. 设置Scopes存储
+    Sentry->>Storage: set(rootScopes)
+
+    Note over Sentry: 8. 初始化配置
+    Sentry->>Sentry: initConfigurations(options)
+    Sentry->>Options: getOutboxPath()
+    alt outboxPath存在
+        Sentry->>Sentry: 创建outbox目录
+    end
+    Sentry->>Options: getCacheDirPath()
+    alt cacheDirPath存在
+        Sentry->>Sentry: 创建cache目录
+        Sentry->>Options: setEnvelopeDiskCache(EnvelopeCache)
+    end
+    Sentry->>Options: getProfilingTracesDirPath()
+    alt 性能分析启用
+        Sentry->>Sentry: 创建profiling目录
+        Sentry->>Sentry: 清理旧的trace文件
+    end
+
+    Note over Sentry: 9. 配置模块和调试元数据
+    Sentry->>Options: setModulesLoader()
+    Sentry->>Options: setDebugMetaLoader()
+    Sentry->>Options: setThreadChecker()
+    Sentry->>Options: addPerformanceCollector()
+
+    Note over Sentry: 10. 创建并绑定客户端
+    Sentry->>Client: new SentryClient(options)
+    Client->>Transport: transportFactory.create(options)
+    Transport-->>Client: transport实例
+    Client-->>Sentry: client实例
+    Sentry->>Scopes: bindClient(client)
+
+    Note over Sentry: 11. 注册集成
+    loop 遍历所有集成
+        Sentry->>Integrations: register(ScopesAdapter, options)
+        Integrations->>Options: 获取配置
+        Integrations->>Scopes: 注册回调和监听器
+        Integrations-->>Sentry: 注册完成
+    end
+
+    Note over Sentry: 12. 后续处理
+    Sentry->>Sentry: notifyOptionsObservers(options)
+    Sentry->>Sentry: finalizePreviousSession(options, scopes)
+    Sentry->>Sentry: handleAppStartProfilingConfig(options)
+
+    Sentry->>Lock: release()
+    Sentry-->>User: 初始化完成 

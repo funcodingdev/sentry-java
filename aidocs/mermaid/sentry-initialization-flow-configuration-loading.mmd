@@ -1,0 +1,43 @@
+sequenceDiagram
+    participant S as Sentry
+    participant O as SentryOptions
+    participant E as ExternalOptions
+    participant P as PropertiesProvider
+    participant M as AndroidManifest
+    participant F as ConfigFiles
+
+    Note over S: Pre-initialization Configuration Check
+    S->>O: isEnableExternalConfiguration()
+    alt External Configuration Enabled
+        S->>P: PropertiesProviderFactory.create()
+        P->>F: Read sentry.properties
+        P->>F: Read system properties
+        P->>F: Read environment variables
+        P-->>E: Configuration data
+        S->>E: from(properties, logger)
+        E-->>O: External configuration
+        S->>O: merge(externalOptions)
+    end
+
+    Note over S: Android Specific Configuration Loading
+    alt Android Platform
+        S->>M: Read meta-data
+        M->>O: Set DSN
+        M->>O: Set debug mode
+        M->>O: Set sample rate
+        M->>O: Set environment info
+        M->>O: Set release version
+    end
+
+    Note over S: DSN Validation
+    S->>O: getDsn()
+    alt DSN Empty or Disabled
+        S->>S: close()
+        S-->>S: return false
+    else DSN Invalid
+        S-->>S: throw IllegalArgumentException
+    end
+
+    S->>O: retrieveParsedDsn()
+    O->>O: Parse and validate DSN format
+    O-->>S: Parse completed 

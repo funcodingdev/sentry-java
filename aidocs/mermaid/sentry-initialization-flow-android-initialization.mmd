@@ -1,0 +1,81 @@
+sequenceDiagram
+    participant User as 用户代码
+    participant SentryAndroid as SentryAndroid
+    participant Context as Android Context
+    participant AndroidOptions as SentryAndroidOptions
+    participant AndroidInit as AndroidOptionsInitializer
+    participant AppStart as AppStartMetrics
+    participant Integrations as Android Integrations
+
+    User->>SentryAndroid: init(context, configuration)
+    SentryAndroid->>SentryAndroid: staticLock.acquire()
+
+    Note over SentryAndroid: 1. 检查可用的集成
+    SentryAndroid->>SentryAndroid: 检查Timber可用性
+    SentryAndroid->>SentryAndroid: 检查Fragment可用性
+    SentryAndroid->>SentryAndroid: 检查Replay可用性
+
+    Note over SentryAndroid: 2. 创建Android特定组件
+    SentryAndroid->>SentryAndroid: new BuildInfoProvider()
+    SentryAndroid->>SentryAndroid: new ActivityFramesTracker()
+
+    Note over SentryAndroid: 3. 加载默认配置和元数据
+    SentryAndroid->>AndroidInit: loadDefaultAndMetadataOptions(options, context)
+    AndroidInit->>Context: 读取AndroidManifest.xml
+    AndroidInit->>AndroidOptions: 设置默认值
+    AndroidInit->>AndroidOptions: 应用元数据配置
+    AndroidInit-->>SentryAndroid: 配置完成
+
+    Note over SentryAndroid: 4. 安装默认集成
+    SentryAndroid->>AndroidInit: installDefaultIntegrations()
+    AndroidInit->>AndroidOptions: 添加ActivityLifecycleIntegration
+    AndroidInit->>AndroidOptions: 添加AnrIntegration
+    AndroidInit->>AndroidOptions: 添加NetworkBreadcrumbsIntegration
+    AndroidInit->>AndroidOptions: 添加SystemEventsBreadcrumbsIntegration
+    alt Fragment可用
+        AndroidInit->>AndroidOptions: 添加FragmentLifecycleIntegration
+    end
+    alt Timber可用
+        AndroidInit->>AndroidOptions: 添加SentryTimberIntegration
+    end
+    alt Replay可用
+        AndroidInit->>AndroidOptions: 添加ReplayIntegration
+    end
+
+    Note over SentryAndroid: 5. 执行用户配置回调
+    SentryAndroid->>User: configuration.configure(options)
+    User-->>SentryAndroid: 配置完成
+
+    Note over SentryAndroid: 6. 设置应用启动指标
+    SentryAndroid->>AppStart: getInstance()
+    alt 性能V2启用
+        SentryAndroid->>AppStart: setStartedAt(Process.getStartUptimeMillis())
+    end
+    SentryAndroid->>AppStart: registerApplicationForegroundCheck()
+    SentryAndroid->>AppStart: setSdkInitStartedAt(sdkInitMillis)
+
+    Note over SentryAndroid: 7. 初始化集成和处理器
+    SentryAndroid->>AndroidInit: initializeIntegrationsAndProcessors()
+    AndroidInit->>AndroidOptions: 添加DefaultAndroidEventProcessor
+    AndroidInit->>AndroidOptions: 添加PerformanceAndroidEventProcessor
+    AndroidInit->>AndroidOptions: 添加ScreenshotEventProcessor
+    AndroidInit->>AndroidOptions: 添加ViewHierarchyEventProcessor
+    AndroidInit->>AndroidOptions: 添加AnrV2EventProcessor
+
+    Note over SentryAndroid: 8. 去重集成
+    SentryAndroid->>SentryAndroid: deduplicateIntegrations()
+
+    Note over SentryAndroid: 9. 调用核心Sentry初始化
+    SentryAndroid->>Sentry: init(OptionsContainer, configuration, globalHubMode=true)
+    Note over Sentry: 执行核心初始化流程...
+
+    Note over SentryAndroid: 10. 启动会话和Replay
+    SentryAndroid->>SentryAndroid: 检查前台重要性
+    alt 应用在前台
+        alt 自动会话跟踪启用
+            SentryAndroid->>Scopes: startSession()
+        end
+        SentryAndroid->>Options: getReplayController().start()
+    end
+
+    SentryAndroid-->>User: 初始化完成 

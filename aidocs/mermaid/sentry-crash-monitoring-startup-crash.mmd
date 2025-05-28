@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant App as 应用启动
+    participant SDK as Sentry SDK
+    participant Cache as 缓存系统
+    participant Sender as 发送器
+
+    App->>SDK: Sentry.init()
+    SDK->>SDK: 记录初始化时间
+    
+    Note over App: 应用崩溃 (< 2s)
+    App->>SDK: UncaughtException
+    SDK->>Cache: 检查启动时间
+    Cache->>Cache: 写入启动崩溃标记
+    
+    Note over App: 应用重启
+    App->>SDK: Sentry.init()
+    SDK->>Cache: 检查启动崩溃标记
+    Cache->>Sender: 阻塞发送启动崩溃事件
+    Note over Sender: 等待最多5秒确保发送成功
+    Sender->>SDK: 发送完成
+    SDK->>App: 初始化完成 

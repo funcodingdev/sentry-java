@@ -1,0 +1,29 @@
+sequenceDiagram
+    participant Sentry as Sentry
+    participant Client as SentryClient
+    participant Options as SentryOptions
+    participant TransportFactory as ITransportFactory
+    participant Transport as ITransport
+    participant RequestResolver as RequestDetailsResolver
+
+    Sentry->>Client: new SentryClient(options)
+    Client->>Options: 验证options非空
+    Client->>Client: enabled = true
+
+    Note over Client: 创建传输层
+    Client->>Options: getTransportFactory()
+    alt TransportFactory是NoOp
+        Client->>TransportFactory: new AsyncHttpTransportFactory()
+        Client->>Options: setTransportFactory(transportFactory)
+    end
+
+    Client->>RequestResolver: new RequestDetailsResolver(options)
+    Client->>RequestResolver: resolve()
+    RequestResolver-->>Client: RequestDetails
+
+    Client->>TransportFactory: create(options, requestDetails)
+    TransportFactory->>Transport: 创建具体传输实现
+    Transport-->>TransportFactory: transport实例
+    TransportFactory-->>Client: transport实例
+
+    Client-->>Sentry: SentryClient实例 

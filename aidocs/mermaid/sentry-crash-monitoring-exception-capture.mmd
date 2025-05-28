@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant App as 应用线程
+    participant Handler as UncaughtExceptionHandler
+    participant Sentry as Sentry SDK
+    participant Transport as 传输层
+    participant Original as 原始处理器
+
+    App->>Handler: 未捕获异常发生
+    Handler->>Sentry: 创建 SentryEvent
+    Note over Handler: 设置 level = FATAL
+    Note over Handler: 标记 handled = false
+    
+    Handler->>Sentry: captureEvent(event, hint)
+    Sentry->>Transport: 发送事件
+    
+    Note over Handler: 等待事件刷新到磁盘
+    Handler->>Handler: waitFlush()
+    
+    alt 有原始处理器
+        Handler->>Original: 调用原始处理器
+    else 无原始处理器
+        Handler->>App: printStackTrace()
+    end 
