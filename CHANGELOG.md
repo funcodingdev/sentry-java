@@ -6,6 +6,12 @@
 
 - Support `metric` envelope item type ([#4956](https://github.com/getsentry/sentry-java/pull/4956))
 
+### Dependencies
+
+- Bump Native SDK from v0.12.2 to v0.13.3 ([#14](https://github.com/funcodingdev/sentry-java/pull/14))
+  - [changelog](https://github.com/getsentry/sentry-native/blob/master/CHANGELOG.md#0133)
+  - [diff](https://github.com/getsentry/sentry-native/compare/0.12.2...0.13.3)
+
 ## 8.28.0
 
 ### Features
