@@ -6,6 +6,12 @@
 
 - Support `metric` envelope item type ([#4956](https://github.com/getsentry/sentry-java/pull/4956))
 
+### Dependencies
+
+- Bump Gradle from v8.14.3 to v9.5.1 ([#23](https://github.com/funcodingdev/sentry-java/pull/23))
+  - [changelog](https://github.com/gradle/gradle/blob/master/CHANGELOG.md#v951)
+  - [diff](https://github.com/gradle/gradle/compare/v8.14.3...v9.5.1)
+
 ## 8.28.0
 
 ### Features
