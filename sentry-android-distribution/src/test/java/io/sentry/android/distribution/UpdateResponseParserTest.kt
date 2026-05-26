@@ -1,5 +1,6 @@
 package io.sentry.android.distribution
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.sentry.SentryOptions
 import io.sentry.UpdateStatus
 import org.junit.Assert.assertEquals
@@ -7,9 +8,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class UpdateResponseParserTest {
 
   private lateinit var options: SentryOptions
@@ -32,11 +32,12 @@ class UpdateResponseParserTest {
           "build_number": 42,
           "download_url": "https://example.com/download",
           "app_name": "Test App",
-          "created_date": "2023-10-01T00:00:00Z"
+          "created_date": "2023-10-01T00:00:00Z",
+          "install_groups": ["beta", "internal"]
         },
         "current": null
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -49,6 +50,7 @@ class UpdateResponseParserTest {
     assertEquals("https://example.com/download", updateInfo.downloadUrl)
     assertEquals("Test App", updateInfo.appName)
     assertEquals("2023-10-01T00:00:00Z", updateInfo.createdDate)
+    assertEquals(listOf("beta", "internal"), updateInfo.installGroups)
   }
 
   @Test
@@ -66,7 +68,7 @@ class UpdateResponseParserTest {
           "created_date": "2023-09-01T00:00:00Z"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -88,7 +90,7 @@ class UpdateResponseParserTest {
           "created_date": "2023-09-01T00:00:00Z"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -144,7 +146,7 @@ class UpdateResponseParserTest {
           "build_version": "2.0.0"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -171,7 +173,7 @@ class UpdateResponseParserTest {
           "created_date": ""
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -212,7 +214,7 @@ class UpdateResponseParserTest {
           "created_date": "2023-10-01T00:00:00Z"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -238,7 +240,7 @@ class UpdateResponseParserTest {
           "created_date": "2023-10-01T00:00:00Z"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -264,7 +266,7 @@ class UpdateResponseParserTest {
           "created_date": "2023-10-01T00:00:00Z"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -290,7 +292,7 @@ class UpdateResponseParserTest {
           "created_date": "2023-10-01T00:00:00Z"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -314,7 +316,7 @@ class UpdateResponseParserTest {
           "created_date": "2023-10-01T00:00:00Z"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -343,7 +345,7 @@ class UpdateResponseParserTest {
           "created_date": "2023-10-01T00:00:00Z"
         }
       }
-    """
+      """
         .trimIndent()
 
     val result = parser.parseResponse(200, responseBody)
@@ -354,5 +356,104 @@ class UpdateResponseParserTest {
       "Error message should mention missing id field when value is 'null' string",
       error.message.contains("Missing required fields in API response: id"),
     )
+  }
+
+  @Test
+  fun `parseResponse returns null installGroups when not present`() {
+    val responseBody =
+      """
+      {
+        "update": {
+          "id": "update-123",
+          "build_version": "2.0.0",
+          "build_number": 42,
+          "download_url": "https://example.com/download",
+          "app_name": "Test App",
+          "created_date": "2023-10-01T00:00:00Z"
+        }
+      }
+      """
+        .trimIndent()
+
+    val result = parser.parseResponse(200, responseBody)
+
+    assertTrue("Should return NewRelease", result is UpdateStatus.NewRelease)
+    val updateInfo = (result as UpdateStatus.NewRelease).info
+    assertEquals(null, updateInfo.installGroups)
+  }
+
+  @Test
+  fun `parseResponse returns null installGroups when array is empty`() {
+    val responseBody =
+      """
+      {
+        "update": {
+          "id": "update-123",
+          "build_version": "2.0.0",
+          "build_number": 42,
+          "download_url": "https://example.com/download",
+          "app_name": "Test App",
+          "created_date": "2023-10-01T00:00:00Z",
+          "install_groups": []
+        }
+      }
+      """
+        .trimIndent()
+
+    val result = parser.parseResponse(200, responseBody)
+
+    assertTrue("Should return NewRelease", result is UpdateStatus.NewRelease)
+    val updateInfo = (result as UpdateStatus.NewRelease).info
+    assertEquals(null, updateInfo.installGroups)
+  }
+
+  @Test
+  fun `parseResponse returns null installGroups when array is null`() {
+    val responseBody =
+      """
+      {
+        "update": {
+          "id": "update-123",
+          "build_version": "2.0.0",
+          "build_number": 42,
+          "download_url": "https://example.com/download",
+          "app_name": "Test App",
+          "created_date": "2023-10-01T00:00:00Z",
+          "install_groups": null
+        }
+      }
+      """
+        .trimIndent()
+
+    val result = parser.parseResponse(200, responseBody)
+
+    assertTrue("Should return NewRelease", result is UpdateStatus.NewRelease)
+    val updateInfo = (result as UpdateStatus.NewRelease).info
+    assertEquals(null, updateInfo.installGroups)
+  }
+
+  @Test
+  fun `parseResponse returns single installGroup`() {
+    val responseBody =
+      """
+      {
+        "update": {
+          "id": "update-123",
+          "build_version": "2.0.0",
+          "build_number": 42,
+          "download_url": "https://example.com/download",
+          "app_name": "Test App",
+          "created_date": "2023-10-01T00:00:00Z",
+          "install_groups": ["beta-testers"]
+        }
+      }
+      """
+        .trimIndent()
+
+    val result = parser.parseResponse(200, responseBody)
+
+    assertTrue("Should return NewRelease", result is UpdateStatus.NewRelease)
+    val updateInfo = (result as UpdateStatus.NewRelease).info
+    assertEquals(listOf("beta-testers"), updateInfo.installGroups)
   }
 }

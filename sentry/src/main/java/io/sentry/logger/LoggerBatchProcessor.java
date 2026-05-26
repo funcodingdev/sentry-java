@@ -21,8 +21,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
 
 @Open
 public class LoggerBatchProcessor implements ILoggerBatchProcessor {
@@ -36,22 +38,34 @@ public class LoggerBatchProcessor implements ILoggerBatchProcessor {
   private final @NotNull Queue<SentryLogEvent> queue;
   private final @NotNull ISentryExecutorService executorService;
   private volatile @Nullable Future<?> scheduledFlush;
-  private static final @NotNull AutoClosableReentrantLock scheduleLock =
-      new AutoClosableReentrantLock();
+  private final @NotNull AutoClosableReentrantLock scheduleLock = new AutoClosableReentrantLock();
   private volatile boolean hasScheduled = false;
+  private volatile boolean isShuttingDown = false;
 
   private final @NotNull ReusableCountLatch pendingCount = new ReusableCountLatch();
 
   public LoggerBatchProcessor(
       final @NotNull SentryOptions options, final @NotNull ISentryClient client) {
+    this(options, client, new SentryExecutorService(options));
+  }
+
+  @ApiStatus.Internal
+  @TestOnly
+  public LoggerBatchProcessor(
+      final @NotNull SentryOptions options,
+      final @NotNull ISentryClient client,
+      final @NotNull ISentryExecutorService executorService) {
     this.options = options;
     this.client = client;
     this.queue = new ConcurrentLinkedQueue<>();
-    this.executorService = new SentryExecutorService(options);
+    this.executorService = executorService;
   }
 
   @Override
   public void add(final @NotNull SentryLogEvent logEvent) {
+    if (isShuttingDown) {
+      return;
+    }
     if (pendingCount.getCount() >= MAX_QUEUE_SIZE) {
       options
           .getClientReportRecorder()
@@ -60,7 +74,7 @@ public class LoggerBatchProcessor implements ILoggerBatchProcessor {
           JsonSerializationUtils.byteSizeOf(options.getSerializer(), options.getLogger(), logEvent);
       options
           .getClientReportRecorder()
-          .recordLostEvent(DiscardReason.QUEUE_OVERFLOW, DataCategory.Attachment, lostBytes);
+          .recordLostEvent(DiscardReason.QUEUE_OVERFLOW, DataCategory.LogByte, lostBytes);
       return;
     }
     pendingCount.increment();
@@ -71,6 +85,7 @@ public class LoggerBatchProcessor implements ILoggerBatchProcessor {
   @SuppressWarnings("FutureReturnValueIgnored")
   @Override
   public void close(final boolean isRestarting) {
+    isShuttingDown = true;
     if (isRestarting) {
       maybeSchedule(true, true);
       executorService.submit(() -> executorService.close(options.getShutdownTimeoutMillis()));

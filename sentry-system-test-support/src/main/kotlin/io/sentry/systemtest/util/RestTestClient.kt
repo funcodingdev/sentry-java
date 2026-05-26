@@ -50,6 +50,24 @@ class RestTestClient(private val backendBaseUrl: String) : LoggingInsecureRestCl
     return callTyped(request, true)
   }
 
+  fun getCachedTodo(id: Long): Todo? {
+    val request = Request.Builder().url("$backendBaseUrl/cache/$id")
+
+    return callTyped(request, true)
+  }
+
+  fun saveCachedTodo(todo: Todo): Todo? {
+    val request = Request.Builder().url("$backendBaseUrl/cache/").post(toRequestBody(todo))
+
+    return callTyped(request, true)
+  }
+
+  fun deleteCachedTodo(id: Long) {
+    val request = Request.Builder().url("$backendBaseUrl/cache/$id").delete()
+
+    call(request, true)
+  }
+
   fun checkFeatureFlag(flagKey: String): FeatureFlagResponse? {
     val request = Request.Builder().url("$backendBaseUrl/feature-flag/check/$flagKey")
 
@@ -61,6 +79,30 @@ class RestTestClient(private val backendBaseUrl: String) : LoggingInsecureRestCl
 
     val response = call(request, true)
     return response?.body?.string()
+  }
+
+  fun produceKafkaMessage(message: String = "hello from sentry!"): String? {
+    val request = Request.Builder().url("$backendBaseUrl/kafka/produce?message=$message")
+
+    return callTyped(request, true)
+  }
+
+  fun getCountMetric(): String? {
+    val request = Request.Builder().url("$backendBaseUrl/metric/count")
+
+    return callTyped(request, true)
+  }
+
+  fun getGaugeMetric(value: Long): String? {
+    val request = Request.Builder().url("$backendBaseUrl/metric/gauge/$value")
+
+    return callTyped(request, true)
+  }
+
+  fun getDistributionMetric(value: Long): String? {
+    val request = Request.Builder().url("$backendBaseUrl/metric/distribution/$value")
+
+    return callTyped(request, true)
   }
 }
 

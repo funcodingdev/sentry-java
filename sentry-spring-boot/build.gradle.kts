@@ -1,6 +1,5 @@
 import net.ltgt.gradle.errorprone.errorprone
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
   `java-library`
@@ -10,7 +9,6 @@ plugins {
   alias(libs.plugins.errorprone)
   alias(libs.plugins.gradle.versions)
   alias(libs.plugins.buildconfig)
-  alias(libs.plugins.springboot2) apply false
 }
 
 tasks.withType<KotlinCompile>().configureEach {
@@ -20,6 +18,13 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 dependencies {
+  constraints {
+    testImplementation(libs.okhttp) { version { strictly(libs.versions.okhttp.get()) } }
+    testImplementation(libs.okhttp.mockwebserver) {
+      version { strictly(libs.versions.okhttp.get()) }
+    }
+  }
+
   api(projects.sentry)
   api(projects.sentrySpring)
   compileOnly(projects.sentryLogback)
@@ -33,14 +38,16 @@ dependencies {
   compileOnly(libs.springboot.starter.graphql)
   compileOnly(libs.springboot.starter.quartz)
   compileOnly(libs.springboot.starter.security)
-  compileOnly(platform(SpringBootPlugin.BOM_COORDINATES))
+  compileOnly(libs.spring.kafka2)
+  compileOnly(platform(libs.springboot2.bom))
   compileOnly(Config.Libs.springWeb)
   compileOnly(Config.Libs.springWebflux)
   compileOnly(projects.sentryOpentelemetry.sentryOpentelemetryCore)
   compileOnly(projects.sentryGraphql)
+  compileOnly(projects.sentryKafka)
   compileOnly(projects.sentryQuartz)
 
-  annotationProcessor(platform(SpringBootPlugin.BOM_COORDINATES))
+  annotationProcessor(platform(libs.springboot2.bom))
   annotationProcessor(Config.AnnotationProcessors.springBootAutoConfigure)
   annotationProcessor(Config.AnnotationProcessors.springBootConfiguration)
 
@@ -52,6 +59,7 @@ dependencies {
   testImplementation(projects.sentryLogback)
   testImplementation(projects.sentryQuartz)
   testImplementation(projects.sentryApacheHttpClient5)
+  testImplementation(projects.sentryKafka)
   testImplementation(projects.sentryTestSupport)
   testImplementation(kotlin(Config.kotlinStdLib))
   testImplementation(libs.kotlin.test.junit)
@@ -64,6 +72,7 @@ dependencies {
   testImplementation(libs.springboot.starter.aop)
   testImplementation(libs.springboot.starter.quartz)
   testImplementation(libs.springboot.starter.security)
+  testImplementation(libs.spring.kafka2)
   testImplementation(libs.springboot.starter.test)
   testImplementation(libs.springboot.starter.web)
   testImplementation(libs.springboot.starter.webflux)

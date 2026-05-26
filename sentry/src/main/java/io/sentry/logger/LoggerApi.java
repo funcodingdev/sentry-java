@@ -21,6 +21,7 @@ import io.sentry.protocol.User;
 import io.sentry.util.Platform;
 import io.sentry.util.TracingUtils;
 import java.util.HashMap;
+import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -131,7 +132,8 @@ public final class LoggerApi implements ILoggerApi {
           span == null ? propagationContext.getSpanId() : span.getSpanContext().getSpanId();
       final SentryLogEvent logEvent =
           new SentryLogEvent(traceId, timestampToUse, messageToUse, level);
-      logEvent.setAttributes(createAttributes(params, message, spanId, args));
+      logEvent.setSpanId(spanId);
+      logEvent.setAttributes(createAttributes(params, message, args));
       logEvent.setSeverityNumber(level.getSeverityNumber());
 
       scopes.getClient().captureLog(logEvent, combinedScope);
@@ -160,9 +162,16 @@ public final class LoggerApi implements ILoggerApi {
   private @NotNull HashMap<String, SentryLogEventAttributeValue> createAttributes(
       final @NotNull SentryLogParameters params,
       final @NotNull String message,
-      final @NotNull SpanId spanId,
       final @Nullable Object... args) {
     final @NotNull HashMap<String, SentryLogEventAttributeValue> attributes = new HashMap<>();
+
+    final @NotNull Map<String, SentryAttribute> scopeAttributes =
+        scopes.getCombinedScopeView().getAttributes();
+    for (SentryAttribute scopeAttribute : scopeAttributes.values()) {
+      attributes.put(
+          scopeAttribute.getName(), SentryLogEventAttributeValue.fromAttribute(scopeAttribute));
+    }
+
     final @NotNull String origin = params.getOrigin();
     if (!"manual".equalsIgnoreCase(origin)) {
       attributes.put(
@@ -173,17 +182,14 @@ public final class LoggerApi implements ILoggerApi {
 
     if (incomingAttributes != null) {
       for (SentryAttribute attribute : incomingAttributes.getAttributes().values()) {
-        final @Nullable Object value = attribute.getValue();
-        final @NotNull SentryAttributeType type =
-            attribute.getType() == null ? getType(value) : attribute.getType();
-        attributes.put(attribute.getName(), new SentryLogEventAttributeValue(type, value));
+        attributes.put(attribute.getName(), SentryLogEventAttributeValue.fromAttribute(attribute));
       }
     }
 
     if (args != null) {
       int i = 0;
       for (Object arg : args) {
-        final @NotNull SentryAttributeType type = getType(arg);
+        final @NotNull SentryAttributeType type = SentryAttributeType.inferFrom(arg);
         attributes.put(
             "sentry.message.parameter." + i, new SentryLogEventAttributeValue(type, arg));
         i++;
@@ -239,10 +245,6 @@ public final class LoggerApi implements ILoggerApi {
           "sentry.release", new SentryLogEventAttributeValue(SentryAttributeType.STRING, release));
     }
 
-    attributes.put(
-        "sentry.trace.parent_span_id",
-        new SentryLogEventAttributeValue(SentryAttributeType.STRING, spanId));
-
     if (Platform.isJvm()) {
       setServerName(attributes);
     }
@@ -295,18 +297,5 @@ public final class LoggerApi implements ILoggerApi {
             "user.email", new SentryLogEventAttributeValue(SentryAttributeType.STRING, email));
       }
     }
-  }
-
-  private @NotNull SentryAttributeType getType(final @Nullable Object arg) {
-    if (arg instanceof Boolean) {
-      return SentryAttributeType.BOOLEAN;
-    }
-    if (arg instanceof Integer) {
-      return SentryAttributeType.INTEGER;
-    }
-    if (arg instanceof Number) {
-      return SentryAttributeType.DOUBLE;
-    }
-    return SentryAttributeType.STRING;
   }
 }

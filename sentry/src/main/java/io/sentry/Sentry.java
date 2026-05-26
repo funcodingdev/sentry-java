@@ -14,6 +14,7 @@ import io.sentry.internal.modules.ManifestModulesLoader;
 import io.sentry.internal.modules.NoOpModulesLoader;
 import io.sentry.internal.modules.ResourcesModulesLoader;
 import io.sentry.logger.ILoggerApi;
+import io.sentry.metrics.IMetricsApi;
 import io.sentry.opentelemetry.OpenTelemetryUtil;
 import io.sentry.protocol.Feedback;
 import io.sentry.protocol.SentryId;
@@ -328,6 +329,8 @@ public final class Sentry {
                   "Sentry has been already initialized. Previous configuration will be overwritten.");
         }
 
+        options.activate();
+
         final IScopes scopes = getCurrentScopes();
         scopes.close(true);
 
@@ -436,7 +439,10 @@ public final class Sentry {
 
   private static void initScopesStorage(SentryOptions options) {
     getScopesStorage().close();
-    if (SentryOpenTelemetryMode.OFF == options.getOpenTelemetryMode()) {
+    if (options.getScopesStorageFactory() != null) {
+      scopesStorage = options.getScopesStorageFactory().create(options);
+      scopesStorage.init();
+    } else if (SentryOpenTelemetryMode.OFF == options.getOpenTelemetryMode()) {
       scopesStorage = new DefaultScopesStorage();
     } else {
       scopesStorage = ScopesStorageFactory.create(new LoadClass(), NoOpLogger.getInstance());
@@ -609,7 +615,7 @@ public final class Sentry {
     final String outboxPath = options.getOutboxPath();
     if (outboxPath != null) {
       final File outboxDir = new File(outboxPath);
-      options.getRuntimeManager().runWithRelaxedPolicy(() -> outboxDir.mkdirs());
+      outboxDir.mkdirs();
     } else {
       logger.log(SentryLevel.INFO, "No outbox dir path is defined in options.");
     }
@@ -617,7 +623,7 @@ public final class Sentry {
     final String cacheDirPath = options.getCacheDirPath();
     if (cacheDirPath != null) {
       final File cacheDir = new File(cacheDirPath);
-      options.getRuntimeManager().runWithRelaxedPolicy(() -> cacheDir.mkdirs());
+      cacheDir.mkdirs();
       final IEnvelopeCache envelopeCache = options.getEnvelopeDiskCache();
       // only overwrite the cache impl if it's not already set
       if (envelopeCache instanceof NoOpEnvelopeCache) {
@@ -630,7 +636,7 @@ public final class Sentry {
         && profilingTracesDirPath != null) {
 
       final File profilingTracesDir = new File(profilingTracesDirPath);
-      options.getRuntimeManager().runWithRelaxedPolicy(() -> profilingTracesDir.mkdirs());
+      profilingTracesDir.mkdirs();
 
       try {
         options
@@ -821,40 +827,37 @@ public final class Sentry {
   }
 
   /**
-   * Captures the feedback.
-   *
-   * @param feedback The feedback to send.
-   * @return The Id (SentryId object) of the event
+   * @deprecated Use {@link #feedback()}.{@link IFeedbackApi#capture(Feedback) capture(feedback)}
+   *     instead.
    */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
   public static @NotNull SentryId captureFeedback(final @NotNull Feedback feedback) {
-    return getCurrentScopes().captureFeedback(feedback);
+    return feedback().capture(feedback);
   }
 
   /**
-   * Captures the feedback.
-   *
-   * @param feedback The feedback to send.
-   * @param hint An optional hint to be applied to the event.
-   * @return The Id (SentryId object) of the event
+   * @deprecated Use {@link #feedback()}.{@link IFeedbackApi#capture(Feedback, Hint)
+   *     capture(feedback, hint)} instead.
    */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
   public static @NotNull SentryId captureFeedback(
       final @NotNull Feedback feedback, final @Nullable Hint hint) {
-    return getCurrentScopes().captureFeedback(feedback, hint);
+    return feedback().capture(feedback, hint);
   }
 
   /**
-   * Captures the feedback.
-   *
-   * @param feedback The feedback to send.
-   * @param hint An optional hint to be applied to the event.
-   * @param callback The callback to configure the scope for a single invocation.
-   * @return The Id (SentryId object) of the event
+   * @deprecated Use {@link #feedback()}.{@link IFeedbackApi#capture(Feedback, Hint, ScopeCallback)
+   *     capture(feedback, hint, callback)} instead.
    */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
   public static @NotNull SentryId captureFeedback(
       final @NotNull Feedback feedback,
       final @Nullable Hint hint,
       final @Nullable ScopeCallback callback) {
-    return getCurrentScopes().captureFeedback(feedback, hint, callback);
+    return feedback().capture(feedback, hint, callback);
   }
 
   /**
@@ -910,7 +913,11 @@ public final class Sentry {
    * Captures a manually created user feedback and sends it to Sentry.
    *
    * @param userFeedback The user feedback to send to Sentry.
+   * @deprecated Use {@link #feedback()}.{@link IFeedbackApi#capture(Feedback) capture(feedback)}
+   *     with the new {@link Feedback} type instead.
    */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
   public static void captureUserFeedback(final @NotNull UserFeedback userFeedback) {
     getCurrentScopes().captureUserFeedback(userFeedback);
   }
@@ -1344,20 +1351,83 @@ public final class Sentry {
     return getCurrentScopes().getScope().getOptions().getDistributionController();
   }
 
-  public static void showUserFeedbackDialog() {
-    showUserFeedbackDialog(null);
+  @NotNull
+  public static IMetricsApi metrics() {
+    return getCurrentScopes().metrics();
   }
 
+  @NotNull
+  public static IFeedbackApi feedback() {
+    return getCurrentScopes().feedback();
+  }
+
+  /**
+   * @deprecated Use {@link #feedback()}.{@link IFeedbackApi#show() show()} instead.
+   */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
+  public static void showUserFeedbackDialog() {
+    feedback().show();
+  }
+
+  /**
+   * @deprecated Use {@link #feedback()}.{@link
+   *     IFeedbackApi#show(SentryFeedbackOptions.OptionsConfigurator) show(configurator)} instead.
+   */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
   public static void showUserFeedbackDialog(
       final @Nullable SentryFeedbackOptions.OptionsConfigurator configurator) {
-    showUserFeedbackDialog(null, configurator);
+    feedback().show(configurator);
   }
 
+  /**
+   * @deprecated Use {@link #feedback()}.{@link IFeedbackApi#show(SentryId,
+   *     SentryFeedbackOptions.OptionsConfigurator) show(associatedEventId, configurator)} instead.
+   */
+  @Deprecated
+  @SuppressWarnings("InlineMeSuggester")
   public static void showUserFeedbackDialog(
       final @Nullable SentryId associatedEventId,
       final @Nullable SentryFeedbackOptions.OptionsConfigurator configurator) {
-    final @NotNull SentryOptions options = getCurrentScopes().getOptions();
-    options.getFeedbackOptions().getDialogHandler().showDialog(associatedEventId, configurator);
+    feedback().show(associatedEventId, configurator);
+  }
+
+  /**
+   * Sets an attribute on the scope.
+   *
+   * @param key the key
+   * @param value the value
+   */
+  public static void setAttribute(final @Nullable String key, final @Nullable Object value) {
+    getCurrentScopes().setAttribute(key, value);
+  }
+
+  /**
+   * Sets an attribute on the scope.
+   *
+   * @param attribute the attribute
+   */
+  public static void setAttribute(final @Nullable SentryAttribute attribute) {
+    getCurrentScopes().setAttribute(attribute);
+  }
+
+  /**
+   * Sets multiple attributes on the scope.
+   *
+   * @param attributes the attributes
+   */
+  public static void setAttributes(final @Nullable SentryAttributes attributes) {
+    getCurrentScopes().setAttributes(attributes);
+  }
+
+  /**
+   * Removes an attribute from the scope.
+   *
+   * @param key the key
+   */
+  public static void removeAttribute(final @Nullable String key) {
+    getCurrentScopes().removeAttribute(key);
   }
 
   public static void addFeatureFlag(final @Nullable String flag, final @Nullable Boolean result) {

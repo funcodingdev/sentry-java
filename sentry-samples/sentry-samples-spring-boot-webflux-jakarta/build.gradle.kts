@@ -18,6 +18,9 @@ java.targetCompatibility = JavaVersion.VERSION_17
 
 repositories { mavenCentral() }
 
+// Apollo 4.x requires coroutines 1.9.0+, override Spring Boot's managed version
+extra["kotlin-coroutines.version"] = "1.9.0"
+
 dependencies {
   implementation(Config.Libs.kotlinReflect)
   implementation(kotlin(Config.kotlinStdLib, KotlinCompilerVersion.VERSION))
@@ -25,10 +28,15 @@ dependencies {
   implementation(projects.sentryLogback)
   implementation(projects.sentryJdbc)
   implementation(projects.sentryGraphql22)
+  implementation(projects.sentryAsyncProfiler)
   implementation(libs.context.propagation)
   implementation(libs.springboot3.starter.actuator)
   implementation(libs.springboot3.starter.graphql)
   implementation(libs.springboot3.starter.webflux)
+
+  // cache tracing
+  implementation(libs.springboot3.starter.cache)
+  implementation(libs.caffeine)
 
   testImplementation(kotlin(Config.kotlinStdLib))
   testImplementation(projects.sentrySystemTestSupport)
@@ -54,6 +62,10 @@ tasks.withType<KotlinCompile>().configureEach {
 tasks.register<Test>("systemTest").configure {
   group = "verification"
   description = "Runs the System tests"
+
+  val test = project.extensions.getByType<SourceSetContainer>()["test"]
+  testClassesDirs = test.output.classesDirs
+  classpath = test.runtimeClasspath
 
   outputs.upToDateWhen { false }
 

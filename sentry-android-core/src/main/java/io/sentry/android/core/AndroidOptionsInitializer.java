@@ -5,6 +5,7 @@ import static io.sentry.android.core.NdkIntegration.SENTRY_NDK_CLASS_NAME;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.os.Build;
 import io.sentry.CompositePerformanceCollector;
 import io.sentry.DeduplicateMultithreadedEventProcessor;
 import io.sentry.DefaultCompositePerformanceCollector;
@@ -25,13 +26,14 @@ import io.sentry.SendFireAndForgetEnvelopeSender;
 import io.sentry.SendFireAndForgetOutboxSender;
 import io.sentry.SentryLevel;
 import io.sentry.SentryOpenTelemetryMode;
+import io.sentry.android.core.anr.AnrProfileRotationHelper;
+import io.sentry.android.core.anr.AnrProfilingIntegration;
 import io.sentry.android.core.cache.AndroidEnvelopeCache;
 import io.sentry.android.core.internal.debugmeta.AssetsDebugMetaLoader;
 import io.sentry.android.core.internal.gestures.AndroidViewGestureTargetLocator;
 import io.sentry.android.core.internal.modules.AssetsModulesLoader;
 import io.sentry.android.core.internal.util.AndroidConnectionStatusProvider;
 import io.sentry.android.core.internal.util.AndroidCurrentDateProvider;
-import io.sentry.android.core.internal.util.AndroidRuntimeManager;
 import io.sentry.android.core.internal.util.AndroidThreadChecker;
 import io.sentry.android.core.internal.util.SentryFrameMetricsCollector;
 import io.sentry.android.core.performance.AppStartMetrics;
@@ -122,8 +124,8 @@ final class AndroidOptionsInitializer {
     options.setDefaultScopeType(ScopeType.CURRENT);
     options.setOpenTelemetryMode(SentryOpenTelemetryMode.OFF);
     options.setDateProvider(new SentryAndroidDateProvider());
-    options.setRuntimeManager(new AndroidRuntimeManager());
     options.getLogs().setLoggerBatchProcessorFactory(new AndroidLoggerBatchProcessorFactory());
+    options.getMetrics().setMetricsBatchProcessorFactory(new AndroidMetricsBatchProcessorFactory());
 
     // set a lower flush timeout on Android to avoid ANRs
     options.setFlushTimeoutMillis(DEFAULT_FLUSH_TIMEOUT_MS);
@@ -133,13 +135,13 @@ final class AndroidOptionsInitializer {
 
     ManifestMetadataReader.applyMetadata(finalContext, options, buildInfoProvider);
 
-    options.setCacheDirPath(
-        options
-            .getRuntimeManager()
-            .runWithRelaxedPolicy(() -> getCacheDir(finalContext).getAbsolutePath()));
+    options.setCacheDirPath(getCacheDir(finalContext).getAbsolutePath());
+
+    AnrProfileRotationHelper.rotate();
 
     readDefaultOptionValues(options, finalContext, buildInfoProvider);
     AppState.getInstance().registerLifecycleObserver(options);
+    options.activate();
   }
 
   @TestOnly
@@ -186,9 +188,11 @@ final class AndroidOptionsInitializer {
     options.addEventProcessor(
         new DefaultAndroidEventProcessor(context, buildInfoProvider, options));
     options.addEventProcessor(new PerformanceAndroidEventProcessor(options, activityFramesTracker));
-    options.addEventProcessor(new ScreenshotEventProcessor(options, buildInfoProvider));
+    options.addEventProcessor(
+        new ScreenshotEventProcessor(options, buildInfoProvider, isReplayAvailable));
     options.addEventProcessor(new ViewHierarchyEventProcessor(options));
-    options.addEventProcessor(new AnrV2EventProcessor(context, options, buildInfoProvider));
+    options.addEventProcessor(
+        new ApplicationExitInfoEventProcessor(context, options, buildInfoProvider));
     if (options.getTransportGate() instanceof NoOpTransportGate) {
       options.setTransportGate(new AndroidTransportGate(options));
     }
@@ -196,7 +200,7 @@ final class AndroidOptionsInitializer {
     final @NotNull AppStartMetrics appStartMetrics = AppStartMetrics.getInstance();
 
     if (options.getModulesLoader() instanceof NoOpModulesLoader) {
-      options.setModulesLoader(new AssetsModulesLoader(context, options.getLogger()));
+      options.setModulesLoader(new AssetsModulesLoader(context, options));
     }
     if (options.getDebugMetaLoader() instanceof NoOpDebugMetaLoader) {
       options.setDebugMetaLoader(new AssetsDebugMetaLoader(context, options.getLogger()));
@@ -241,6 +245,7 @@ final class AndroidOptionsInitializer {
     if (options.getSocketTagger() instanceof NoOpSocketTagger) {
       options.setSocketTagger(AndroidSocketTagger.getInstance());
     }
+
     if (options.getPerformanceCollectors().isEmpty()) {
       options.addPerformanceCollector(new AndroidMemoryCollector());
       options.addPerformanceCollector(new AndroidCpuCollector(options.getLogger()));
@@ -339,7 +344,7 @@ final class AndroidOptionsInitializer {
                 options.getLogger(),
                 options.getProfilingTracesDirPath(),
                 options.getProfilingTracesHz(),
-                options.getExecutorService()));
+                () -> options.getExecutorService()));
       }
     }
   }
@@ -373,6 +378,10 @@ final class AndroidOptionsInitializer {
     final Class<?> sentryNdkClass = loadClass.loadClass(SENTRY_NDK_CLASS_NAME, options.getLogger());
     options.addIntegration(new NdkIntegration(sentryNdkClass));
 
+    if (buildInfoProvider.getSdkInfoVersion() >= Build.VERSION_CODES.S) {
+      options.addIntegration(new TombstoneIntegration(context));
+    }
+
     // this integration uses android.os.FileObserver, we can't move to sentry
     // before creating a pure java impl.
     options.addIntegration(EnvelopeFileObserverIntegration.getOutboxFileObserver());
@@ -392,6 +401,8 @@ final class AndroidOptionsInitializer {
     // it to set the replayId in case of an ANR
     options.addIntegration(AnrIntegrationFactory.create(context, buildInfoProvider));
 
+    options.addIntegration(new AnrProfilingIntegration());
+
     // registerActivityLifecycleCallbacks is only available if Context is an AppContext
     if (context instanceof Application) {
       options.addIntegration(
@@ -399,6 +410,7 @@ final class AndroidOptionsInitializer {
               (Application) context, buildInfoProvider, activityFramesTracker));
       options.addIntegration(new ActivityBreadcrumbsIntegration((Application) context));
       options.addIntegration(new UserInteractionIntegration((Application) context, loadClass));
+      options.addIntegration(new FeedbackShakeIntegration((Application) context));
       if (isFragmentAvailable) {
         options.addIntegration(new FragmentLifecycleIntegration((Application) context, true, true));
       }
@@ -429,7 +441,7 @@ final class AndroidOptionsInitializer {
     }
     options
         .getFeedbackOptions()
-        .setDialogHandler(new SentryAndroidOptions.AndroidUserFeedbackIDialogHandler());
+        .setFormHandler(new SentryAndroidOptions.AndroidUserFeedbackFormHandler());
   }
 
   /**
@@ -461,8 +473,7 @@ final class AndroidOptionsInitializer {
 
     if (options.getDistinctId() == null) {
       try {
-        options.setDistinctId(
-            options.getRuntimeManager().runWithRelaxedPolicy(() -> Installation.id(context)));
+        options.setDistinctId(Installation.id(context));
       } catch (RuntimeException e) {
         options.getLogger().log(SentryLevel.ERROR, "Could not generate distinct Id.", e);
       }

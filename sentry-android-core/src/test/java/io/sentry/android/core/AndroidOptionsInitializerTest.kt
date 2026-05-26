@@ -18,13 +18,12 @@ import io.sentry.MainEventProcessor
 import io.sentry.NoOpContinuousProfiler
 import io.sentry.NoOpTransactionProfiler
 import io.sentry.SentryOptions
-import io.sentry.android.core.SentryAndroidOptions.AndroidUserFeedbackIDialogHandler
+import io.sentry.android.core.SentryAndroidOptions.AndroidUserFeedbackFormHandler
 import io.sentry.android.core.cache.AndroidEnvelopeCache
 import io.sentry.android.core.internal.debugmeta.AssetsDebugMetaLoader
 import io.sentry.android.core.internal.gestures.AndroidViewGestureTargetLocator
 import io.sentry.android.core.internal.modules.AssetsModulesLoader
 import io.sentry.android.core.internal.util.AndroidConnectionStatusProvider
-import io.sentry.android.core.internal.util.AndroidRuntimeManager
 import io.sentry.android.core.internal.util.AndroidThreadChecker
 import io.sentry.android.core.performance.AppStartMetrics
 import io.sentry.android.fragment.FragmentLifecycleIntegration
@@ -259,9 +258,10 @@ class AndroidOptionsInitializerTest {
   }
 
   @Test
-  fun `AnrV2EventProcessor added to processors list`() {
+  fun `ApplicationExitInfoProcessor added to processors list`() {
     fixture.initSut()
-    val actual = fixture.sentryOptions.eventProcessors.firstOrNull { it is AnrV2EventProcessor }
+    val actual =
+      fixture.sentryOptions.eventProcessors.firstOrNull { it is ApplicationExitInfoEventProcessor }
     assertNotNull(actual)
   }
 
@@ -882,9 +882,9 @@ class AndroidOptionsInitializerTest {
   }
 
   @Test
-  fun `AndroidUserFeedbackIDialogHandler is set as feedback dialog handler`() {
+  fun `AndroidUserFeedbackFormHandler is set as feedback form handler`() {
     fixture.initSut()
-    assertIs<AndroidUserFeedbackIDialogHandler>(fixture.sentryOptions.feedbackOptions.dialogHandler)
+    assertIs<AndroidUserFeedbackFormHandler>(fixture.sentryOptions.feedbackOptions.formHandler)
   }
 
   @Test
@@ -928,11 +928,5 @@ class AndroidOptionsInitializerTest {
     assertFalse {
       fixture.sentryOptions.compositePerformanceCollector is DefaultCompositePerformanceCollector
     }
-  }
-
-  @Test
-  fun `AndroidRuntimeManager is set in the options`() {
-    fixture.initSut()
-    assertIs<AndroidRuntimeManager>(fixture.sentryOptions.runtimeManager)
   }
 }

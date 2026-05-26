@@ -2,7 +2,7 @@
 import java.math.BigDecimal
 
 object Config {
-    val AGP = System.getenv("VERSION_AGP") ?: "8.6.0"
+    val AGP = System.getenv("VERSION_AGP") ?: "8.13.1"
     val kotlinStdLib = "stdlib-jdk8"
     val kotlinStdLibVersionAndroid = "1.9.24"
     val kotlinTestJunit = "test-junit"
@@ -64,6 +64,8 @@ object Config {
         val SENTRY_SPRING_BOOT_4_STARTER_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.spring-boot-4-starter"
         val SENTRY_OPENTELEMETRY_BOOTSTRAP_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.opentelemetry.bootstrap"
         val SENTRY_OPENTELEMETRY_CORE_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.opentelemetry.core"
+        val SENTRY_OPENTELEMETRY_OTLP_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.opentelemetry.otlp"
+        val SENTRY_OPENTELEMETRY_OTLP_SPRING_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.opentelemetry.otlp-spring"
         val SENTRY_OPENTELEMETRY_AGENT_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.opentelemetry.agent"
         val SENTRY_OPENTELEMETRY_AGENTLESS_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.opentelemetry.agentless"
         val SENTRY_OPENTELEMETRY_AGENTLESS_SPRING_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.opentelemetry.agentless-spring"
@@ -75,8 +77,10 @@ object Config {
         val SENTRY_GRAPHQL_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.graphql"
         val SENTRY_GRAPHQL_CORE_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.graphql-core"
         val SENTRY_GRAPHQL22_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.graphql22"
+        val SENTRY_JCACHE_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.jcache"
         val SENTRY_QUARTZ_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.quartz"
         val SENTRY_JDBC_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.jdbc"
+        val SENTRY_KAFKA_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.kafka"
         val SENTRY_OPENFEATURE_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.openfeature"
         val SENTRY_LAUNCHDARKLY_SERVER_SDK_NAME = "$SENTRY_JAVA_SDK_NAME.launchdarkly-server"
         val SENTRY_LAUNCHDARKLY_ANDROID_SDK_NAME = "$SENTRY_ANDROID_SDK_NAME.launchdarkly"

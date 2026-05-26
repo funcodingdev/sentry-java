@@ -39,6 +39,7 @@ dependencies {
   implementation(kotlin(Config.kotlinStdLib, KotlinCompilerVersion.VERSION))
   implementation(projects.sentrySpring7)
   implementation(projects.sentryLogback)
+  implementation(projects.sentryAsyncProfiler)
   implementation(libs.jackson.databind)
   implementation(libs.logback.classic)
   implementation(libs.servlet.jakarta.api)
@@ -71,6 +72,10 @@ configure<SourceSetContainer> { test { java.srcDir("src/test/java") } }
 tasks.register<Test>("systemTest").configure {
   group = "verification"
   description = "Runs the System tests"
+
+  val test = project.extensions.getByType<SourceSetContainer>()["test"]
+  testClassesDirs = test.output.classesDirs
+  classpath = test.runtimeClasspath
 
   outputs.upToDateWhen { false }
 

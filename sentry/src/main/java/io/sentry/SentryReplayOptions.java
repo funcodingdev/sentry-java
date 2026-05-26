@@ -1,5 +1,7 @@
 package io.sentry;
 
+import static io.sentry.util.IntegrationUtils.addIntegrationToSdkVersion;
+
 import io.sentry.protocol.SdkVersion;
 import io.sentry.util.SampleRateUtils;
 import java.util.ArrayList;
@@ -9,21 +11,33 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class SentryReplayOptions {
+public final class SentryReplayOptions extends SentryMaskingOptions {
 
-  public static final String TEXT_VIEW_CLASS_NAME = "android.widget.TextView";
-  public static final String IMAGE_VIEW_CLASS_NAME = "android.widget.ImageView";
-  public static final String WEB_VIEW_CLASS_NAME = "android.webkit.WebView";
-  public static final String VIDEO_VIEW_CLASS_NAME = "android.widget.VideoView";
-  public static final String ANDROIDX_MEDIA_VIEW_CLASS_NAME = "androidx.media3.ui.PlayerView";
-  public static final String EXOPLAYER_CLASS_NAME = "com.google.android.exoplayer2.ui.PlayerView";
-  public static final String EXOPLAYER_STYLED_CLASS_NAME =
-      "com.google.android.exoplayer2.ui.StyledPlayerView";
+  /**
+   * Callback that is called before the error sample rate is checked for session replay. If the
+   * callback returns {@code false}, the replay will not be captured for this error event, and the
+   * {@code onErrorSampleRate} will not be checked. If the callback returns {@code true}, the {@code
+   * onErrorSampleRate} will be checked as usual. This allows developers to filter which errors
+   * trigger replay capture.
+   */
+  public interface BeforeErrorSamplingCallback {
+    /**
+     * Determines whether replay capture should proceed for the given error event.
+     *
+     * @param event the error event that triggered the replay capture
+     * @param hint the hint associated with the event
+     * @return {@code true} if the error sample rate should be checked, {@code false} to skip replay
+     *     capture entirely
+     */
+    boolean execute(@NotNull SentryEvent event, @NotNull Hint hint);
+  }
+
+  private static final String CUSTOM_MASKING_INTEGRATION_NAME = "ReplayCustomMasking";
+  private volatile boolean customMaskingTracked = false;
 
   /**
    * Maximum size in bytes for network request/response bodies to be captured in replays. Bodies
@@ -81,36 +95,6 @@ public final class SentryReplayOptions {
   private @Nullable Double onErrorSampleRate;
 
   /**
-   * Mask all views with the specified class names. The class name is the fully qualified class name
-   * of the view, e.g. android.widget.TextView. The subclasses of the specified classes will be
-   * masked as well.
-   *
-   * <p>If you're using an obfuscation tool, make sure to add the respective proguard rules to keep
-   * the class names.
-   *
-   * <p>Default is empty.
-   */
-  private Set<String> maskViewClasses = new CopyOnWriteArraySet<>();
-
-  /**
-   * Ignore all views with the specified class names from masking. The class name is the fully
-   * qualified class name of the view, e.g. android.widget.TextView. The subclasses of the specified
-   * classes will be ignored as well.
-   *
-   * <p>If you're using an obfuscation tool, make sure to add the respective proguard rules to keep
-   * the class names.
-   *
-   * <p>Default is empty.
-   */
-  private Set<String> unmaskViewClasses = new CopyOnWriteArraySet<>();
-
-  /** The class name of the view container that masks all of its children. */
-  private @Nullable String maskViewContainerClass = null;
-
-  /** The class name of the view container that unmasks its direct children. */
-  private @Nullable String unmaskViewContainerClass = null;
-
-  /**
    * Defines the quality of the session replay. The higher the quality, the more accurate the replay
    * will be, but also more data to transfer and more CPU load, defaults to MEDIUM.
    */
@@ -163,6 +147,20 @@ public final class SentryReplayOptions {
   private @NotNull ScreenshotStrategyType screenshotStrategy = ScreenshotStrategyType.PIXEL_COPY;
 
   /**
+   * Whether to capture SurfaceView content (e.g. Unity, video players, maps) during replay
+   * recording. When enabled, each SurfaceView in the view hierarchy will be captured separately via
+   * PixelCopy and composited onto the screenshot. Only applies when {@link #screenshotStrategy} is
+   * {@link ScreenshotStrategyType#PIXEL_COPY}. Default is disabled.
+   *
+   * <p><b>Warning:</b> the SDK cannot mask individual elements rendered inside a SurfaceView (e.g.
+   * native Unity UI, map labels, video frames) — masking granularity is at the SurfaceView level
+   * only. If the SurfaceView is configured to be masked, the entire region is redacted; otherwise
+   * its full pixel content is sent in the replay. Only enable this for SurfaceViews whose content
+   * is safe to record.
+   */
+  @ApiStatus.Experimental private boolean captureSurfaceViews = false;
+
+  /**
    * Capture request and response details for XHR and fetch requests that match the given URLs.
    * Default is empty (network details not collected).
    */
@@ -207,12 +205,20 @@ public final class SentryReplayOptions {
    */
   private @NotNull List<String> networkResponseHeaders = DEFAULT_HEADERS;
 
+  /**
+   * A callback that is called before the error sample rate is checked for session replay. Can be
+   * used to filter which errors trigger replay capture.
+   */
+  private @Nullable BeforeErrorSamplingCallback beforeErrorSampling;
+
   public SentryReplayOptions(final boolean empty, final @Nullable SdkVersion sdkVersion) {
     if (!empty) {
-      setMaskAllText(true);
-      setMaskAllImages(true);
+      // Add default mask classes directly without setting usingCustomMasking flag
+      maskViewClasses.add(TEXT_VIEW_CLASS_NAME);
+      maskViewClasses.add(IMAGE_VIEW_CLASS_NAME);
       maskViewClasses.add(WEB_VIEW_CLASS_NAME);
       maskViewClasses.add(VIDEO_VIEW_CLASS_NAME);
+      maskViewClasses.add(CAMERAX_PREVIEW_VIEW_CLASS_NAME);
       maskViewClasses.add(ANDROIDX_MEDIA_VIEW_CLASS_NAME);
       maskViewClasses.add(EXOPLAYER_CLASS_NAME);
       maskViewClasses.add(EXOPLAYER_STYLED_CLASS_NAME);
@@ -268,56 +274,32 @@ public final class SentryReplayOptions {
     this.sessionSampleRate = sessionSampleRate;
   }
 
-  /**
-   * Mask all text content. Draws a rectangle of text bounds with text color on top. By default only
-   * views extending TextView are masked.
-   *
-   * <p>Default is enabled.
-   */
+  @Override
   public void setMaskAllText(final boolean maskAllText) {
-    if (maskAllText) {
-      addMaskViewClass(TEXT_VIEW_CLASS_NAME);
-      unmaskViewClasses.remove(TEXT_VIEW_CLASS_NAME);
-    } else {
-      addUnmaskViewClass(TEXT_VIEW_CLASS_NAME);
-      maskViewClasses.remove(TEXT_VIEW_CLASS_NAME);
+    if (!maskAllText) {
+      trackCustomMasking();
     }
+    super.setMaskAllText(maskAllText);
   }
 
-  /**
-   * Mask all image content. Draws a rectangle of image bounds with image's dominant color on top.
-   * By default only views extending ImageView with BitmapDrawable or custom Drawable type are
-   * masked. ColorDrawable, InsetDrawable, VectorDrawable are all considered non-PII, as they come
-   * from the apk.
-   *
-   * <p>Default is enabled.
-   */
+  @Override
   public void setMaskAllImages(final boolean maskAllImages) {
-    if (maskAllImages) {
-      addMaskViewClass(IMAGE_VIEW_CLASS_NAME);
-      unmaskViewClasses.remove(IMAGE_VIEW_CLASS_NAME);
-    } else {
-      addUnmaskViewClass(IMAGE_VIEW_CLASS_NAME);
-      maskViewClasses.remove(IMAGE_VIEW_CLASS_NAME);
+    if (!maskAllImages) {
+      trackCustomMasking();
     }
+    super.setMaskAllImages(maskAllImages);
   }
 
-  @NotNull
-  public Set<String> getMaskViewClasses() {
-    return this.maskViewClasses;
-  }
-
+  @Override
   public void addMaskViewClass(final @NotNull String className) {
-    this.maskViewClasses.add(className);
+    trackCustomMasking();
+    super.addMaskViewClass(className);
   }
 
-  @NotNull
-  public Set<String> getUnmaskViewClasses() {
-    return this.unmaskViewClasses;
-  }
-
+  @Override
   public void addUnmaskViewClass(final @NotNull String className) {
-    this.unmaskViewClasses.add(className);
+    trackCustomMasking();
+    super.addUnmaskViewClass(className);
   }
 
   @ApiStatus.Internal
@@ -349,25 +331,12 @@ public final class SentryReplayOptions {
     return sessionDuration;
   }
 
-  @ApiStatus.Internal
-  public void setMaskViewContainerClass(@NotNull String containerClass) {
-    addMaskViewClass(containerClass);
-    maskViewContainerClass = containerClass;
-  }
-
-  @ApiStatus.Internal
-  public void setUnmaskViewContainerClass(@NotNull String containerClass) {
-    unmaskViewContainerClass = containerClass;
-  }
-
-  @ApiStatus.Internal
-  public @Nullable String getMaskViewContainerClass() {
-    return maskViewContainerClass;
-  }
-
-  @ApiStatus.Internal
-  public @Nullable String getUnmaskViewContainerClass() {
-    return unmaskViewContainerClass;
+  @Override
+  public void trackCustomMasking() {
+    if (!customMaskingTracked) {
+      customMaskingTracked = true;
+      addIntegrationToSdkVersion(CUSTOM_MASKING_INTEGRATION_NAME);
+    }
   }
 
   @ApiStatus.Internal
@@ -426,6 +395,26 @@ public final class SentryReplayOptions {
   @ApiStatus.Experimental
   public void setScreenshotStrategy(final @NotNull ScreenshotStrategyType screenshotStrategy) {
     this.screenshotStrategy = screenshotStrategy;
+  }
+
+  /**
+   * Whether SurfaceView capture is enabled. See {@link #captureSurfaceViews}.
+   *
+   * @return true if SurfaceView capture is enabled
+   */
+  @ApiStatus.Experimental
+  public boolean isCaptureSurfaceViews() {
+    return captureSurfaceViews;
+  }
+
+  /**
+   * Enables or disables SurfaceView capture. See {@link #captureSurfaceViews}.
+   *
+   * @param captureSurfaceViews true to enable SurfaceView capture
+   */
+  @ApiStatus.Experimental
+  public void setCaptureSurfaceViews(final boolean captureSurfaceViews) {
+    this.captureSurfaceViews = captureSurfaceViews;
   }
 
   /**
@@ -538,5 +527,27 @@ public final class SentryReplayOptions {
     merged.addAll(defaultHeaders);
     merged.addAll(additionalHeaders);
     return Collections.unmodifiableList(new ArrayList<>(merged));
+  }
+
+  /**
+   * Gets the callback that is called before the error sample rate is checked for session replay.
+   *
+   * @return the callback, or {@code null} if not set
+   */
+  public @Nullable BeforeErrorSamplingCallback getBeforeErrorSampling() {
+    return beforeErrorSampling;
+  }
+
+  /**
+   * Sets the callback that is called before the error sample rate is checked for session replay.
+   * Returning {@code false} from the callback will skip replay capture for the error event entirely
+   * (the {@code onErrorSampleRate} will not be checked). Returning {@code true} will proceed with
+   * the normal error sample rate check.
+   *
+   * @param beforeErrorSampling the callback, or {@code null} to disable filtering
+   */
+  public void setBeforeErrorSampling(
+      final @Nullable BeforeErrorSamplingCallback beforeErrorSampling) {
+    this.beforeErrorSampling = beforeErrorSampling;
   }
 }

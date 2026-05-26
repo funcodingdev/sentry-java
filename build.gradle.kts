@@ -77,6 +77,7 @@ apiValidation {
             "sentry-samples-spring-boot-4",
             "sentry-samples-spring-boot-4-opentelemetry",
             "sentry-samples-spring-boot-4-opentelemetry-noagent",
+            "sentry-samples-spring-boot-4-otlp",
             "sentry-samples-spring-boot-4-webflux",
             "sentry-samples-ktor-client",
             "sentry-uitest-android",
@@ -85,7 +86,10 @@ apiValidation {
             "test-app-plain",
             "test-app-sentry",
             "test-app-size",
-            "sentry-samples-netflix-dgs"
+            "sentry-samples-netflix-dgs",
+            "sentry-samples-console-otlp",
+            "sentry-test-support",
+            "sentry-system-test-support"
         )
     )
 }
@@ -210,9 +214,9 @@ subprojects {
             }
         }
 
-        afterEvaluate {
-            apply<MavenPublishPlugin>()
+        apply<MavenPublishPlugin>()
 
+        afterEvaluate {
             configure<MavenPublishBaseExtension> {
                 assignAarTypes()
             }
@@ -247,9 +251,13 @@ tasks.register("buildForCodeQL") {
         }
         .forEach { proj ->
             if (proj.plugins.hasPlugin("com.android.library")) {
-                this.dependsOn(proj.tasks.findByName("compileReleaseUnitTestSources"))
+                proj.tasks.findByName("compileReleaseUnitTestSources")?.let { testTask ->
+                    this.dependsOn(testTask)
+                }
             } else {
-                this.dependsOn(proj.tasks.findByName("testClasses"))
+                proj.tasks.findByName("testClasses")?.let { testTask ->
+                    this.dependsOn(testTask)
+                }
             }
         }
 }

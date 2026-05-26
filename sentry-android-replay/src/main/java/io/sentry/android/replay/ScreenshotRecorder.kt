@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.roundToInt
 
-@SuppressLint("UseKtx")
+@SuppressLint("UseKtx", "UseRequiresApi")
 @TargetApi(26)
 internal class ScreenshotRecorder(
   val config: ScreenshotRecorderConfig,
@@ -47,6 +47,7 @@ internal class ScreenshotRecorder(
           options,
           config,
           debugOverlayDrawable,
+          markContentChanged = { contentChanged.set(true) },
         )
     }
 

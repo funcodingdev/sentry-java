@@ -188,6 +188,31 @@ class ManifestMetadataReaderTest {
   }
 
   @Test
+  fun `applyMetadata reads dist to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.DIST to "test-dist")
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals("test-dist", fixture.options.dist)
+  }
+
+  @Test
+  fun `applyMetadata reads dist and keep default value if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertNull(fixture.options.dist)
+  }
+
+  @Test
   fun `applyMetadata reads session tracking interval to options`() {
     // Arrange
 
@@ -261,6 +286,56 @@ class ManifestMetadataReaderTest {
 
     // Assert
     assertEquals(false, fixture.options.isAttachAnrThreadDump)
+  }
+
+  @Test
+  fun `applyMetadata reads tombstone attach raw to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.TOMBSTONE_ATTACH_RAW to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals(true, fixture.options.isAttachRawTombstone)
+  }
+
+  @Test
+  fun `applyMetadata reads tombstone attach raw to options and keeps default`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals(false, fixture.options.isAttachRawTombstone)
+  }
+
+  @Test
+  fun `applyMetadata reads anr report historical to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.ANR_REPORT_HISTORICAL to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals(true, fixture.options.isReportHistoricalAnrs)
+  }
+
+  @Test
+  fun `applyMetadata reads anr report historical to options and keeps default`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals(false, fixture.options.isReportHistoricalAnrs)
   }
 
   @Test
@@ -644,6 +719,32 @@ class ManifestMetadataReaderTest {
 
     // Assert
     assertTrue(fixture.options.isEnableScopeSync)
+  }
+
+  @Test
+  fun `applyMetadata reads nativeSdkName to options`() {
+    // Arrange
+    val expectedValue = "sentry.native.android.unity"
+    val bundle = bundleOf(ManifestMetadataReader.NDK_SDK_NAME to expectedValue)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals(expectedValue, fixture.options.nativeSdkName)
+  }
+
+  @Test
+  fun `applyMetadata reads nativeSdkName and keeps default`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertNull(fixture.options.nativeSdkName)
   }
 
   @Test
@@ -1156,6 +1257,31 @@ class ManifestMetadataReaderTest {
 
     // Assert
     assertTrue(fixture.options.isCollectAdditionalContext)
+  }
+
+  @Test
+  fun `applyMetadata reads collect external storage to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.COLLECT_EXTERNAL_STORAGE_CONTEXT to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.isCollectExternalStorageContext)
+  }
+
+  @Test
+  fun `applyMetadata reads collect external storage and keep default value if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertFalse(fixture.options.isCollectExternalStorageContext)
   }
 
   @Test
@@ -1687,6 +1813,44 @@ class ManifestMetadataReaderTest {
   }
 
   @Test
+  fun `applyMetadata reads metrics enabled and keep default value if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.metrics.isEnabled)
+  }
+
+  @Test
+  fun `applyMetadata reads metrics enabled to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.ENABLE_METRICS to false)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertFalse(fixture.options.metrics.isEnabled)
+  }
+
+  @Test
+  fun `applyMetadata reads metrics enabled to options when set to true`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.ENABLE_METRICS to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.metrics.isEnabled)
+  }
+
+  @Test
   fun `applyMetadata reads feedback name required and keep default value if not found`() {
     // Arrange
     val context = fixture.getContext()
@@ -1837,6 +2001,31 @@ class ManifestMetadataReaderTest {
   }
 
   @Test
+  fun `applyMetadata reads feedback use shake gesture and keep default value if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertFalse(fixture.options.feedbackOptions.isUseShakeGesture)
+  }
+
+  @Test
+  fun `applyMetadata reads feedback use shake gesture to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.FEEDBACK_USE_SHAKE_GESTURE to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.feedbackOptions.isUseShakeGesture)
+  }
+
+  @Test
   fun `applyMetadata reads screenshot strategy canvas to options`() {
     // Arrange
     val bundle = bundleOf(ManifestMetadataReader.REPLAYS_SCREENSHOT_STRATEGY to "canvas")
@@ -1881,6 +2070,81 @@ class ManifestMetadataReaderTest {
       io.sentry.ScreenshotStrategyType.PIXEL_COPY,
       fixture.options.sessionReplay.screenshotStrategy,
     )
+  }
+
+  @Test
+  fun `applyMetadata reads capture-surface-views to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.REPLAYS_CAPTURE_SURFACE_VIEWS to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.sessionReplay.isCaptureSurfaceViews)
+  }
+
+  @Test
+  fun `applyMetadata reads capture-surface-views and keeps default if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertFalse(fixture.options.sessionReplay.isCaptureSurfaceViews)
+  }
+
+  @Test
+  fun `applyMetadata reads anrProfilingSampleRate to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.ANR_PROFILING_SAMPLE_RATE to 0.5f)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals(0.5, fixture.options.anrProfilingSampleRate!!, 0.01)
+  }
+
+  @Test
+  fun `applyMetadata keeps anrProfilingSampleRate default when not set in manifest`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertNull(fixture.options.anrProfilingSampleRate)
+  }
+
+  @Test
+  fun `applyMetadata reads enableAnrFingerprinting to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.ENABLE_ANR_FINGERPRINTING to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.isEnableAnrFingerprinting)
+  }
+
+  @Test
+  fun `applyMetadata keeps enableAnrFingerprinting default when not set in manifest`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.isEnableAnrFingerprinting)
   }
 
   // Network Detail Configuration Tests
@@ -2127,5 +2391,199 @@ class ManifestMetadataReaderTest {
     val headers = fixture.options.sessionReplay.networkRequestHeaders
     assertTrue(headers.contains("Authorization"))
     assertTrue(headers.contains("X-Custom-Header"))
+  }
+
+  // Spotlight Configuration Tests
+
+  @Test
+  fun `applyMetadata reads spotlight enabled and keeps default value if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertFalse(fixture.options.isEnableSpotlight)
+  }
+
+  @Test
+  fun `applyMetadata reads spotlight enabled to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.SPOTLIGHT_ENABLE to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.isEnableSpotlight)
+  }
+
+  @Test
+  fun `applyMetadata reads spotlight url and keeps null if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertNull(fixture.options.spotlightConnectionUrl)
+  }
+
+  @Test
+  fun `applyMetadata reads spotlight url to options`() {
+    // Arrange
+    val expectedUrl = "http://10.0.2.2:8969/stream"
+    val bundle = bundleOf(ManifestMetadataReader.SPOTLIGHT_CONNECTION_URL to expectedUrl)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals(expectedUrl, fixture.options.spotlightConnectionUrl)
+  }
+
+  @Test
+  fun `applyMetadata reads both spotlight enabled and url to options`() {
+    // Arrange
+    val expectedUrl = "http://localhost:8969/stream"
+    val bundle =
+      bundleOf(
+        ManifestMetadataReader.SPOTLIGHT_ENABLE to true,
+        ManifestMetadataReader.SPOTLIGHT_CONNECTION_URL to expectedUrl,
+      )
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.isEnableSpotlight)
+    assertEquals(expectedUrl, fixture.options.spotlightConnectionUrl)
+  }
+
+  // Screenshot masking tests
+
+  @Test
+  fun `applyMetadata reads screenshot mask-all-text to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.SCREENSHOT_MASK_ALL_TEXT to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.screenshot.maskViewClasses.contains("android.widget.TextView"))
+  }
+
+  @Test
+  fun `applyMetadata reads screenshot mask-all-images to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.SCREENSHOT_MASK_ALL_IMAGES to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.screenshot.maskViewClasses.contains("android.widget.ImageView"))
+  }
+
+  @Test
+  fun `applyMetadata without specifying screenshot mask-all-text, stays false`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertFalse(fixture.options.screenshot.maskViewClasses.contains("android.widget.TextView"))
+  }
+
+  @Test
+  fun `applyMetadata without specifying screenshot mask-all-images, stays false`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertFalse(fixture.options.screenshot.maskViewClasses.contains("android.widget.ImageView"))
+  }
+
+  @Test
+  fun `applyMetadata reads both screenshot masking options`() {
+    // Arrange
+    val bundle =
+      bundleOf(
+        ManifestMetadataReader.SCREENSHOT_MASK_ALL_TEXT to true,
+        ManifestMetadataReader.SCREENSHOT_MASK_ALL_IMAGES to true,
+      )
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.screenshot.maskViewClasses.contains("android.widget.TextView"))
+    assertTrue(fixture.options.screenshot.maskViewClasses.contains("android.widget.ImageView"))
+    // maskAllImages should also add WebView
+    assertTrue(fixture.options.screenshot.maskViewClasses.contains("android.webkit.WebView"))
+  }
+
+  @Test
+  fun `applyMetadata reads strictTraceContinuation and keeps default value if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertFalse(fixture.options.isStrictTraceContinuation)
+  }
+
+  @Test
+  fun `applyMetadata reads strictTraceContinuation to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.STRICT_TRACE_CONTINUATION to true)
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertTrue(fixture.options.isStrictTraceContinuation)
+  }
+
+  @Test
+  fun `applyMetadata reads orgId and keeps null if not found`() {
+    // Arrange
+    val context = fixture.getContext()
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertNull(fixture.options.orgId)
+  }
+
+  @Test
+  fun `applyMetadata reads orgId to options`() {
+    // Arrange
+    val bundle = bundleOf(ManifestMetadataReader.ORG_ID to "12345")
+    val context = fixture.getContext(metaData = bundle)
+
+    // Act
+    ManifestMetadataReader.applyMetadata(context, fixture.options, fixture.buildInfoProvider)
+
+    // Assert
+    assertEquals("12345", fixture.options.orgId)
   }
 }
